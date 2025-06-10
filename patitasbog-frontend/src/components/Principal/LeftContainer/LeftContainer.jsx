@@ -1,10 +1,10 @@
 import React from 'react';
 import './LeftContainer.css';
 
-const LeftContainer = ({ children }) => {
+const LeftContainer = () => {
     return (
         <div className="left-container">
-            {children}
+            
         </div>
     );
 };

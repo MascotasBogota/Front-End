@@ -23,6 +23,11 @@ function App() {
             <></> {/*Vista Register*/}
           </Layout>
         } />
+        <Route path="/education" element={
+          <Layout>
+            <></> {/*Vista Módulo Educativo*/}
+          </Layout>
+        } />
       </Routes>
     </Router>
   );

@@ -6,3 +6,45 @@
   box-sizing: border-box;
   overflow-y: auto; 
 }
+
+.contact {
+  flex: auto;
+  background-color: var(--orange2);
+  padding: 0.5rem 0.5rem;
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contact h2{
+  margin-top: 0;
+  margin-bottom: 0rem;
+  text-align: center;
+}
+
+.contact span{
+  margin-left: 1rem;
+  margin-top: 0;
+}
+
+.call-to-action {
+  flex: auto;
+  background-color: var(--orange2);
+  padding: 0.5rem 0.5rem;
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.call-to-action h2{
+  margin-top: 0.2rem;
+  margin-bottom: 0rem;
+  text-align: center;
+}
+.call-to-action .imagen-previa{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 2rem;
+}
