@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'; // Importamos useState y useEffect
 import { useLocation } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
+import Navbar from '../Navbar/Navbar'; 
 import LeftContainer from '../LeftContainer/LeftContainer';
 import MainContainer from '../MainContainer/MainContainer';
 import RightContainer from '../RightContainer/RightContainer';
