@@ -1,0 +1,8 @@
+.right-container {
+  flex: 0 0 300px;
+  background-color: var(--white); 
+  border-left: 1px solid var(--gray);
+  padding: var(--spacing-unit);
+  box-sizing: border-box;
+  overflow-y: auto; 
+}

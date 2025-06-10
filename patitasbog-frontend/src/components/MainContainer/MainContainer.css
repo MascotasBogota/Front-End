@@ -1,0 +1,7 @@
+.main-container {
+  flex: 1; 
+  background-color: var(--white);
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+}

@@ -1,0 +1,21 @@
+.main-content-wrapper {
+  display: flex; 
+  height: calc(100vh - var(--navbar-height));
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.layout-toggle-button {
+  margin-top: var(--spacing-unit);
+  padding: 0.5rem var(--spacing-unit);
+  background-color: var(--blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold; 
+}
+
+.layout-toggle-button:hover {
+  background-color: var(--orange1);
+}
