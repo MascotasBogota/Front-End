@@ -37,11 +37,17 @@
   align-items: center;
 }
 
+.call-to-action a{
+  text-decoration: none;
+}
+
 .call-to-action h2{
   margin-top: 0.2rem;
   margin-bottom: 0rem;
   text-align: center;
+  color: var(--blue)
 }
+
 .call-to-action .imagen-previa{
   height: 100%;
   width: 100%;

@@ -4,19 +4,23 @@ import './Navbar.css';
 const Navbar =() => {
   return (
     <nav className="navbar" role="navigation" aria-label="Barra de navegación principal">
-      {/*Sección del logo y texto "PatitasBog"*/}
-      <div className="logo-section">
-        <div className="logo-container">
-          <img
-            src="/images/logo.png"
-            alt="Logo de PatitasBog"
-            className="logo"
-          />
+      <a
+          href="/"
+          className="logo-link"
+          aria-label="Redirección a página de inicio"
+      >
+        <div className="logo-section">
+          <div className="logo-container">
+            <img
+              src="/images/logo.png"
+              alt="Logo de PatitasBog"
+              className="logo"
+            />
+          </div>
+          <span className="logo-text">PatitasBog</span>
         </div>
-        <span className="logo-text">PatitasBog</span>
-      </div>
-
-      {/* Agrupación de enlaces de la derecha */}
+      </a>
+      
       <div className="nav-links">
         <a
           href="/register"
