@@ -28,6 +28,16 @@ function App() {
             <></> {/*Vista Módulo Educativo*/}
           </Layout>
         } />
+        <Route path="/notifications" element={
+          <Layout>
+            <></> {/*Vista Notificaciones*/}
+          </Layout>
+        } />
+        <Route path="/myprofile" element={
+          <Layout>
+            <></> {/*Vista Mi Perfil*/}
+          </Layout>
+        } />
       </Routes>
     </Router>
   );

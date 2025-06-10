@@ -12,13 +12,12 @@ const RightContainer = ({ children }) => {
             <div className="call-to-action">
                 <a
                 href="/education"
-                className="image-link"
                 aria-label="Ingresar al módulo educativo"
                 >
                     <h2>Módulo Educativo</h2>
-                    <div className="image-container">
+                    <div >
                     <img
-                        src="/images/moduloeducativo.PNG"
+                        src="/images/moduloeducativo.png"
                         alt="Dibujo animado de mujer con dos perritos"
                         className="imagen-previa"
                     />

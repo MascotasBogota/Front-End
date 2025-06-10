@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
                     <LeftContainer>
                     </LeftContainer>
                 )}
-                <MainContainer className={!showLeftContainer ? 'full-width' : ''}>
+                <MainContainer className='main-container'>
                     {children}
                 </MainContainer>
                 <RightContainer>
