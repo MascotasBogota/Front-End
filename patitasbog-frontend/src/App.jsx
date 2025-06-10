@@ -10,17 +10,17 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Layout>
-            <></> {/* Aquí iría el componente de tu vista principal */}
+            <></> {/*Vista Home*/}
           </Layout>
         } />
         <Route path="/login" element={
           <Layout>
-            <></> {/* Aquí iría el componente de tu vista de login */}
+            <></> {/*Vista Login*/}
           </Layout>
         } />
         <Route path="/register" element={
           <Layout>
-            <></> {/* Aquí iría el componente de tu vista de registro */}
+            <></> {/*Vista Register*/}
           </Layout>
         } />
       </Routes>

@@ -1,24 +1,19 @@
-/* src/index.css o src/App.css */
-
-/* Reseteo básico y estilos globales */
 html,
 body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%; /* Muy importante para que 100vh en el Layout funcione correctamente */
-    font-family: 'League Spartan', sans-serif; /* Tu fuente principal */
-    font-weight: 400; /* Peso de la fuente base */
-    -webkit-font-smoothing: antialiased; /* Mejorar el renderizado de la fuente en Webkit */
-    -moz-osx-font-smoothing: grayscale; /* Mejorar el renderizado de la fuente en Firefox */
-    line-height: 1.5; /* Espaciado entre líneas del texto */
-    color: var(--blue); /* Color de texto base para toda la aplicación */
-    background-color: var(--grey-light); /* Un color de fondo global más suave */
+    height: 100%;
+    font-family: 'League Spartan', sans-serif; 
+    font-weight: 400; 
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale; 
+    line-height: 1.5; 
+    color: var(--blue);
+    background-color: var(--white); 
 }
 
-/* Variables CSS (Colores, espaciados, bordes, sombras, etc.) */
 :root {
-    /* Paleta de Colores que definiste */
     --orange1: #ec8238;
     --orange2: #fad29d;
     --blue: #0b2a3f;
