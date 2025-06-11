@@ -40,7 +40,7 @@ const RightContainer = ({ children }) => {
                         <h2>Módulo Educativo</h2>
                         <div >
                             <img
-                                src="/images/moduloeducativo.png"
+                                src="/images/moduloeducativo.PNG"
                                 alt="Dibujo animado de mujer con dos perritos"
                                 className="imagen-previa"
                             />
