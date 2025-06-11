@@ -1,10 +1,13 @@
 .main-container {
-  flex: 1; 
-  background-color: var(--white);
-  padding: 0rem;
-  box-sizing: border-box;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    flex: 1; 
+    background-color: var(--white);
+    padding: 0rem; 
+    height: 100%; 
+    box-sizing: border-box; 
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center; 
+    padding-bottom: 1rem;
 }
