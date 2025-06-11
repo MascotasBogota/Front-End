@@ -28,3 +28,13 @@ body {
 #root {
     padding: 0;
 }
+
+.container-generic{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    width: 100%; 
+    max-width: 800px;
+    box-sizing: border-box;
+}

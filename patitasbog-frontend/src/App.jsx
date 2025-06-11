@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'; 
 import Layout from './components/Principal/Layout/Layout';
+import ViewRecuperarClave from './views/Login/ViewRecuperarClave';
+import ViewCambiarClave from './views/Login/ViewCambiarClave';
 import './index.css'; 
 
 function App() {
@@ -21,6 +23,16 @@ function App() {
         <Route path="/register" element={
           <Layout>
             <></> {/*Vista Register*/}
+          </Layout>
+        } />
+        <Route path="/recover_password_request" element={
+          <Layout>
+            <ViewRecuperarClave />
+          </Layout>
+        } />
+        <Route path="/change_password" element={
+          <Layout>
+            <ViewCambiarClave />
           </Layout>
         } />
         <Route path="/education" element={

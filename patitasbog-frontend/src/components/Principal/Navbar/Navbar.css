@@ -6,6 +6,7 @@
   padding: 0.2rem 1.5rem; 
   color: var(--blue);
   height: var(--navbar-height);
+  z-index: 1000; 
 }
 
 .navbar a{

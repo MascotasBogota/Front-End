@@ -9,6 +9,7 @@
   box-sizing: border-box;
   overflow-y: auto;
   align-items: center;
+  transition: transform 0.3s ease-in-out; 
 }
 
 .icono-container {
@@ -33,4 +34,42 @@
   object-fit: cover;
   border-radius: 50%;
   object-position: center
+}
+
+.toggle-left-container-button {
+    display: none; 
+    position: fixed; 
+    bottom: 50%; 
+    left: 0.5rem; 
+    z-index: 999; 
+    background-color: var(--white);
+    color: var(--blue);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.5rem; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+}
+
+@media (max-width: 768px) { 
+    .left-container {
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 60px; 
+        height: 100%; 
+        transform: translateX(-100%); 
+        border-right: none; 
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); 
+        z-index: 998; 
+    }
+
+    .left-container.open {
+        transform: translateX(0%); 
+    }
+
+    .toggle-left-container-button {
+        display: block;
+    }
 }
