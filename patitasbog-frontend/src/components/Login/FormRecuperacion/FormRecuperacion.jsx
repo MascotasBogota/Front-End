@@ -1,13 +1,46 @@
 import {React, useState} from 'react'
 import './FormRecuperacion.css'
 
-const FormRecuperacion = () => {
-    const [showMessage, setShowMessage] = useState(true);
+const FormRecuperacion = ({ onChangeSuccess, onChangeFail }) => {
     const [correo, setCorreo] = useState('');
-    
+    const [found, setFound] = useState(true);
+
+    const validateForm = () => {
+        let currentErrors = []; 
+        let isValid = true;   
+
+        if (correo === '' ){
+            currentErrors.push('Todos los campos son obligatorios.');
+            isValid = false;
+        }
+        if (!found) { 
+            currentErrors.push('El correo no fue encontrado.');
+            isValid = false;
+        }
+        return { isValid, errors: currentErrors.join('\n') };
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Correo: ', correo);
+        const { isValid, errors } = validateForm();
+
+        if (isValid) {
+            setTimeout(() => {
+                onChangeSuccess(
+                    '¡Correo enviado correctamente!',
+                    'Cambiar contraseña',
+                    'change_password'
+                );
+            }, 500); 
+        }
+        else {
+            setTimeout(() => {
+                onChangeFail(
+                    '¡Error al enviar código de confirmación!',
+                    errors
+                );
+            }, 500); 
+        }
     };
 
     return(
