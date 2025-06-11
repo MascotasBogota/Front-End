@@ -32,9 +32,8 @@ body {
 .container-generic{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding-bottom: 0.5rem;
+    padding: 1rem;
     width: 100%; 
     max-width: 800px;
     box-sizing: border-box;
