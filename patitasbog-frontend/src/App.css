@@ -39,7 +39,6 @@ body {
     align-items: center;
     padding: 1rem;
     width: 100%; 
-    max-width: 800px;
     box-sizing: border-box;
 }
 
@@ -64,9 +63,11 @@ span{
     margin-right: 5%;
 }
 
-input{
-    width: 100%; 
+input{ 
     height: 2rem;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
     border: none;
     border-radius: 5px;
     box-sizing: border-box; 
