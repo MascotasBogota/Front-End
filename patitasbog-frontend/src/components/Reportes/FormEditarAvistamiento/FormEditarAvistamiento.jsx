@@ -1,15 +1,16 @@
 import React, { useState } from 'react'; 
-import './FormCrearAvistamiento.css';
+import './FormEditarAvistamiento.css';
 import MapaSelector from '../MapaSelector/MapaSelector';
 
-const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
-    const tiporeporteInput = 'Avistamiento';
+const FormEditarAvistamiento = ({mascota, fecha, hora, detalles,
+    ubicacion, imagen, onChangeSuccess, onChangeFail}) => {
+    const tiporeporteInput ='Avistamiento';
     const nombremascotaInput = mascota;
-    const [fechaInput, setFechaInput] = useState('');
-    const [horaInput, setHoraInput] = useState('');
-    const [detallesInput, setDetallesInput] = useState('');
-    const [ubicacionInput, setUbicacionInput] = useState(null);
-    const [imagenInput, setImagenInput] = useState(null);
+    const [fechaInput, setFechaInput] = useState(fecha);
+    const [horaInput, setHoraInput] = useState(hora);
+    const [detallesInput, setDetallesInput] = useState(detalles);
+    const [ubicacionInput, setUbicacionInput] = useState(ubicacion);
+    const [imagenInput, setImagenInput] = useState(imagen);
     
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -25,10 +26,6 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
         let currentErrors = []; 
         let isValid = true;   
 
-        if (nombremascotaInput==='') {
-            currentErrors.push('El campo de nombre mascota no puede estar vacío.');
-            isValid = false;
-        }
         if (fechaInput==='') {
             currentErrors.push('El campo de fecha no puede estar vacío.');
             isValid = false;
@@ -55,7 +52,7 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
         if (isValid) {
             setTimeout(() => {
                 onChangeSuccess(
-                    '¡Reporte de avistamiento creado correctamente!',
+                    '¡Reporte actualizado correctamente!',
                     'inicio',
                     'home'
                 );
@@ -64,7 +61,7 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
         else {
             setTimeout(() => {
                 onChangeFail(
-                    '¡Error al crear reporte',
+                    '¡Error al actualizae reporte',
                     errors
                 );
             }, 500); 
@@ -129,7 +126,11 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
 
                         {imagenInput && (
                         <img
-                            src={URL.createObjectURL(imagenInput)}
+                            src={
+                            typeof imagenInput === 'string'
+                                ? imagenInput
+                                : URL.createObjectURL(imagenInput)
+                            }
                             alt="Preview"
                             className="preview-foto"
                         />
@@ -138,7 +139,7 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
                 </div>
                 <div className='generic-div'>
                     <a href='/home' className='button-secondary'>Descartar</a>
-                    <button type="submit" className="button-principal">Crear</button>
+                    <button type="submit" className="button-principal">Guardar</button>
                 </div>
             </form>
             <h3>Los campos señalados con * no pueden quedar vacíos</h3>
@@ -146,4 +147,4 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
     );
 };
 
-export default FormCrearAvistamiento;
+export default FormEditarAvistamiento;

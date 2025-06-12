@@ -3,7 +3,7 @@ import './FormCrearPerdida.css';
 import MapaSelector from '../MapaSelector/MapaSelector';
 
 const FormCrearPerdida = ({onChangeSuccess, onChangeFail}) => {
-    const [tiporeporteInput, setTipoReporteInput] = useState('Perdida');
+    const tiporeporteInput = 'Perdida';
     const [nombremascotaInput, setNombreMascotaInput] = useState('');
     const [fechaInput, setFechaInput] = useState('');
     const [horaInput, setHoraInput] = useState('');

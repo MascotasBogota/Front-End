@@ -4,7 +4,7 @@ import MapaSelector from '../MapaSelector/MapaSelector';
 
 const FormEditarPerdida = ({mascota, fecha, hora, detalles,
     ubicacion, imagen, onChangeSuccess, onChangeFail}) => {
-    const [tiporeporteInput, setTipoReporteInput] = useState('Perdida');
+    const tiporeporteInput = 'Perdida';
     const [nombremascotaInput, setNombreMascotaInput] = useState(mascota);
     const [fechaInput, setFechaInput] = useState(fecha);
     const [horaInput, setHoraInput] = useState(hora);
