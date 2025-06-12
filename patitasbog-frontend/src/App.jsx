@@ -4,6 +4,8 @@ import './App.css';
 import Layout from './components/Principal/Layout/Layout';
 import ViewRecuperarClave from './views/Login/ViewRecuperarClave';
 import ViewCambiarClave from './views/Login/ViewCambiarClave';
+import ViewPerfil from './views/Login/ViewPerfil';
+import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
 import './index.css'; 
 
 function App() {
@@ -12,8 +14,15 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Layout>
-            <></> {/*Vista Home*/}
+            <></> {/*Vista Home sin loguear*/}
           </Layout>
+          
+        } />
+        <Route path="/home" element={
+          <Layout>
+            <></> {/*Vista Home logueado*/}
+          </Layout>
+          
         } />
         <Route path="/login" element={
           <Layout>
@@ -45,9 +54,24 @@ function App() {
             <></> {/*Vista Notificaciones*/}
           </Layout>
         } />
-        <Route path="/myprofile" element={
+        <Route path="/my_profile" element={
           <Layout>
-            <></> {/*Vista Mi Perfil*/}
+            <ViewPerfil />
+          </Layout>
+        } />
+        <Route path="/my_profile/picture" element={
+          <Layout>
+             <></> {/*Vista Subir Foto*/}
+          </Layout>
+        } />
+        <Route path="/my_profile/edit" element={
+          <Layout>
+             <ViewEditarPerfil />
+          </Layout>
+        } />
+        <Route path="/my_profile/change_password" element={
+          <Layout>
+             <></> {/*Vista Cambiar Contraseña*/}
           </Layout>
         } />
       </Routes>
