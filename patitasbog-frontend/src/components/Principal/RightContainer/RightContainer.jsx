@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
+import { useLocation } from 'react-router-dom';
 import './RightContainer.css';
 
 const RightContainer = ({ children }) => {
+    const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
+    const [isLogued, setIsLogued] = useState(true);
 
     useEffect(() => {
         const handleResize = () => {
@@ -14,6 +17,17 @@ const RightContainer = ({ children }) => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [isOpen]);
+
+    useEffect(() => {
+            if(location.pathname=='/login' || location.pathname=='/register'
+               || location.pathname=='/recover_password_request'
+                || location.pathname=='/change_password'){
+                setIsLogued(false);
+            }
+            else{
+                setIsLogued(true);
+            }
+        }, [location.pathname]);
 
     const toggleRightContainer = () => {
         setIsOpen(!isOpen);
@@ -47,6 +61,19 @@ const RightContainer = ({ children }) => {
                         </div>
                     </a>
                 </div>
+                
+                {isLogued &&
+                    <div className="create-report-redirect">
+                        <a href="/create_report" aria-label="Crear nuevo reporte" className="report-link">
+                            <img
+                                src="/images/lapiz_icono.png"
+                                alt="Ícono de lápiz"
+                                className="imagen-previa"
+                            />
+                            <h2>Nuevo Reporte</h2>
+                        </a>
+                    </div>
+                }
             </div>
         </>
     );
