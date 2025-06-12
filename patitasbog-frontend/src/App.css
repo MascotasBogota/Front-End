@@ -88,6 +88,8 @@ input{
     border: none;
     font-weight: bold;
     text-decoration: none;
+    font-family: 'League Spartan', sans-serif;
+    height: 2.5rem;
 }
 
 .button-principal:hover{
@@ -107,6 +109,7 @@ input{
     border: none;
     font-weight: bold;
     text-decoration: none;
+    font-family: 'League Spartan', sans-serif;
 }
 
 .button-secondary:hover{
@@ -126,6 +129,7 @@ input{
     border: none;
     font-weight: bold;
     text-decoration: none;
+    font-family: 'League Spartan', sans-serif;
 }
 
 .button-three:hover{

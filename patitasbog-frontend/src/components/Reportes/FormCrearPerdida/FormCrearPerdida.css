@@ -127,3 +127,10 @@ form .input-foto {
   border-radius: 1rems;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+
+.generic-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
