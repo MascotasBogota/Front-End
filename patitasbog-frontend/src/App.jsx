@@ -7,6 +7,7 @@ import ViewCambiarClave from './views/Login/ViewCambiarClave';
 import ViewCambiarClaveLogued from './views/Login/ViewCambiarClaveLogued';
 import ViewPerfil from './views/Login/ViewPerfil';
 import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
+import ViewCrearPerdida from './views/Reportes/ViewCrearPerdida';
 import './index.css'; 
 
 function App() {
@@ -73,6 +74,11 @@ function App() {
         <Route path="/my_profile/change_password" element={
           <Layout>
             <ViewCambiarClaveLogued />
+          </Layout>
+        } />
+        <Route path="/create_report" element={
+          <Layout>
+            <ViewCrearPerdida />
           </Layout>
         } />
       </Routes>
