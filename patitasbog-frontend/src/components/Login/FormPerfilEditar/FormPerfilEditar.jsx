@@ -54,7 +54,7 @@ const FormPerfilEditar = ({nombre, email, usuario, genero, direccion, telefono,
                 <span className='title'><h2>Perfil</h2></span>
                 <a href='/home'><span className='close'>X</span></a>
             </div>
-            <form  onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                     <div className='columnas-formulario'>
                     <div className= 'filas-formulario'>
                         <label>Nombre*</label>
