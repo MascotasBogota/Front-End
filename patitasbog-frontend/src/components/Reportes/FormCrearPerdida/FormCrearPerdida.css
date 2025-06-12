@@ -115,6 +115,7 @@ form .input-foto {
   margin-right: 12px;
   font-size: 15px;
   transition: background-color 0.2s ease;
+  font-family: 'League Spartan', sans-serif; ;
 }
 
 .input-foto::file-selector-button:hover {
