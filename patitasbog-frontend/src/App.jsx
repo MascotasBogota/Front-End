@@ -8,9 +8,6 @@ import ViewCambiarClaveLogued from './views/Login/ViewCambiarClaveLogued';
 import ViewPerfil from './views/Login/ViewPerfil';
 import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
 import ViewCrearPerdida from './views/Reportes/ViewCrearPerdida';
-import ViewLogin from './views/Login/ViewLogin';
-import ViewHomeLogin from './views/Home/ViewHomeLogin';
-
 import './index.css'; 
 
 function App() {
@@ -25,13 +22,13 @@ function App() {
         } />
         <Route path="/home" element={
           <Layout>
-            <ViewHomeLogin /> {/*Vista Home logueado*/}
+            <></> {/*Vista Home logueado*/}
           </Layout>
           
         } />
         <Route path="/login" element={
           <Layout>
-            <ViewLogin /> {/*Vista Login*/}
+            <></> {/*Vista Login*/}
           </Layout>
         } />
         <Route path="/register" element={
