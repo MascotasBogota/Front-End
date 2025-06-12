@@ -12,7 +12,8 @@ const Layout = ({ children }) => {
 
     useEffect(() => {
         if(location.pathname=='/login' || location.pathname=='/register'
-           || location.pathname=='/recuperarclave'){
+           || location.pathname=='/recover_password_request'
+            || location.pathname=='/change_password'){
             setShowLeftContainer(false);
         }
         else{
