@@ -141,7 +141,10 @@ const FormCrearPerdida = ({onChangeSuccess, onChangeFail}) => {
                         )}
                     </div>
                 </div>
-                <button type="submit" className="button-principal">Crear</button>
+                <div className='generic-div'>
+                    <a href='/home' className='button-secondary'>Descartar</a>
+                    <button type="submit" className="button-principal">Crear</button>
+                </div>
             </form>
             <h3>Los campos señalados con * no pueden quedar vacíos</h3>
         </div>
