@@ -36,6 +36,7 @@
     border-radius: 2rem;
     justify-content: center;
     align-items: center;
+    margin-bottom: 1rem;
 }
 
 .call-to-action a {
@@ -92,4 +93,31 @@
     .toggle-right-container-button {
         display: block;
     }
+}
+
+.create-report-redirect {
+    background-color: var(--orange1);
+    padding: 1rem;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+}
+
+.create-report-redirect .report-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.create-report-redirect .imagen-previa {
+    height: 2rem;
+    width: 2rem;
+    object-fit: contain;
+}
+
+.create-report-redirect h2 {
+    margin: 0;
+    color: var(--blue);
+    font-size: 1.5rem;
 }
