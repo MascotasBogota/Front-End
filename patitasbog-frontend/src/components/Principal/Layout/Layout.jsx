@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
     const [showLeftContainer, setShowLeftContainer] = useState(true);
 
     useEffect(() => {
-        if(location.pathname=='/login' || location.pathname=='/register'
+        if(location.pathname=='/' || location.pathname=='/login' || location.pathname=='/register'
            || location.pathname=='/recover_password_request'
             || location.pathname=='/change_password'){
             setShowLeftContainer(false);

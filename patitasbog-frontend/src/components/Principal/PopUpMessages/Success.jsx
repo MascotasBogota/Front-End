@@ -8,7 +8,7 @@ const Success = ({title, end, redirect}) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             if (redirect) {
-                navigate(`/${redirect}`); 
+                 navigate(redirect); // <--- cambie de navigate(`/${redirect}`); 
             }
         }, 1000); 
         return () => clearTimeout(timer);
@@ -18,7 +18,7 @@ const Success = ({title, end, redirect}) => {
         <div className='background-block'>
             <div className='success-popup'>
                 <h1>{title}</h1>
-                <h2>Redirigiendo a {end}...</h2>
+                <h2>{end}...</h2> {/*texto de popup */}
             </div>
         </div>
     )
