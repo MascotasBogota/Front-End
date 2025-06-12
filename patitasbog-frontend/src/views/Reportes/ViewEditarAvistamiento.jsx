@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import FormCrearAvistamiento from '../../components/Reportes/FormCrearAvistamiento/FormCrearAvistamiento'
+import FormEditarAvistamiento from '../../components/Reportes/FormEditarAvistamiento/FormEditarAvistamiento'
 import Success from '../../components/Principal/PopUpMessages/Success';
 import Fail from '../../components/Principal/PopUpMessages/Fail';
 
-const ViewCrearAvistamiento = () => {    
+const ViewEditarAvistamiento = () => {
+    const mascota = 'Firulais';
+    const fecha = '2025-06-11';
+    const hora = '15:30';
+    const detalles = 'Se escapó en el parque cerca de la calle 80.';
+    const ubicacion = { lat: 4.65, lng: -74.05 };
+    const imagen = '/images/foto_mascota.png';
+    
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [titleSuccess, setTitleSuccess] = useState('');  
     const [endSuccess, setEndSuccess] = useState('');     
     const [redirectSuccess, setRedirectSuccess] = useState(''); 
-    const mascota = 'Firulais';
     
     const handleChangeSuccess = (title, end, redirect) => {
         setTitleSuccess(title);
@@ -29,8 +35,12 @@ const ViewCrearAvistamiento = () => {
     
     return (
         <div className='container-generic'>
-            <FormCrearAvistamiento
-                mascota={mascota}
+            <FormEditarAvistamiento mascota={mascota}
+                fecha={fecha}
+                hora={hora}
+                detalles={detalles}
+                ubicacion={ubicacion}
+                imagen={imagen}
                 onChangeSuccess={handleChangeSuccess}
                 onChangeFail={handleChangeFail}
             />
@@ -52,4 +62,4 @@ const ViewCrearAvistamiento = () => {
     );
 };
 
-export default ViewCrearAvistamiento;
+export default ViewEditarAvistamiento;

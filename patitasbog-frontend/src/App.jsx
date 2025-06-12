@@ -10,6 +10,7 @@ import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
 import ViewCrearPerdida from './views/Reportes/ViewCrearPerdida';
 import ViewEditarPerdida from './views/Reportes/ViewEditarPerdida';
 import ViewCrearAvistamiento from './views/Reportes/ViewCrearAvistamiento';
+import ViewEditarAvistamiento from './views/Reportes/ViewEditarAvistamiento';
 import './index.css'; 
 
 function App() {
@@ -91,6 +92,11 @@ function App() {
         <Route path="/create_seen" element={
           <Layout>
             <ViewCrearAvistamiento />
+          </Layout>
+        } />
+        <Route path="/edit_seen" element={
+          <Layout>
+            <ViewEditarAvistamiento />
           </Layout>
         } />
       </Routes>
