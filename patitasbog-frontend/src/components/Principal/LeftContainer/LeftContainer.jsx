@@ -34,7 +34,7 @@ const LeftContainer = () => {
                     </a>
                 </div>
                 <div className="profile-picture-container">
-                    <a href="/myprofile">
+                    <a href="/my_profile">
                         <img src='/images/fotodeperfil.png' className="profile-picture"
                         alt="foto de perfil" />                
                     </a>

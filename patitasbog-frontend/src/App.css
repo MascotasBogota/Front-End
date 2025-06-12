@@ -36,13 +36,14 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: auto;
     align-items: center;
     padding: 1rem;
     width: 100%; 
     box-sizing: border-box;
 }
 
-h1{
+h1, h2, h3{
     margin-top: 0.3rem;
     margin-bottom: 0.2rem;
     margin-left: 5%;
@@ -85,6 +86,7 @@ input{
     border-radius: 2rem;
     border: none;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .button-principal:hover{
@@ -103,6 +105,7 @@ input{
     border-radius: 2rem;
     border: none;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .button-secondary:hover{
@@ -121,8 +124,23 @@ input{
     border-radius: 2rem;
     border: none;
     font-weight: bold;
+    text-decoration: none;
 }
 
-.button-secondary:hover{
+.button-three:hover{
     cursor: pointer;
+}
+
+.blocked-input{
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: var(--gray);
+    color: var(--blue);
+    font-size: 1rem;
+    padding: 0.3rem 4rem;
+    border: none;
+    font-weight: bold;
+    width:50%;
 }
