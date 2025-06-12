@@ -10,6 +10,9 @@ import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
 import ViewCrearPerdida from './views/Reportes/ViewCrearPerdida';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
+import ViewEditarPerdida from './views/Reportes/ViewEditarPerdida';
+import ViewCrearAvistamiento from './views/Reportes/ViewCrearAvistamiento';
+import ViewEditarAvistamiento from './views/Reportes/ViewEditarAvistamiento';
 import './index.css'; 
 
 function App() {
