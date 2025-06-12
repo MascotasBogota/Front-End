@@ -1,0 +1,137 @@
+.caja-formulario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    text-align: center;
+    background-color: var(--orange2);
+    border-radius: 2rem;
+    padding: 2rem 1rem;
+}
+
+.columnas-formulario {
+    margin-top: 0.5rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.filas-formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin-right: 1rem;
+}
+
+.cabecera {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%; 
+}
+
+.cabecera a{
+    text-decoration: none;
+    color: var(--blue);
+}
+
+.title {
+    background-color: var(--orange1);
+    padding: 0rem 1rem;
+    width: 50%;
+}
+
+.close {
+    background-color: var(--orange1);
+    padding: 0.75rem 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.close:hover{
+    cursor: pointer;
+}
+
+.blocked-input{
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: var(--gray);
+    color: var(--blue);
+    font-size: 1rem;
+    padding: 0.3rem 4rem;
+    border: none;
+    font-weight: bold;
+    width:50%;
+}
+
+@media(max-width:780px){
+    .columnas-formulario{
+        flex-direction: column;
+    }
+}
+
+textarea{
+    width: 95%;
+    height: 100%;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0rem 0.5rem;
+}
+
+.label-foto {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: var(--blue);
+}
+
+form .input-foto {
+  all: unset; 
+  border: none;
+  padding: 12px 16px;              
+  border-radius: 8px;              
+  background-color: var(--white);
+  cursor: pointer;
+  color: var(--blue);
+  margin-bottom: 1rem;
+  display: block;
+  font-size: 16px;                
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 80%;
+  max-width: 400px;
+}
+
+.input-foto::file-selector-button {
+  background-color: var(--orange1);
+  border: none;
+  color: var(--blue);
+  padding: 10px 16px;             
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 12px;
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+  font-family: 'League Spartan', sans-serif; ;
+}
+
+.input-foto::file-selector-button:hover {
+  background-color: var(--gray);
+}
+
+.preview-foto {
+  margin-top: 10px;
+  width: 80%;
+  border-radius: 1rems;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.generic-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
