@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import FormCrearPerdida from '../../components/Reportes/FormCrearPerdida/FormCrearPerdida'
+import FormCrearAvistamiento from '../../components/Reportes/FormCrearAvistamiento/FormCrearAvistamiento'
 import Success from '../../components/Principal/PopUpMessages/Success';
 import Fail from '../../components/Principal/PopUpMessages/Fail';
 
-const ViewCrearPerdida = () => {    
+const ViewCrearAvistamiento = () => {    
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [titleSuccess, setTitleSuccess] = useState('');  
     const [endSuccess, setEndSuccess] = useState('');     
@@ -28,7 +28,7 @@ const ViewCrearPerdida = () => {
     
     return (
         <div className='container-generic'>
-            <FormCrearPerdida 
+            <FormCrearAvistamiento
                 onChangeSuccess={handleChangeSuccess}
                 onChangeFail={handleChangeFail}
             />
@@ -50,4 +50,4 @@ const ViewCrearPerdida = () => {
     );
 };
 
-export default ViewCrearPerdida;
+export default ViewCrearAvistamiento;
