@@ -11,7 +11,7 @@ const ViewHomeLogin = () => {
   const [endSuccess, setEndSuccess] = useState('');
   const [redirectSuccess, setRedirectSuccess] = useState('');
 
-  // Handler para mostrar el popup de éxito
+  // Handler para mostrar el popup de éxit
   const handleChangeSuccess = (title, end, redirect) => {
     setTitleSuccess(title);
     setEndSuccess(end);

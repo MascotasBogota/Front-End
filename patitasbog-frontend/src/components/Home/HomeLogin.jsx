@@ -56,7 +56,7 @@ const HomeLogin = () => {
               {/* Nombre y detalles */}
               <h2 className="reporte-nombre">{reporte.nombreMascota}</h2>
               <p className="reporte-detalles">{reporte.detalles}</p>
-              {/* Aquí puedes mostrar un mapa estático o el componente MapaSelector */}
+              {/* Aquí puedes mostrar un mapa estático o el componente MapaSelecto */}
               <img src={reporte.mapa} alt="Mapa" className="reporte-mapa" />
             </div>
           </div>

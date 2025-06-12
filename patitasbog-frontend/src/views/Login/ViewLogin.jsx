@@ -5,7 +5,7 @@ import Success from '../../components/Principal/PopUpMessages/Success';
 import Fail from '../../components/Principal/PopUpMessages/Fail';
 
 const ViewLogin = () => {
-  // Puedes usar estos estados si quieres mostrar popups de éxito o error
+  // Puede usar estos estados si quieres mostrar popups de éxito o error
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [titleSuccess, setTitleSuccess] = useState('');
   const [endSuccess, setEndSuccess] = useState('');

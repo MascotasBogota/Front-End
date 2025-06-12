@@ -31,7 +31,7 @@ const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
       if (onFail)
         onFail(
           'Error',
-          'Las credenciales ingresadas no son válidas. Verifica que el correo y la contraseña estén bien escritos.'
+          'Las credenciales ingresadas no son válidas. Verifica que el correo y la contraseña estén bien escritos'
         );
     }
   };
