@@ -56,7 +56,6 @@ const FormCambiarClave = ({ onChangeSuccess, onChangeFail }) => {
     return (
         <div className='caja-formulario'>
             <h1>Reestablecer Contraseña</h1>
-            <p>Ingresa tu nueva contraseña a continuación</p>
             <form onSubmit={handleSubmit}>
                 <PasswordInput
                     label="Nueva Contraseña:"
@@ -66,6 +65,8 @@ const FormCambiarClave = ({ onChangeSuccess, onChangeFail }) => {
                     name="newPassword"
                     required
                 />
+                <p className='behind-input'>*La contraseña debe  tener mínimo 8 caracteres que 
+                    incluyan mayúsculas, minúsculas, letras, números y símbolos especiales </p>
                 <PasswordInput
                     label="Confirmar Contraseña:"
                     id="confirmPassword"
@@ -74,12 +75,16 @@ const FormCambiarClave = ({ onChangeSuccess, onChangeFail }) => {
                     name="confirmPassword"
                     required
                 />
-                <label>Código de confirmación enviado al correo</label>
+                <p className='behind-input'>*La confirmación de contraseña debe coincidir con
+                    la nueva contraseña </p>
+                <label>Código de confirmación</label>
                 <input
                     type="text"
                     value={codeConfirmation}
                     onChange={(e) => setCodeConfirmation(e.target.value)}
                 />
+                <p className='behind-input'>*El código debe coincidir con el código enviado
+                    al correo </p>
                 <button type="submit" className="button-principal">Enviar</button>
             </form>
         </div>

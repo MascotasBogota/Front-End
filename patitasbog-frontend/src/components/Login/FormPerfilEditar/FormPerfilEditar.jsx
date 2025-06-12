@@ -62,31 +62,37 @@ const FormPerfilEditar = ({nombre, email, usuario, genero, direccion, telefono,
                         onChange={(e) => setNombreInput(e.target.value)} 
                             type="text"
                         />
+                        <p className='behind-input'></p>
                         <label>Usuario*</label>
                         <input value={usuarioInput}
                         onChange={(e) => setUsuarioInput(e.target.value)} 
                             type="text"
                         />
+                        <p className='behind-input'></p>
                         <label>Dirección</label>
                         <input value={direccionInput}
                         onChange={(e) => setDireccionInput(e.target.value)} 
                             type="text"
                         />
+                        <p className='behind-input'></p>
                         <a href='/my_profile' className='button-secondary'>Descartar</a>
                     </div>
                     <div className= 'filas-formulario'>
                         <label>Correo</label>
                         <span className='blocked-input'>{email}</span>
+                        <p className='behind-input'></p>
                         <label>Género</label>
                         <input value={generoInput}
                         onChange={(e) => setGeneroInput(e.target.value)} 
                             type="text"
                         />
+                        <p className='behind-input'></p>
                         <label>Número de teléfono</label>
                         <input value={telefonoInput}
                         onChange={(e) => setTelefonoInput(e.target.value)} 
                             type="text"
                         />
+                        <p className='behind-input'></p>
                         <button type="submit" className="button-principal">Guardar</button>
                     </div>
                 </div>

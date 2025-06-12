@@ -4,6 +4,7 @@ import './App.css';
 import Layout from './components/Principal/Layout/Layout';
 import ViewRecuperarClave from './views/Login/ViewRecuperarClave';
 import ViewCambiarClave from './views/Login/ViewCambiarClave';
+import ViewCambiarClaveLogued from './views/Login/ViewCambiarClaveLogued';
 import ViewPerfil from './views/Login/ViewPerfil';
 import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
 import './index.css'; 
@@ -71,7 +72,7 @@ function App() {
         } />
         <Route path="/my_profile/change_password" element={
           <Layout>
-             <></> {/*Vista Cambiar Contraseña*/}
+            <ViewCambiarClaveLogued />
           </Layout>
         } />
       </Routes>
