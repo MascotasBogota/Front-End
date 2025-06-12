@@ -9,11 +9,11 @@ import './Layout.css';
 const Layout = ({ children }) => {
     const location = useLocation();
     const [showLeftContainer, setShowLeftContainer] = useState(true);
-
+    // Oculta LeftContainer si NO está logueado (por ejemplo, en /, /login, /register, /recover_password_request, /change_password)
     useEffect(() => {
-        if(location.pathname=='/login' || location.pathname=='/register'
-           || location.pathname=='/recover_password_request'
-            || location.pathname=='/change_password'){
+        if(location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register'
+           || location.pathname === '/recover_password_request'
+            || location.pathname === '/change_password'){
             setShowLeftContainer(false);
         }
         else{
