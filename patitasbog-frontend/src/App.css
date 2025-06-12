@@ -143,4 +143,5 @@ input{
     border: none;
     font-weight: bold;
     width:50%;
+    border-radius: 0.3rem;
 }

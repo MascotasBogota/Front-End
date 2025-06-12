@@ -5,6 +5,7 @@ import Layout from './components/Principal/Layout/Layout';
 import ViewRecuperarClave from './views/Login/ViewRecuperarClave';
 import ViewCambiarClave from './views/Login/ViewCambiarClave';
 import ViewPerfil from './views/Login/ViewPerfil';
+import ViewEditarPerfil from './views/Login/ViewEditarPerfil';
 import './index.css'; 
 
 function App() {
@@ -65,7 +66,7 @@ function App() {
         } />
         <Route path="/my_profile/edit" element={
           <Layout>
-             <></> {/*Vista Editar Datos*/}
+             <ViewEditarPerfil />
           </Layout>
         } />
         <Route path="/my_profile/change_password" element={
