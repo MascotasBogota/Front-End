@@ -16,8 +16,7 @@ const LocationMarker = ({ setUbicacion, ubicacionInicial }) => {
   });
 
   return position ? (
-    <Marker position={position}>
-    </Marker>
+    <Marker position={position} />
   ) : null;
 };
 
@@ -32,7 +31,10 @@ const MapaSelector = ({ setUbicacion, ubicacionInicial }) => {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <LocationMarker setUbicacion={setUbicacion} />
+      <LocationMarker 
+        setUbicacion={setUbicacion} 
+        ubicacionInicial={ubicacionInicial} 
+      />
     </MapContainer>
   );
 };

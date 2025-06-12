@@ -64,7 +64,7 @@ const RightContainer = ({ children }) => {
                 
                 {isLogued &&
                     <div className="create-report-redirect">
-                        <a href="/create_report" aria-label="Crear nuevo reporte" className="report-link">
+                        <a href="/create_lost" aria-label="Crear nuevo reporte" className="report-link">
                             <img
                                 src="/images/lapiz_icono.png"
                                 alt="Ícono de lápiz"
