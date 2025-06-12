@@ -8,7 +8,7 @@ export const reportService = {
   getAllReports: () => reportApi.get("/reports/public"),
 
   // Método para obtener un reporte específico por ID
-  getReportById: (reportId) => reportApi.get(`/reports/${reportId}`),
+  getReportById: (reportId) => reportApi.get(`/reports/public/${reportId}`),
 
   // Método para actualizar un reporte
   updateReport: (reportId, reportData) =>
