@@ -1,219 +1,134 @@
-// API Service para comunicación con el backend
-class ApiService {
-  constructor() {
-    this.baseURL = 'http://localhost:5000/api';
-    this.token = localStorage.getItem('authToken');
-  }
+const API_BASE_URL = 'http://localhost:5000/api';
 
-  // Configurar headers por defecto
-  getHeaders(includeAuth = false) {
-    const headers = {
-      'Content-Type': 'application/json',
+class ApiService {
+  // Configuración base para requests
+  static async makeRequest(endpoint, options = {}) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    
+    const defaultOptions = {
+      headers: {
+        'Content-Type': 'application/json',  // ✅ Esto está correcto
+        ...options.headers
+      }
     };
 
-    if (includeAuth && this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+    // Agregar token si está disponible
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      defaultOptions.headers.Authorization = `Bearer ${token}`;
     }
 
-    return headers;
-  }
-
-  // Manejar respuestas de la API
-  async handleResponse(response) {
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.message || 'Error en la petición');
-    }
-    
-    return data;
-  }
-
-  // 🔐 AUTENTICACIÓN
-  
-  // Iniciar sesión
-  async login(email, password) {
     try {
-      const response = await fetch(`${this.baseURL}/auth/login`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await this.handleResponse(response);
+      console.log(`🌐 Making request to: ${url}`);
+      console.log(`📤 Request method: ${options.method || 'GET'}`);
+      console.log(`📋 Request headers:`, defaultOptions.headers);
       
-      // Guardar token en localStorage
-      if (data.token) {
-        localStorage.setItem('authToken', data.token);
-        this.token = data.token;
+      // AGREGAR DEBUG PARA VER QUÉ SE ESTÁ ENVIANDO
+      if (options.body) {
+        console.log(`📦 Request body:`, options.body);
+        console.log(`📦 Request body type:`, typeof options.body);
       }
       
-      return data;
-    } catch (error) {
-      throw new Error(error.message || 'Error al iniciar sesión');
-    }
-  }
-
-  // Registrar usuario
-  async register(fullName, email, password) {
-    try {
-      const response = await fetch(`${this.baseURL}/auth/register`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({ fullName, email, password })
-      });
-
-      const data = await this.handleResponse(response);
+      const response = await fetch(url, { ...defaultOptions, ...options });
       
-      // Guardar token si viene en el registro
-      if (data.token) {
-        localStorage.setItem('authToken', data.token);
-        this.token = data.token;
+      console.log(`📊 Response status: ${response.status}`);
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Error desconocido' }));
+        throw new Error(errorData.message || `HTTP ${response.status}`);
       }
-      
-      return data;
+
+      return await response.json();
     } catch (error) {
-      throw new Error(error.message || 'Error al registrar usuario');
+      console.error(`❌ API Error for ${endpoint}:`, error);
+      throw error;
     }
   }
 
-  // Solicitar restablecimiento de contraseña
-  async forgotPassword(email) {
-    try {
-      const response = await fetch(`${this.baseURL}/auth/forgot-password`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({ email })
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Error al solicitar restablecimiento');
-    }
+  // AUTENTICACIÓN - RUTAS CORREGIDAS
+  static async login(credentials) {
+    return this.makeRequest('/users/login', {  // CORREGIDO: era /auth/login
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    });
   }
 
-  // Verificar token de restablecimiento
-  async verifyResetToken(token) {
-    try {
-      const response = await fetch(`${this.baseURL}/auth/verify-token`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({ token })
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Token inválido o expirado');
-    }
+  static async register(userData) {
+    return this.makeRequest('/users/register', {  // CORREGIDO: era /auth/register
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
   }
 
-  // Restablecer contraseña
-  async resetPassword(token, newPassword) {
-    try {
-      const response = await fetch(`${this.baseURL}/auth/reset-password`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({ token, password: newPassword })
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Error al restablecer contraseña');
-    }
+  // RECUPERACIÓN DE CONTRASEÑA - RUTAS CORREGIDAS
+  static async forgotPassword(email) {
+    return this.makeRequest('/auth/forgot-password', {  // Esta SÍ está en /auth
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
   }
 
-  // 👤 PERFIL
-
-  // Obtener perfil del usuario
-  async getProfile() {
-    try {
-      const response = await fetch(`${this.baseURL}/profile/`, {
-        method: 'GET',
-        headers: this.getHeaders(true)
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Error al obtener perfil');
-    }
+  static async verifyResetToken(token) {
+    return this.makeRequest('/auth/verify-token', {  // Esta SÍ está en /auth
+      method: 'POST',
+      body: JSON.stringify({ token })
+    });
   }
 
-  // Actualizar perfil
-  async updateProfile(profileData) {
-    try {
-      const response = await fetch(`${this.baseURL}/profile/`, {
-        method: 'PUT',
-        headers: this.getHeaders(true),
-        body: JSON.stringify(profileData)
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Error al actualizar perfil');
-    }
+  static async resetPassword(token, newPassword) {
+    return this.makeRequest('/auth/reset-password', {  // Esta SÍ está en /auth
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword })
+    });
   }
 
-  // Cambiar contraseña
-  async changePassword(currentPassword, newPassword) {
-    try {
-      const response = await fetch(`${this.baseURL}/profile/password`, {
-        method: 'PUT',
-        headers: this.getHeaders(true),
-        body: JSON.stringify({ currentPassword, newPassword })
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Error al cambiar contraseña');
-    }
+  // PERFIL DE USUARIO
+  static async getProfile() {
+    return this.makeRequest('/profile/');
   }
 
-  // Subir foto de perfil
-  async uploadProfilePicture(file) {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch(`${this.baseURL}/profile/upload-picture`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.token}`
-          // No incluir Content-Type para multipart/form-data
-        },
-        body: formData
-      });
-
-      return await this.handleResponse(response);
-    } catch (error) {
-      throw new Error(error.message || 'Error al subir imagen');
-    }
+  static async updateProfile(profileData) {
+    return this.makeRequest('/profile/', {
+      method: 'PUT',
+      body: JSON.stringify(profileData)
+    });
   }
 
-  // 🔒 UTILIDADES
-
-  // Cerrar sesión
-  logout() {
-    localStorage.removeItem('authToken');
-    this.token = null;
+  static async changePassword(passwordData) {
+    return this.makeRequest('/profile/change-password', {
+      method: 'POST',
+      body: JSON.stringify(passwordData)
+    });
   }
 
-  // Verificar si está autenticado
-  isAuthenticated() {
-    return !!this.token;
+  // SUBIDA DE ARCHIVOS
+  static async uploadProfilePicture(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.makeRequest('/profile/upload-picture', {
+      method: 'POST',
+      headers: {}, // Sin Content-Type para FormData
+      body: formData
+    });
   }
 
-  // Obtener token actual
-  getToken() {
-    return this.token;
-  }
-
-  // Actualizar token
-  setToken(token) {
-    this.token = token;
+  // UTILIDADES
+  static saveToken(token) {
     localStorage.setItem('authToken', token);
+  }
+
+  static getToken() {
+    return localStorage.getItem('authToken');
+  }
+
+  static removeToken() {
+    localStorage.removeItem('authToken');
+  }
+
+  static isAuthenticated() {
+    return !!this.getToken();
   }
 }
 
-// Exportar instancia única
-const apiService = new ApiService();
-export default apiService;
+export default ApiService;

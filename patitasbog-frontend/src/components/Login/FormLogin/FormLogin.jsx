@@ -1,38 +1,59 @@
 import React, { useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import './FormLogin.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import apiService from '../../../services/apiService';
 
-// Formulario de login con campos controlados y botones estilizados
+// Formulario de login con integración a la API backend
 const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
-  // Lista simulada de usuarios registrados
-  const usuarios = [
-    { correo: 'usuario1@ejemplo.com', password: '123456' },
-    { correo: 'usuario2@ejemplo.com', password: 'abcdef' }
-  ];
-
-  // Maneja el envío del formulario
-  const handleSubmit = (e) => {
+  // Maneja el envío del formulario con API real
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const usuarioValido = usuarios.find(
-      (u) => u.correo === correo && u.password === password
-    );
-    if (usuarioValido) {
-      if (onLogin)
-        onLogin(
-          '¡Exitoso!',
-          'Entrando en la aplicación...',
-          '/home' // <--- Redirige a HomeLogin.jsx
-        );
-    } else {
-      if (onFail)
-        onFail(
-          'Error',
-          'Las credenciales ingresadas no son válidas. Verifica que el correo y la contraseña estén bien escritos'
-        );
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    try {
+      // CORREGIDO: Enviar email en lugar de username
+      const credentials = {
+        email: correo, // El campo se llama username en el form pero enviamos como email
+        password
+      };
+
+      console.log('🔐 Intentando login con:', { 
+        email: credentials.email, 
+        password: '***' 
+      });
+
+      // Llamar a la API de login
+      const response = await apiService.login(credentials);
+      
+      console.log('✅ Login response:', response);
+      
+      if (response.token) {
+        // Guardar token y datos del usuario
+        apiService.saveToken(response.token);
+        localStorage.setItem('userProfile', JSON.stringify(response.user));
+        
+        setSuccessMessage('¡Login exitoso! Redirigiendo...');
+        
+        // Redirigir después de un breve delay
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('❌ Error de login:', error);
+      setErrorMessage(error.message || 'Error al iniciar sesión. Verifica tus credenciales.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,10 +78,13 @@ const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-          />
-          {/* Botón de iniciar sesión */}
-          <button type="submit" className="button-principal">
-            Iniciar Sesión
+          />          {/* Botón de iniciar sesión */}
+          <button 
+            type="submit" 
+            className="button-principal"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
           <div className="separador-o">ó</div>
           {/* Botón para login con Google */}
@@ -76,6 +100,9 @@ const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
         <Link to="/recover_password_request" className="link-recuperar-clave">
           ¿Olvidaste tu contraseña?
         </Link>
+        {/* Mensajes de éxito o error */}
+        {errorMessage && <div className="mensaje-error">{errorMessage}</div>}
+        {successMessage && <div className="mensaje-exito">{successMessage}</div>}
       </div>
     </div>
   );
