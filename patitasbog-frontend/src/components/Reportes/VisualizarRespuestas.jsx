@@ -7,7 +7,7 @@ const VisualizarRespuestas = (id_reporte, ids_respuestas) => {
     return(
         <div className='preview-container'>
             <div className='preview-columna'>
-                <div className='mapa-preview-container'>
+                <div className='left-preview-container'>
                     <MapaLectura ubicacion={[4.612, -74.07]} />
                 </div>
             </div> 
@@ -22,7 +22,7 @@ const VisualizarRespuestas = (id_reporte, ids_respuestas) => {
                     </p>
                 </div>
                 <div className='container-button-picture-preview'>
-                    <div className='foto-preview-container'>
+                    <div className='right-preview-container'>
                         <img src='images/foto_mascota.png'
                            className='foto-preview'/>
                     </div>

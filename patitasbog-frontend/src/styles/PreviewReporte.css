@@ -47,7 +47,7 @@
     margin-bottom: 0rem;
 }
 
-.mapa-preview-container{
+.left-preview-container{
     display: flex;
     margin-top: 10px;
     width: 150px;
@@ -67,7 +67,7 @@
     align-items: center;
 }
 
-.foto-preview-container{
+.right-preview-container{
     display: flex;
     margin-top: 10px; 
     border-radius: 0.5rem;
