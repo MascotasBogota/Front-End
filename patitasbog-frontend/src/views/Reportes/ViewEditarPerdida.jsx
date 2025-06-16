@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import FormEditarPerdida from '../../components/Reportes/FormEditarPerdida/FormEditarPerdida'
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import FormEditarPerdida from '../../components/Reportes/FormEditarPerdida'
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewEditarPerdida = () => {
     const mascota = 'Firulais';
@@ -34,7 +34,7 @@ const ViewEditarPerdida = () => {
     };
     
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <FormEditarPerdida mascota={mascota}
                 fecha={fecha}
                 hora={hora}

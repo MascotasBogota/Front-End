@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 import HomeLogin from '../../components/Home/HomeLogin';
 
 // Vista principal del home cuando el usuario está logueado
@@ -32,7 +32,7 @@ const ViewHomeLogin = () => {
   };
 
   return (
-    <div className="container-generic">
+    <div className="generic-container">
       {/* Componente central que muestra la barra superior y los reportes */}
       <HomeLogin
         onChangeSuccess={handleChangeSuccess}

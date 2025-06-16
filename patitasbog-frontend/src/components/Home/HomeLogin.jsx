@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './HomeLogin.css';
+import '../../styles/Home.css';
 
 // Datos simulados de reportes (puedes reemplazar por datos reales)
 const mockReportes = [

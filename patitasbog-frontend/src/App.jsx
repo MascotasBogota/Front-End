@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'; 
-import Layout from './components/Principal/Layout/Layout';
+import Layout from './components/Principal/Layout';
 import ViewRecuperarClave from './views/Login/ViewRecuperarClave';
 import ViewCambiarClave from './views/Login/ViewCambiarClave';
 import ViewCambiarClaveLogued from './views/Login/ViewCambiarClaveLogued';

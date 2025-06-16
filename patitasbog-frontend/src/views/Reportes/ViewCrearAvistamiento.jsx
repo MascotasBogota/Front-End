@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import FormCrearAvistamiento from '../../components/Reportes/FormCrearAvistamiento/FormCrearAvistamiento'
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import FormCrearAvistamiento from '../../components/Reportes/FormCrearAvistamiento'
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewCrearAvistamiento = () => {    
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -28,7 +28,7 @@ const ViewCrearAvistamiento = () => {
     };
     
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <FormCrearAvistamiento
                 mascota={mascota}
                 onChangeSuccess={handleChangeSuccess}

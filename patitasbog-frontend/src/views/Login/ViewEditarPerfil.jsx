@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import FormPerfilEditar from '../../components/Login/FormPerfilEditar/FormPerfilEditar'
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import FormPerfilEditar from '../../components/Login/FormPerfilEditar'
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewEditarPerfil = () => {
     const nombre='Juan Pérez';
@@ -34,7 +34,7 @@ const ViewEditarPerfil = () => {
     };
     
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <FormPerfilEditar nombre={nombre}
                 email={email}
                 usuario={usuario}

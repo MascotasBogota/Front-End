@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Bienvenida from '../../components/Login/Bienvenida/Bienvenida';
-import FormCambiarClave from '../../components/Login/FormCambiarClave/FormCambiarClave';
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import Bienvenida from '../../components/Login/Bienvenida';
+import FormCambiarClave from '../../components/Login/FormCambiarClave';
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewCambiarClave = () => {
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -28,7 +28,7 @@ const ViewCambiarClave = () => {
     };
 
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <Bienvenida />
             <FormCambiarClave
                 onChangeSuccess={handleChangeSuccess}

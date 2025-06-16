@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import FormCrearPerdida from '../../components/Reportes/FormCrearPerdida/FormCrearPerdida'
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import FormCrearPerdida from '../../components/Reportes/FormCrearPerdida'
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewCrearPerdida = () => {    
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -27,7 +27,7 @@ const ViewCrearPerdida = () => {
     };
     
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <FormCrearPerdida 
                 onChangeSuccess={handleChangeSuccess}
                 onChangeFail={handleChangeFail}

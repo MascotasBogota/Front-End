@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import FormEditarAvistamiento from '../../components/Reportes/FormEditarAvistamiento/FormEditarAvistamiento'
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import FormEditarAvistamiento from '../../components/Reportes/FormEditarAvistamiento'
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewEditarAvistamiento = () => {
     const mascota = 'Firulais';
@@ -34,7 +34,7 @@ const ViewEditarAvistamiento = () => {
     };
     
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <FormEditarAvistamiento mascota={mascota}
                 fecha={fecha}
                 hora={hora}

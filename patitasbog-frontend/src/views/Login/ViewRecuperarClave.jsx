@@ -1,8 +1,8 @@
 import {React,useState} from 'react'; 
-import Bienvenida from '../../components/Login/Bienvenida/Bienvenida'
-import FormRecuperacion from '../../components/Login/FormRecuperacion/FormRecuperacion';
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import Bienvenida from '../../components/Login/Bienvenida'
+import FormRecuperacion from '../../components/Login/FormRecuperacion';
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewRecuperarClave = () => {
         const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -28,7 +28,7 @@ const ViewRecuperarClave = () => {
         };
 
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <Bienvenida />
             <FormRecuperacion onChangeSuccess={handleChangeSuccess}
                 onChangeFail={handleChangeFail}/>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MenuPerfil from '../../components/Login/MenuPerfil/MenuPerfil'
+import MenuPerfil from '../../components/Login/MenuPerfil'
 
 const ViewPerfil = () => {
     const nombre='Juan Pérez';
@@ -10,7 +10,7 @@ const ViewPerfil = () => {
     const telefono='+1234567890';
 
     return (
-        <div className='container-generic'>
+        <div className='generic-container'>
             <MenuPerfil nombre={nombre}
                 email={email}
                 usuario={usuario}

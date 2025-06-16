@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Bienvenida from '../../components/Login/Bienvenida/Bienvenida';
-import FormLogin from '../../components/Login/FormLogin/FormLogin';
-import Success from '../../components/Principal/PopUpMessages/Success';
-import Fail from '../../components/Principal/PopUpMessages/Fail';
+import Bienvenida from '../../components/Login/Bienvenida';
+import FormLogin from '../../components/Login/FormLogin';
+import Success from '../../components/Principal/Success';
+import Fail from '../../components/Principal/Fail';
 
 const ViewLogin = () => {
   // Puede usar estos estados si quieres mostrar popups de éxito o error
@@ -29,7 +29,7 @@ const ViewLogin = () => {
   };
 
   return (
-    <div className="container-generic">
+    <div className="generic-container">
       <Bienvenida />
       <FormLogin
         onLogin={handleChangeSuccess}
