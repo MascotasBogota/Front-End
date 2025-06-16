@@ -153,6 +153,26 @@ input{
     cursor: pointer;
 }
 
+.button-four{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 3%;
+    margin-right: 3%;
+    background-color: var(--orange2);
+    color: var(--blue);
+    font-size: 1rem;
+    padding: 0.6rem 2rem;
+    border-radius: 2rem;
+    border: none;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: 'League Spartan', sans-serif;
+}
+
+.button-four:hover{
+    cursor: pointer;
+}
+
 .blocked-input{
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
@@ -187,15 +207,4 @@ input{
 
 .close:hover{
     cursor: pointer;
-}
-
-.generic-container{
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: auto;
-    align-items: center;
-    padding: 1rem;
-    width: 100%; 
-    box-sizing: border-box;
 }

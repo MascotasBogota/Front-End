@@ -13,6 +13,7 @@ import ViewCrearAvistamiento from './views/Reportes/ViewCrearAvistamiento';
 import ViewEditarAvistamiento from './views/Reportes/ViewEditarAvistamiento';
 import ViewCrearHallazgo from './views/Reportes/ViewCrearHallazgo';
 import ViewEditarHallazgo from './views/Reportes/ViewEditarHallazgo';
+import ViewVisualizarReportes from './views/Reportes/ViewVisualizarReportes';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import './index.css'; 
@@ -111,6 +112,11 @@ function App() {
         <Route path="/edit_found" element={
           <Layout>
             <ViewEditarHallazgo />
+          </Layout>
+        } />
+        <Route path="/report_details" element={
+          <Layout>
+            <ViewVisualizarReportes />
           </Layout>
         } />
       </Routes>
