@@ -47,7 +47,7 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
         
         // Redirigir después de un breve delay
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/home'); // Changed from /dashboard to /home
         }, 1500);
       }
     } catch (error) {
@@ -73,7 +73,7 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
         localStorage.setItem('userProfile', JSON.stringify(response.user));
         setSuccessMessage('¡Login con Google exitoso! Redirigiendo...');
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/home'); // Changed from /dashboard to /home
         }, 1500);
       }
     } catch (error) {
