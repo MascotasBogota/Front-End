@@ -11,6 +11,9 @@ import ViewCrearPerdida from './views/Reportes/ViewCrearPerdida';
 import ViewEditarPerdida from './views/Reportes/ViewEditarPerdida';
 import ViewCrearAvistamiento from './views/Reportes/ViewCrearAvistamiento';
 import ViewEditarAvistamiento from './views/Reportes/ViewEditarAvistamiento';
+import ViewCrearHallazgo from './views/Reportes/ViewCrearHallazgo';
+import ViewEditarHallazgo from './views/Reportes/ViewEditarHallazgo';
+import ViewVisualizarReportes from './views/Reportes/ViewVisualizarReportes';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewRegistro from './views/Login/ViewRegistro'; // Cambiado de ViewRegistroTemp a ViewRegistro
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
@@ -100,6 +103,21 @@ function App() {
         <Route path="/edit_seen" element={
           <Layout>
             <ViewEditarAvistamiento />
+          </Layout>
+        } />
+        <Route path="/create_found" element={
+          <Layout>
+            <ViewCrearHallazgo />
+          </Layout>
+        } />
+        <Route path="/edit_found" element={
+          <Layout>
+            <ViewEditarHallazgo />
+          </Layout>
+        } />
+        <Route path="/report_details" element={
+          <Layout>
+            <ViewVisualizarReportes />
           </Layout>
         } />
       </Routes>
