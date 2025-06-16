@@ -6,9 +6,11 @@ const VisualizarPerdidaDetalle = (id_reporte, ids_respuestas) => {
     return(
         <div className='visualizacion-container'>
             <div className='cabecera-visualizacion'>
-                <span className='button-three'>
-                    <a href='/home'>Volver</a>
-                </span>
+                <a href='/home'>
+                    <span className='button-three'>
+                        Volver
+                    </span>
+                </a>
             </div>
             <div className='reporte-perdida-container'>
                     <div className='reporte-perdida-columna'>
@@ -36,20 +38,28 @@ const VisualizarPerdidaDetalle = (id_reporte, ids_respuestas) => {
                             </p>
                         </div>
                         <div className='div-botones-reporte-perdida'>
-                            <span className='button-four'>
-                                <a href='/create_seen'>Avistamiento</a>
-                            </span>
-                            <span className='button-principal'>
-                                <a href='/create_found'>Hallazgo</a>
-                            </span>
+                            <a href='/create_seen'>
+                                <span className='button-four'>
+                                Avistamiento
+                                </span>
+                            </a>
+                            <a href='/create_found'>
+                                <span className='button-principal'>
+                                Hallazgo
+                                </span>
+                             </a>
                         </div>
                         <div className='div-botones-reporte-perdida'>
-                            <span className='button-principal'>
-                                <a href='/home'>Eliminar</a>
-                            </span>
+                            <a href='/home'>
+                                <span className='button-principal'>
+                                Eliminar
+                                </span>
+                            </a>
+                            <a href='/edit_lost'>
                             <span className='button-four'>
-                                <a href='/edit_lost'>Editar</a>
+                                Editar
                             </span>
+                            </a>
                         </div>
                     </div>
             </div>
