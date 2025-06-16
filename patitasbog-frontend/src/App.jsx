@@ -12,6 +12,7 @@ import ViewEditarPerdida from './views/Reportes/ViewEditarPerdida';
 import ViewCrearAvistamiento from './views/Reportes/ViewCrearAvistamiento';
 import ViewEditarAvistamiento from './views/Reportes/ViewEditarAvistamiento';
 import ViewLogin from './views/Login/ViewLogin';
+import ViewRegistro from './views/Login/ViewRegistro'; // Cambiado de ViewRegistroTemp a ViewRegistro
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import './index.css'; 
 
@@ -38,7 +39,7 @@ function App() {
         } />
         <Route path="/register" element={
           <Layout>
-            <></> {/*Vista Register*/}
+            <ViewRegistro /> {/* Cambiado de ViewRegistroTemp a ViewRegistro */}
           </Layout>
         } />
         <Route path="/recover_password_request" element={

@@ -7,7 +7,7 @@ class ApiService {
     
     const defaultOptions = {
       headers: {
-        'Content-Type': 'application/json',  // ✅ Esto está correcto
+        'Content-Type': 'application/json',
         ...options.headers
       }
     };
@@ -23,7 +23,6 @@ class ApiService {
       console.log(`📤 Request method: ${options.method || 'GET'}`);
       console.log(`📋 Request headers:`, defaultOptions.headers);
       
-      // AGREGAR DEBUG PARA VER QUÉ SE ESTÁ ENVIANDO
       if (options.body) {
         console.log(`📦 Request body:`, options.body);
         console.log(`📦 Request body type:`, typeof options.body);
@@ -35,14 +34,46 @@ class ApiService {
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: 'Error desconocido' }));
-        throw new Error(errorData.message || `HTTP ${response.status}`);
+        // Lanza un error que incluye el status code para mejor debugging
+        const error = new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        error.status = response.status;
+        error.data = errorData;
+        throw error;
       }
 
+      // Para respuestas 204 No Content, no intentes parsear JSON
+      if (response.status === 204) {
+        return null; 
+      }
       return await response.json();
     } catch (error) {
       console.error(`❌ API Error for ${endpoint}:`, error);
+      // Re-lanza el error para que pueda ser capturado por el llamador
       throw error;
     }
+  }
+
+  // Métodos HTTP específicos
+  static async get(endpoint) {
+    return this.makeRequest(endpoint, { method: 'GET' });
+  }
+
+  static async post(endpoint, data) {
+    return this.makeRequest(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  static async put(endpoint, data) {
+    return this.makeRequest(endpoint, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
+  }
+
+  static async delete(endpoint) {
+    return this.makeRequest(endpoint, { method: 'DELETE' });
   }
 
   // AUTENTICACIÓN - RUTAS CORREGIDAS
