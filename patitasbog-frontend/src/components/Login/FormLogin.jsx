@@ -3,9 +3,10 @@ import PasswordInput from './PasswordInput';
 import '../../styles/FormsLogin.css';
 import { Link, useNavigate } from 'react-router-dom';
 import apiService from '../../services/apiService';
+import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
 
 // Formulario de login con integración a la API backend
-const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
+const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props as it's handled internally now
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -57,6 +58,37 @@ const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
     }
   };
 
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+    console.log('🔑 Google credentialResponse:', credentialResponse);
+    try {
+      // Send the ID token to your backend
+      const response = await apiService.googleLogin({ token: credentialResponse.credential });
+      console.log('✅ Google Login response:', response);
+
+      if (response.token) {
+        apiService.saveToken(response.token);
+        localStorage.setItem('userProfile', JSON.stringify(response.user));
+        setSuccessMessage('¡Login con Google exitoso! Redirigiendo...');
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('❌ Error de login con Google:', error);
+      setErrorMessage(error.message || 'Error al iniciar sesión con Google.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    console.error('❌ Google Login Failed');
+    setErrorMessage('Error al iniciar sesión con Google. Inténtalo de nuevo.');
+  };
+
   return (
     <div className="container-modulo-login">
       <form onSubmit={handleSubmit}>
@@ -83,17 +115,17 @@ const FormLogin = ({ onLogin, onFail, onGoogleLogin }) => {
           className="button-principal"
           disabled={isLoading}
         >
-          {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+          {isLoading && !successMessage ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </button>
         <div className="separador-o-login">ó</div>
         {/* Botón para login con Google */}
-        <button
-          type="button"
-          className="button-principal"
-          onClick={onGoogleLogin}
-        >
-          Entrar con Google
-        </button>
+        <div className="google-login-button-container">
+          <GoogleLogin
+            onSuccess={handleGoogleLoginSuccess}
+            onError={handleGoogleLoginError}
+            useOneTap
+          />
+        </div>
         </form>
       {/* Enlace para recuperar contraseña como link subrayado */}
       <Link to="/recover_password_request" className="link-recuperar-clave">

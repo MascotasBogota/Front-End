@@ -84,6 +84,13 @@ class ApiService {
     });
   }
 
+  static async googleLogin(tokenData) { // New method for Google Login
+    return this.makeRequest('/auth/google_login', { // Endpoint to be created in backend
+      method: 'POST',
+      body: JSON.stringify(tokenData)
+    });
+  }
+
   static async register(userData) {
     return this.makeRequest('/users/register', {  // CORREGIDO: era /auth/register
       method: 'POST',
