@@ -1,41 +1,48 @@
-import React, { useState } from 'react';
+/**
+ * El componente HomeLogin muestra una lista de reportes de mascotas con funcionalidad de búsqueda.
+ *
+ * - Obtiene los reportes desde reportService al montar el componente.
+ * - Permite filtrar los reportes por nombre de mascota usando un campo de búsqueda.
+ * - Muestra un indicador de carga mientras se obtienen los datos.
+ * - Muestra un mensaje si no se encuentran reportes después de filtrar.
+ * - Renderiza una vista previa para cada reporte, incluyendo la imagen y detalles de la mascota.
+ *
+ * @component
+ * @returns {JSX.Element} El componente HomeLogin renderizado.
+ */
+import React, { useState, useEffect } from 'react';
 import '../../styles/Home.css';
-import MapaLectura from '../Reportes/MapaLectura';
+import { reportService } from '../../services/reportService';
 
-// Datos simulados de reportes (puedes reemplazar por datos reales)
-const mockReportes = [
-  {
-    id: 1,
-    nombreMascota: 'El Bigotes',
-    detalles: 'Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles',
-    imagen: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg',
-    // Aquí puedes agregar la propiedad 'mapa' o 'ubicacion' si quieres mostrar un mapa real
-  },
-  {
-    id: 2,
-    nombreMascota: 'Pies Ligeros',
-    detalles: 'Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles',
-    imagen: 'https://images.pexels.com/photos/128756/pexels-photo-128756.jpeg',
-    // Aquí puedes agregar la propiedad 'mapa' o 'ubicacion' si quieres mostrar un mapa real
-  }
-];
 
 const HomeLogin = () => {
-  // Estado para el campo de búsqueda
   const [busqueda, setBusqueda] = useState('');
+  const [reportes, setReportes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filtrado de reportes según el texto de búsqueda
-  const reportesFiltrados = mockReportes.filter(r =>
-    r.nombreMascota.toLowerCase().includes(busqueda.toLowerCase())
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const data = await reportService.getAllReports();
+        setReportes(Array.isArray(data) ? data : []);
+      } catch (error) {
+        setReportes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
+
+  // Filtrado por nombre de mascota
+  const reportesFiltrados = reportes.filter(r =>
+    r.nombreMascota?.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
     <div className="home-container">
-      {/* Barra superior con botón y campo de búsqueda */}
       <div className="cabecera-home">
-        <button
-          className="button-principal"
-        >
+        <button className="button-principal">
           Mis Reportes
         </button>
         <input
@@ -46,30 +53,25 @@ const HomeLogin = () => {
           onChange={e => setBusqueda(e.target.value)}
         />
       </div>
-
-      {/* Lista de reportes (tarjetas con imagen, texto y mapa) */}
-        {reportesFiltrados.map(reporte => (
-          <a href='/report_details'>
-            <div className='preview-container-home'>
-              <div className='preview-columna-home'>
-                <div className='foto-container-home'>
-                  {/* Imagen de la mascota */}
-                  <img src={reporte.imagen} alt={reporte.nombreMascota} 
-                  className="preview-foto-home" />
-                </div>
-              </div>
-              <div className='preview-columna-home-alterna'>
-                <div className='texto-preview-home'>
-                    {/* Nombre y detalles */}
-                    <h2>{reporte.nombreMascota}</h2>
-                    <p>{reporte.detalles}</p>
-                </div>
-                <div className='mapa-preview-home'>
-                    <MapaLectura ubicacion={[4.612, -74.07]} dragging={true}  />
-                </div>
-              </div>
+      {loading && <div>Cargando reportes...</div>}
+      {!loading && reportesFiltrados.length === 0 && (
+        <div>No se encontraron reportes.</div>
+      )}
+      {!loading && reportesFiltrados.map(reporte => (
+        <div key={reporte.id} className="preview-container-home">
+          <div className="preview-columna-home">
+            <div className="foto-container-home">
+              <img src={reporte.imagen} alt={reporte.nombreMascota} className="preview-foto-home" />
             </div>
-          </a>
+          </div>
+          <div className="preview-columna-home-alterna">
+            <div className="texto-preview-home">
+              <h2>{reporte.nombreMascota}</h2>
+              <p>{reporte.detalles}</p>
+            </div>
+            {/* Aquí podrías agregar el mapa si lo necesitas */}
+          </div>
+        </div>
       ))}
     </div>
   );

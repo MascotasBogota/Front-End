@@ -25,7 +25,7 @@ const LoginUser = () => {
         <div>
           <h2>User Logged In Successfully</h2>
           <p>ID: {userLogin._id}</p>
-          <p>Name: {userLogin.fullName}</p>
+          <p>Name: {userLogin.full_name}</p>
           <p>Email: {userLogin.email}</p>
           <p>Token: {userLogin.token}</p>
           {localStorage.getItem("token") && (
