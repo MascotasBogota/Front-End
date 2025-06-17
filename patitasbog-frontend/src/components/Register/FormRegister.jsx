@@ -30,21 +30,25 @@ const FormRegister = ({ onRegister, onFail }) => {
     if (!nombre || !correo || !password || !confirmarPassword) {
       setErrorMessage('No es posible registrarse porque... Algún campo está vacío');
       setIsLoading(false);
+      if (onFail) onFail('No es posible registrarse', 'Algún campo está vacío');
       return;
     }
     if (!validarCorreo(correo)) {
       setErrorMessage('No es posible registrarse porque... El correo no tiene un formato válido');
       setIsLoading(false);
+      if (onFail) onFail('No es posible registrarse', 'El correo no tiene un formato válido');
       return;
     }
     if (!validarPassword(password)) {
       setErrorMessage('No es posible registrarse porque... La contraseña no cumple los estándares');
       setIsLoading(false);
+      if (onFail) onFail('No es posible registrarse', 'La contraseña no cumple los estándares');
       return;
     }
     if (password !== confirmarPassword) {
       setErrorMessage('No es posible registrarse porque... La confirmación no coincide con la contraseña');
       setIsLoading(false);
+      if (onFail) onFail('No es posible registrarse', 'La confirmación no coincide con la contraseña');
       return;
     }
 
@@ -57,24 +61,13 @@ const FormRegister = ({ onRegister, onFail }) => {
 
       const response = await apiService.register(userData);
 
-      if (response.token) {
-        setSuccessMessage('¡Cuenta creada con éxito! Redirigiendo a login...');
-        if (onRegister) {
-          onRegister(
-            '¡Cuenta creada con éxito!',
-            'Redirigiendo a login...',
-            '/login'
-          );
-        }
-      } else {
-        setSuccessMessage('¡Cuenta creada con éxito! Redirigiendo a login...');
-        if (onRegister) {
-          onRegister(
-            '¡Cuenta creada con éxito!',
-            'Redirigiendo a login...',
-            '/login'
-          );
-        }
+      setSuccessMessage('¡Cuenta creada con éxito! Redirigiendo a login...');
+      if (onRegister) {
+        onRegister(
+          '¡Cuenta creada con éxito!',
+          'Redirigiendo a login...',
+          '/login'
+        );
       }
     } catch (error) {
       setErrorMessage(
@@ -82,10 +75,7 @@ const FormRegister = ({ onRegister, onFail }) => {
           (error.message || 'Error desconocido')
       );
       if (onFail) {
-        onFail(
-          'No es posible registrarse',
-          error.message || 'Error desconocido'
-        );
+        onFail('No es posible registrarse', error.message || 'Error desconocido');
       }
     } finally {
       setIsLoading(false);
