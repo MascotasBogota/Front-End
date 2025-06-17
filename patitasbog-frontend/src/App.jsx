@@ -17,6 +17,7 @@ import ViewVisualizarReportes from './views/Reportes/ViewVisualizarReportes';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewRegistro from './views/Login/ViewRegistro'; // Cambiado de ViewRegistroTemp a ViewRegistro
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
+import ViewHome from './views/Home/ViewHome';
 import './index.css'; 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Layout>
-            <></> {/*Vista Home sin loguear*/}
+            <ViewHome /> 
           </Layout>
           
         } />

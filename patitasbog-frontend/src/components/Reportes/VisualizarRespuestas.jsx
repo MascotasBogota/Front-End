@@ -8,7 +8,7 @@ const VisualizarRespuestas = (id_reporte, ids_respuestas) => {
         <div className='preview-container'>
             <div className='preview-columna'>
                 <div className='left-preview-container'>
-                    <MapaLectura ubicacion={[4.612, -74.07]} />
+                    <MapaLectura ubicacion={[4.612, -74.07]} dragging={true} />
                 </div>
             </div> 
             <div className='preview-columna-altern'>
