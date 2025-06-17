@@ -15,7 +15,7 @@ import ViewCrearHallazgo from './views/Reportes/ViewCrearHallazgo';
 import ViewEditarHallazgo from './views/Reportes/ViewEditarHallazgo';
 import ViewVisualizarReportes from './views/Reportes/ViewVisualizarReportes';
 import ViewLogin from './views/Login/ViewLogin';
-//import ViewRegistro from './views/Login/ViewRegistro';  // Cambiado de ViewRegistroTemp a ViewRegistro
+import ViewRegistro from './views/Login/ViewRegistro';  // Cambiado de ViewRegistroTemp a ViewRegistro
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewHome from './views/Home/ViewHome';
 import ViewRegister from './views/Register/ViewRegister';
@@ -45,7 +45,7 @@ function App() {
         } />
         <Route path="/register" element={
           <Layout>
-            <ViewRegister />  {/* Cambiado de ViewRegistroTemp a ViewRegistro */}
+            <ViewRegistro />  {/* Cambiado de ViewRegistroTemp a ViewRegistro */}
           </Layout>
         } />
         <Route path="/recover_password_request" element={
