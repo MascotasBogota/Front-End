@@ -3,7 +3,7 @@ import { userService } from "../../services/userService";
 const RegisterUser = () => {
   const [userCreationResponse, setUserCreationResponse] = useState(null);
   const newUserObj = {
-    fullName: "Usuario Prueba 503",
+    full_name: "Usuario Prueba 503",
     email: "userprueba@ejemplo.com", //cambiar correo cada vez que se registre un nuevo usuario
     password: "Cisco123",
   };
@@ -23,7 +23,7 @@ const RegisterUser = () => {
         <div>
           <h2>User Created Successfully</h2>
           <p>ID: {userCreationResponse._id}</p>
-          <p>Name: {userCreationResponse.fullName}</p>
+          <p>Name: {userCreationResponse.full_name}</p>
           <p>Email: {userCreationResponse.email}</p>
         </div>
       ) : (

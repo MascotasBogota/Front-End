@@ -6,7 +6,7 @@ import '../../styles/FormsLogin.css';
 
 const FormRegistro = ({ onChangeSuccess, onChangeFail }) => {
     const [formData, setFormData] = useState({
-        fullName: '',
+        full_name: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -42,7 +42,7 @@ const FormRegistro = ({ onChangeSuccess, onChangeFail }) => {
 
         try {
             const payload = {
-                full_name: formData.fullName, // Asegúrate que el backend espera full_name
+                full_name: formData.full_name, // Asegúrate que el backend espera full_name
                 email: formData.email,
                 password: formData.password,
             };
@@ -68,12 +68,12 @@ const FormRegistro = ({ onChangeSuccess, onChangeFail }) => {
         <div className="container-modulo-login">
             <h2>Crear Nueva Cuenta</h2>
             <form onSubmit={handleSubmit} className="formulario-modulo-login">
-                <label htmlFor="fullName" className="label-formulario-login">Nombre Completo</label>
+                <label htmlFor="full_name" className="label-formulario-login">Nombre Completo</label>
                 <input
                     type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
+                    id="full_name"
+                    name="full_name"
+                    value={formData.full_name}
                     onChange={handleChange}
                     required
                 />
