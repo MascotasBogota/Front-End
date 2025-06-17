@@ -19,7 +19,7 @@ const VisualizarPerdidaDetalle = (id_reporte, ids_respuestas) => {
                            className='foto-reporte'/>
                         </div>
                         <div className='mapa-container'>
-                            <MapaLectura ubicacion={[4.612, -74.07]} />
+                            <MapaLectura ubicacion={[4.612, -74.07]} dragging={true} />
                         </div>
                     </div>
                     <div className='reporte-perdida-columna'>

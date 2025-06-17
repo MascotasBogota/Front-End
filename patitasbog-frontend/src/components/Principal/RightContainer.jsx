@@ -21,7 +21,8 @@ const RightContainer = ({ children }) => {
     useEffect(() => {
             if(location.pathname=='/login' || location.pathname=='/register'
                || location.pathname=='/recover_password_request'
-                || location.pathname=='/change_password'){
+                || location.pathname=='/change_password' || 
+                location.pathname=='/'){
                 setIsLogued(false);
             }
             else{
