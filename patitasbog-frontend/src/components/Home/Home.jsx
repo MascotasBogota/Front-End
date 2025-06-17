@@ -20,7 +20,7 @@ const mockReportes = [
   }
 ];
 
-const HomeLogin = () => {
+const Home = () => {
   // Estado para el campo de búsqueda
   const [busqueda, setBusqueda] = useState('');
 
@@ -31,48 +31,27 @@ const HomeLogin = () => {
 
   return (
     <div className="home-container">
-      {/* Barra superior con botón y campo de búsqueda */}
-      <div className="cabecera-home">
-        <button
-          className="button-principal"
-        >
-          Mis Reportes
-        </button>
-        <input
-          type="text"
-          className="input"
-          placeholder="Buscar"
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-        />
-      </div>
-
-      {/* Lista de reportes (tarjetas con imagen, texto y mapa) */}
         {reportesFiltrados.map(reporte => (
-          <a href='/report_details'>
             <div className='preview-container-home'>
               <div className='preview-columna-home'>
                 <div className='foto-container-home'>
-                  {/* Imagen de la mascota */}
                   <img src={reporte.imagen} alt={reporte.nombreMascota} 
                   className="preview-foto-home" />
                 </div>
               </div>
               <div className='preview-columna-home-alterna'>
                 <div className='texto-preview-home'>
-                    {/* Nombre y detalles */}
                     <h2>{reporte.nombreMascota}</h2>
                     <p>{reporte.detalles}</p>
                 </div>
                 <div className='mapa-preview-home'>
-                    <MapaLectura ubicacion={[4.612, -74.07]} dragging={true}  />
+                    <MapaLectura ubicacion={[4.612, -74.07]} dragging={false} />
                 </div>
               </div>
             </div>
-          </a>
       ))}
     </div>
   );
 };
 
-export default HomeLogin;
+export default Home;

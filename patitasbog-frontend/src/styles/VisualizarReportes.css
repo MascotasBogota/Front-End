@@ -17,6 +17,7 @@
     width: 100%;
     border-bottom: 1px solid var(--gray);
 }
+
 .cabecera-visualizacion a{
     text-decoration: none;
     margin-bottom: 0.8rem;
