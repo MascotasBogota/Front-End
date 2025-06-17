@@ -19,8 +19,8 @@ import ViewLogin from './views/Login/ViewLogin';
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewHome from './views/Home/ViewHome';
 import ViewRegister from './views/Register/ViewRegister';
-
 import './index.css'; 
+import ConnTest from "./views/conn-test/conn-test";
 
 function App() {
   return (
@@ -123,6 +123,14 @@ function App() {
             <ViewVisualizarReportes />
           </Layout>
         } />
+        <Route
+          path="/conn-test"
+          element={
+            //<Layout>
+            <ConnTest />
+            //</Layout>
+          }
+        />
       </Routes>
     </Router>
   );
