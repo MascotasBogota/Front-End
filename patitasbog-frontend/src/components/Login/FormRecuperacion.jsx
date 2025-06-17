@@ -52,16 +52,11 @@ const FormRecuperacion = ({ onChangeSuccess, onChangeFail }) => {
             // "Si el correo está registrado, recibirás un código para restablecer tu contraseña"
             setApiSuccess(response.message || 'Solicitud enviada. Si tu correo está registrado, recibirás un código en breve.');
             
-            // Ya no llamamos a onChangeSuccess aquí para redirigir inmediatamente.
-            // La navegación a la siguiente etapa (ingresar código) debe ser manejada
-            // por el usuario o por una lógica diferente en el componente padre.
-            // Si se quiere notificar al padre de alguna manera, se puede usar una prop diferente.
-            // Por ejemplo, onApiCallSuccess()
+            // Notificar al componente padre para cambiar la vista a FormCambiarClave
             if (onChangeSuccess && typeof onChangeSuccess === 'function') {
-                 // Podríamos pasar un estado diferente al padre si es necesario,
-                 // pero no 'change_password' para evitar la redirección inmediata.
-                 // Por ahora, solo mostramos el mensaje de éxito.
-                 // onChangeSuccess('Solicitud procesada', 'Verifica tu correo', 'code_verification_pending');
+                 // Pasar un identificador para que el padre sepa qué mostrar
+                 // y el correo, por si FormCambiarClave lo necesita (aunque el token es lo principal)
+                 onChangeSuccess('show_reset_form', correo); 
             }
 
         } catch (error) {

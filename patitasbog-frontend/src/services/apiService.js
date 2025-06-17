@@ -106,10 +106,10 @@ class ApiService {
     });
   }
 
-  static async verifyResetToken(token) {
-    return this.makeRequest('/auth/verify-token', {  // Esta SÍ está en /auth
+  static async verifyResetToken(email, token) { // Accept email and token
+    return this.makeRequest('/auth/verify-token', {  
       method: 'POST',
-      body: JSON.stringify({ token })
+      body: JSON.stringify({ email, token }) // Send both email and token
     });
   }
 
