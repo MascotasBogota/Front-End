@@ -1,55 +1,58 @@
-import React, { useState } from 'react';
+/**
+ * Componente principal de la página de inicio.
+ * 
+ * Obtiene y muestra una lista de reportes de mascotas desde la API.
+ * Muestra un mensaje de carga mientras se obtienen los datos y un mensaje
+ * si no se encuentran reportes.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <Home />
+ * )
+ */
+import React, { useState, useEffect } from 'react';
 import '../../styles/Home.css';
-import MapaLectura from '../Reportes/MapaLectura';
-
-// Datos simulados de reportes (puedes reemplazar por datos reales)
-const mockReportes = [
-  {
-    id: 1,
-    nombreMascota: 'El Bigotes',
-    detalles: 'Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles',
-    imagen: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg',
-    // Aquí puedes agregar la propiedad 'mapa' o 'ubicacion' si quieres mostrar un mapa real
-  },
-  {
-    id: 2,
-    nombreMascota: 'Pies Ligeros',
-    detalles: 'Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles Detalles',
-    imagen: 'https://images.pexels.com/photos/128756/pexels-photo-128756.jpeg',
-    // Aquí puedes agregar la propiedad 'mapa' o 'ubicacion' si quieres mostrar un mapa real
-  }
-];
+import { reportService } from '../../services/reportService';
 
 const Home = () => {
-  // Estado para el campo de búsqueda
-  const [busqueda, setBusqueda] = useState('');
+  // Estado para los reportes obtenidos de la API
+  const [reportes, setReportes] = useState([]);
+  // Estado para saber si está cargando
+  const [loading, setLoading] = useState(true);
 
-  // Filtrado de reportes según el texto de búsqueda
-  const reportesFiltrados = mockReportes.filter(r =>
-    r.nombreMascota.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  // Obtener los reportes al montar el componente
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const data = await reportService.getAllReports();
+        setReportes(Array.isArray(data) ? data : []);
+      } catch (error) {
+        setReportes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
 
   return (
-    <div className="home-container">
-        {reportesFiltrados.map(reporte => (
-            <div className='preview-container-home'>
-              <div className='preview-columna-home'>
-                <div className='foto-container-home'>
-                  <img src={reporte.imagen} alt={reporte.nombreMascota} 
-                  className="preview-foto-home" />
-                </div>
-              </div>
-              <div className='preview-columna-home-alterna'>
-                <div className='texto-preview-home'>
-                    <h2>{reporte.nombreMascota}</h2>
-                    <p>{reporte.detalles}</p>
-                </div>
-                <div className='mapa-preview-home'>
-                    <MapaLectura ubicacion={[4.612, -74.07]} dragging={false} />
-                </div>
-              </div>
+    <div className="home-reportes-container">
+      {loading && <div>Cargando reportes...</div>}
+      <div className="home-lista-reportes">
+        {!loading && reportes.length === 0 && (
+          <div>No se encontraron reportes.</div>
+        )}
+        {!loading && reportes.map(reporte => (
+          <div key={reporte.id} className="home-reporte-card">
+            <img src={reporte.imagen} alt={reporte.nombreMascota} className="home-reporte-img" />
+            <div className="home-reporte-info">
+              <h2 className="home-reporte-nombre">{reporte.nombreMascota}</h2>
+              <p className="home-reporte-detalles">{reporte.detalles}</p>
             </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
