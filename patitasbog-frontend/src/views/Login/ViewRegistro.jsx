@@ -29,7 +29,7 @@ const ViewRegistro = () => {
     };
 
     return (
-        <div className="generics-container">
+        <div className="generic-container">
             <Bienvenida />
             <FormRegistro 
                 onChangeSuccess={handleChangeSuccess}
