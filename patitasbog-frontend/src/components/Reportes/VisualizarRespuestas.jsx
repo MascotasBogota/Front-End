@@ -1,43 +1,57 @@
-import React, { useState } from 'react'; 
+import React from 'react';
 import '../../styles/PreviewReporte.css';
 import MapaLectura from './MapaLectura';
 
-const VisualizarRespuestas = (id_reporte, ids_respuestas) => {
+const VisualizarRespuestas = ({ type, comment, images, location, id_reporte, id_respuesta }) => {
+  const editRoute =
+    type === 'hallazgo' ? 'edit_found' :
+    type === 'avistamiento' ? 'edit_seen' :
+    null;
 
-    return(
-        <div className='preview-container'>
-            <div className='preview-columna'>
-                <div className='left-preview-container'>
-                    <MapaLectura ubicacion={[4.612, -74.07]} dragging={true} />
-                </div>
-            </div> 
-            <div className='preview-columna-altern'>
-                <div className='texto-preview'>
-                    <p>Tipo: Avistamiento</p>
-                    <p>Fecha: 16/06/2025</p>
-                    <p>Hora: 15:30</p>
-                    <p>Detalles Detalles Detalles 
-                       Detalles Detalles Detalles
-                       Detalles Detalles Detallles
-                    </p>
-                </div>
-                <div className='container-button-picture-preview'>
-                    <div className='right-preview-container'>
-                        <img src='images/foto_mascota.png'
-                           className='foto-preview'/>
-                    </div>
-                    <div className='div-buttons-preview'>
-                        <span className='button-four'>
-                            <a href='edit_seen'>Editar</a>
-                        </span>
-                        <span className='button-principal'>
-                            <a href='edit_seen'>Eliminar</a>
-                        </span>
-                    </div>
-                </div>
-            </div> 
+  return (
+    <div className='preview-container'>
+      <div className='preview-columna'>
+        <div className='left-preview-container'>
+          <MapaLectura
+            ubicacion={[
+              location?.coordinates?.[1] || 4.612,
+              location?.coordinates?.[0] || -74.07,
+            ]}
+            dragging={true}
+          />
         </div>
-    )
-}
+      </div>
+
+      <div className='preview-columna-altern'>
+        <div className='texto-preview'>
+          <p>Tipo: {type}</p>
+          <p>{comment}</p>
+        </div>
+
+        <div className='container-button-picture-preview'>
+          <div className='right-preview-container'>
+            <img
+              src={images[0] || 'https://via.placeholder.com/150'}
+              className='foto-preview'
+              alt='Foto respuesta'
+            />
+          </div>
+
+          <div className='div-buttons-preview'>
+            {editRoute && (
+              <a
+                href={`/${editRoute}?id=${id_reporte}&response=${id_respuesta}`}
+                className='button-four'
+              >
+                Editar
+              </a>
+            )}
+            <span className='button-principal'>Eliminar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default VisualizarRespuestas;

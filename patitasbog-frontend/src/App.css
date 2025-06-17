@@ -93,6 +93,17 @@ input{
     padding: 0rem 0.5rem;
 }
 
+select{ 
+    height: 2rem;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    padding: 0rem 0.5rem;
+}
+
 .button-principal{
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -184,7 +195,7 @@ input{
     padding: 0.3rem 4rem;
     border: none;
     font-weight: bold;
-    width:50%;
+    max-width:50%;
     border-radius: 0.3rem;
 }
 

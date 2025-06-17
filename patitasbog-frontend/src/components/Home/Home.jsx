@@ -1,58 +1,63 @@
-/**
- * Componente principal de la página de inicio.
- * 
- * Obtiene y muestra una lista de reportes de mascotas desde la API.
- * Muestra un mensaje de carga mientras se obtienen los datos y un mensaje
- * si no se encuentran reportes.
- * 
- * @component
- * @example
- * return (
- *   <Home />
- * )
- */
 import React, { useState, useEffect } from 'react';
 import '../../styles/Home.css';
+import MapaLectura from '../Reportes/MapaLectura';
 import { reportService } from '../../services/reportService';
 
 const Home = () => {
-  // Estado para los reportes obtenidos de la API
   const [reportes, setReportes] = useState([]);
-  // Estado para saber si está cargando
   const [loading, setLoading] = useState(true);
 
-  // Obtener los reportes al montar el componente
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const data = await reportService.getAllReports();
-        setReportes(Array.isArray(data) ? data : []);
+        const response = await reportService.getAllReports();
+        console.log('Reportes recibidos:', response);
+        setReportes(Array.isArray(response) ? response : []);
       } catch (error) {
+        console.error('Error al obtener reportes:', error);
         setReportes([]);
       } finally {
         setLoading(false);
       }
     };
+
     fetchReports();
   }, []);
 
   return (
-    <div className="home-reportes-container">
-      {loading && <div>Cargando reportes...</div>}
-      <div className="home-lista-reportes">
-        {!loading && reportes.length === 0 && (
-          <div>No se encontraron reportes.</div>
-        )}
-        {!loading && reportes.map(reporte => (
-          <div key={reporte.id} className="home-reporte-card">
-            <img src={reporte.imagen} alt={reporte.nombreMascota} className="home-reporte-img" />
-            <div className="home-reporte-info">
-              <h2 className="home-reporte-nombre">{reporte.nombreMascota}</h2>
-              <p className="home-reporte-detalles">{reporte.detalles}</p>
+    <div className="home-container">
+      {loading ? (
+        <div>Cargando reportes...</div>
+      ) : (
+        reportes.map((reporte, index) => (
+          <div className="preview-container-home" key={reporte._id || index}>
+            <div className="preview-columna-home">
+              <div className="foto-container-home">
+                <img
+                  src={reporte.images[0] || 'https://via.placeholder.com/150'}
+                  alt={reporte.type || 'Mascota'}
+                  className="preview-foto-home"
+                />
+              </div>
+            </div>
+            <div className="preview-columna-home-alterna">
+              <div className="texto-preview-home">
+                <h2>{reporte.type}</h2>
+                <p>{reporte.description || 'Sin detalles'}</p>
+              </div>
+              <div className="mapa-preview-home">
+                <MapaLectura
+                  ubicacion={[
+                    reporte.location?.coordinates?.[1] || 4.612,
+                    reporte.location?.coordinates?.[0] || -74.07,
+                  ]}
+                  dragging={false}
+                />
+              </div>
             </div>
           </div>
-        ))}
-      </div>
+        ))
+      )}
     </div>
   );
 };

@@ -1,75 +1,84 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import '../../styles/FormsReportes.css';
 import MapaSelector from './MapaSelector';
+import { responseService } from '../../services/responseService';
 
-const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
-    const tiporeporteInput = 'Avistamiento';
-    const nombremascotaInput = mascota;
-    const [fechaInput, setFechaInput] = useState('');
-    const [horaInput, setHoraInput] = useState('');
+const FormCrearAvistamiento = ({ onChangeSuccess, onChangeFail }) => {
+    const tiporeporteInput = 'avistamiento';
     const [detallesInput, setDetallesInput] = useState('');
     const [ubicacionInput, setUbicacionInput] = useState(null);
     const [imagenInput, setImagenInput] = useState(null);
-    
+    const [reportId, setReportId] = useState(null);
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-            setImagenInput(file);
+        setImagenInput(file);
         } else {
-            alert("Por favor selecciona una imagen JPG o PNG.");
-            e.target.value = null;
+        alert("Por favor selecciona una imagen JPG o PNG.");
+        e.target.value = null;
         }
     };
 
-    const validateForm = () => {
-        let currentErrors = []; 
-        let isValid = true;   
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        setReportId(id);
+    }, []);
 
-        if (nombremascotaInput==='') {
-            currentErrors.push('El campo de nombre mascota no puede estar vacío.');
-            isValid = false;
-        }
-        if (fechaInput==='') {
-            currentErrors.push('El campo de fecha no puede estar vacío.');
-            isValid = false;
-        }
-        if (horaInput==='') {
-            currentErrors.push('El campo de hora no puede estar vacío.');
-            isValid = false;
-        }
-        if (detallesInput==='') {
+    const validateForm = () => {
+        let currentErrors = [];
+        let isValid = true;
+
+        if (detallesInput === '') {
             currentErrors.push('El campo de detalles no puede estar vacío.');
             isValid = false;
         }
-        if (ubicacionInput==null) {
-            currentErrors.push('El campo de ubicacion no puede estar vacío.');
+        if (ubicacionInput == null) {
+            currentErrors.push('El campo de ubicación no puede estar vacío.');
             isValid = false;
         }
         return { isValid, errors: currentErrors.join('\n') };
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { isValid, errors } = validateForm();
 
+        if (!reportId) {
+            onChangeFail('Error crítico', 'No se encontró el ID del reporte.');
+            return;
+        }
+
         if (isValid) {
-            setTimeout(() => {
+            const responseData = {
+                type: tiporeporteInput,
+                comment: detallesInput,
+                location: {
+                    type: 'Point',
+                    coordinates: [ubicacionInput.lng, ubicacionInput.lat], 
+                },
+                images: ["/images/foto_mascota.png"]
+            };
+
+            try {
+                await responseService.createResponse(reportId, responseData);
                 onChangeSuccess(
                     '¡Reporte de avistamiento creado correctamente!',
                     'inicio',
-                    'home'
+                    `/report_details?id=${reportId}`
                 );
-            }, 500); 
-        }
-        else {
-            setTimeout(() => {
+            } catch (error) {
+                console.error(error);
                 onChangeFail(
-                    '¡Error al crear reporte',
-                    errors
+                    '¡Error al crear reporte!',
+                    'No se pudo crear el reporte. Intenta nuevamente.'
                 );
-            }, 500); 
+            }
+        } else {
+            onChangeFail('Error en el formulario', errors);
         }
-    }; 
+    };
 
     return (
         <div className='container-modulo-reportes'>
@@ -79,54 +88,33 @@ const FormCrearAvistamiento = ({mascota, onChangeSuccess, onChangeFail}) => {
                 <a href='/home'><span className='close'>X</span></a>
             </div>
             <form onSubmit={handleSubmit} className='formulario-modulo-reportes'>
-                    <div className='columnas-container-reportes'>
-                    <div className= 'filas-container-reportes'>
-                        <label>Tipo de Reporte</label>
-                        <span className='blocked-input'>{tiporeporteInput}</span>
-                        <p className='behind-input'></p>
-                        <label>Fecha*</label>
-                        <input value={fechaInput}
-                        onChange={(e) => setFechaInput(e.target.value)} 
-                            type="date"
-                        />
-                        <p className='behind-input'></p>
-                    </div>
-                    <div className= 'filas-container-reportes'>
-                        <label>Nombre Mascota</label>
-                        <span className='blocked-input'>
-                            {nombremascotaInput}
-                        </span>
-                        <p className='behind-input'></p>
-                        <label>Hora*</label>
-                        <input value={horaInput}
-                        onChange={(e) => setHoraInput(e.target.value)} 
-                            type="time"
-                        />
-                        <p className='behind-input'></p>
-                    </div>
+                <div className='filas-container-reportes'>
+                    <label>Tipo de Reporte</label>
+                    <span className='blocked-input'>Avistamiento</span>
+                    <p className='behind-input'></p>
                 </div>
                 <label>Detalles*</label>
-                <textarea className='textarea-reportes'
+                <textarea
+                    className='textarea-reportes'
                     value={detallesInput}
                     onChange={(e) => setDetallesInput(e.target.value)}
                     rows="5"
                 />
                 <p className='behind-input'></p>
                 <div className='columnas-container-reportes'>
-                    <div className= 'filas-container-reportes'>
+                    <div className='filas-container-reportes'>
                         <label>Ubicación*</label>
-                        <MapaSelector setUbicacion={setUbicacionInput} ubicacionInicial={ubicacionInput}/>
+                        <MapaSelector setUbicacion={setUbicacionInput} ubicacionInicial={ubicacionInput} />
                         <p className='behind-input'></p>
                     </div>
-                    <div className= 'filas-container-reportes'>
-                        <label className="label-foto">Foto (JPG o PNG)</label>
+                    <div className='filas-container-reportes'>
+                        <label className="label-foto">Foto (JPG o PNG)*</label>
                         <input
                         type="file"
                         accept=".jpg,.jpeg,.png"
-                        onChange={(e) => handleFileChange(e)}
+                        onChange={handleFileChange}
                         className="input-foto"
                         />
-
                         {imagenInput && (
                         <img
                             src={URL.createObjectURL(imagenInput)}

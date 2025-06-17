@@ -2,7 +2,7 @@ import reportApi from "./httpClients/reportApi";
 
 export const reportService = {
   // Método para crear un reporte
-  createReport: (reportData) => reportApi.post("/reports", reportData),
+  createReport: (reportData) => reportApi.post("/reports/", reportData),
 
   // Método para obtener todos los reportes
   getAllReports: () => reportApi.get("/reports/public"),

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PasswordInput from './PasswordInput';
 import '../../styles/FormsLogin.css';
 import { Link, useNavigate } from 'react-router-dom';
 import apiService from '../../services/apiService';
-import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
+import { GoogleLogin } from '@react-oauth/google';
+import { AuthContext } from '../../contexts/AuthContext'; // ✅ Importar el contexto
 
-// Formulario de login con integración a la API backend
-const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props as it's handled internally now
+const FormLogin = () => {
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +14,8 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
-  // Maneja el envío del formulario con API real
+  const { login } = useContext(AuthContext); // ✅ Obtener la función login del contexto
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -22,32 +23,28 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
     setSuccessMessage('');
 
     try {
-      // CORREGIDO: Enviar email en lugar de username
       const credentials = {
-        email: correo, // El campo se llama username en el form pero enviamos como email
-        password
+        email: correo,
+        password,
       };
 
-      console.log('🔐 Intentando login con:', { 
-        email: credentials.email, 
-        password: '***' 
+      console.log('🔐 Intentando login con:', {
+        email: credentials.email,
+        password: '***',
       });
 
-      // Llamar a la API de login
       const response = await apiService.login(credentials);
-      
+
       console.log('✅ Login response:', response);
-      
+
       if (response.token) {
-        // Guardar token y datos del usuario
         apiService.saveToken(response.token);
         localStorage.setItem('userProfile', JSON.stringify(response.user));
-        
+        login(response.token); // ✅ Actualiza el estado del contexto
         setSuccessMessage('¡Login exitoso! Redirigiendo...');
-        
-        // Redirigir después de un breve delay
+
         setTimeout(() => {
-          navigate('/home'); // Changed from /dashboard to /home
+          navigate('/home');
         }, 1500);
       }
     } catch (error) {
@@ -63,17 +60,18 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
     setErrorMessage('');
     setSuccessMessage('');
     console.log('🔑 Google credentialResponse:', credentialResponse);
+
     try {
-      // Send the ID token to your backend
       const response = await apiService.googleLogin({ token: credentialResponse.credential });
       console.log('✅ Google Login response:', response);
 
       if (response.token) {
         apiService.saveToken(response.token);
         localStorage.setItem('userProfile', JSON.stringify(response.user));
+        login(response.token); // ✅ También actualiza el contexto
         setSuccessMessage('¡Login con Google exitoso! Redirigiendo...');
         setTimeout(() => {
-          navigate('/home'); // Changed from /dashboard to /home
+          navigate('/home');
         }, 1500);
       }
     } catch (error) {
@@ -92,7 +90,6 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
   return (
     <div className="container-modulo-login">
       <form onSubmit={handleSubmit}>
-        {/* Campo de correo */}
         <label className="label-formulario">Correo</label>
         <input
           type="email"
@@ -101,24 +98,26 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
           onChange={(e) => setCorreo(e.target.value)}
           required
         />
-        {/* Campo de contraseña */}
-      <label className="label-formulario-login">Contraseña</label>
+
+        <label className="label-formulario-login">Contraseña</label>
         <PasswordInput
           label=""
           id="loginPassword"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-        />          {/* Botón de iniciar sesión */}
-        <button 
-          type="submit" 
+        />
+
+        <button
+          type="submit"
           className="button-principal"
           disabled={isLoading}
         >
           {isLoading && !successMessage ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </button>
+
         <div className="separador-o-login">ó</div>
-        {/* Botón para login con Google */}
+
         <div className="google-login-button-container">
           <GoogleLogin
             onSuccess={handleGoogleLoginSuccess}
@@ -126,12 +125,12 @@ const FormLogin = ({ onLogin, onFail }) => { // Removed onGoogleLogin from props
             useOneTap
           />
         </div>
-        </form>
-      {/* Enlace para recuperar contraseña como link subrayado */}
+      </form>
+
       <Link to="/recover_password_request" className="link-recuperar-clave">
         ¿Olvidaste tu contraseña?
       </Link>
-      {/* Mensajes de éxito o error */}
+
       {errorMessage && <div className="mensaje-error">{errorMessage}</div>}
       {successMessage && <div className="mensaje-exito">{successMessage}</div>}
     </div>

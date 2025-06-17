@@ -1,7 +1,9 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css'; 
+import { useContext } from 'react';
+import './App.css';
 import Layout from './components/Principal/Layout';
+import PrivateRoute from './components/PrivateRoute';
+import { AuthContext } from './contexts/AuthContext';
 import ViewRecuperarClave from './views/Login/ViewRecuperarClave';
 import ViewCambiarClave from './views/Login/ViewCambiarClave';
 import ViewCambiarClaveLogued from './views/Login/ViewCambiarClaveLogued';
@@ -15,121 +17,144 @@ import ViewCrearHallazgo from './views/Reportes/ViewCrearHallazgo';
 import ViewEditarHallazgo from './views/Reportes/ViewEditarHallazgo';
 import ViewVisualizarReportes from './views/Reportes/ViewVisualizarReportes';
 import ViewLogin from './views/Login/ViewLogin';
-import ViewRegistro from './views/Login/ViewRegistro';  // Cambiado de ViewRegistroTemp a ViewRegistro
+import ViewRegistro from './views/Login/ViewRegistro';
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewHome from './views/Home/ViewHome';
 import ViewRegister from './views/Register/ViewRegister';
-import './index.css'; 
 import ConnTest from "./views/conn-test/conn-test";
 
-
 function App() {
+  const { isAuthenticated } = useContext(AuthContext);
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={
-          <Layout>
-            <ViewHome /> 
-          </Layout>
-          
-        } />
-        <Route path="/home" element={
-          <Layout>
-           <ViewHomeLogin /> {/*Vista Home logueado*/}
-          </Layout>
-          
-        } />
-        <Route path="/login" element={
-          <Layout>
-            <ViewLogin /> {/*Vista Login*/}
-          </Layout>
-        } />
-        <Route path="/register" element={
-          <Layout>
-            <ViewRegistro />  {/* Cambiado de ViewRegistroTemp a ViewRegistro */}
-          </Layout>
-        } />
-        <Route path="/recover_password_request" element={
-          <Layout>
-            <ViewRecuperarClave />
-          </Layout>
-        } />
-        <Route path="/change_password" element={
-          <Layout>
-            <ViewCambiarClave />
-          </Layout>
-        } />
-        <Route path="/education" element={
-          <Layout>
-            <></> {/*Vista Módulo Educativo*/}
-          </Layout>
-        } />
-        <Route path="/notifications" element={
-          <Layout>
-            <></> {/*Vista Notificaciones*/}
-          </Layout>
-        } />
-        <Route path="/my_profile" element={
-          <Layout>
-            <ViewPerfil />
-          </Layout>
-        } />
-        <Route path="/my_profile/picture" element={
-          <Layout>
-             <></> {/*Vista Subir Foto*/}
-          </Layout>
-        } />
-        <Route path="/my_profile/edit" element={
-          <Layout>
-             <ViewEditarPerfil />
-          </Layout>
-        } />
-        <Route path="/my_profile/change_password" element={
-          <Layout>
-            <ViewCambiarClaveLogued />
-          </Layout>
-        } />
-        <Route path="/create_lost" element={
-          <Layout>
-            <ViewCrearPerdida />
-          </Layout>
-        } />
-        <Route path="/edit_lost" element={
-          <Layout>
-            <ViewEditarPerdida />
-          </Layout>
-        } />
-        <Route path="/create_seen" element={
-          <Layout>
-            <ViewCrearAvistamiento />
-          </Layout>
-        } />
-        <Route path="/edit_seen" element={
-          <Layout>
-            <ViewEditarAvistamiento />
-          </Layout>
-        } />
-        <Route path="/create_found" element={
-          <Layout>
-            <ViewCrearHallazgo />
-          </Layout>
-        } />
-        <Route path="/edit_found" element={
-          <Layout>
-            <ViewEditarHallazgo />
-          </Layout>
-        } />
-        <Route path="/report_details" element={
-          <Layout>
-            <ViewVisualizarReportes />
-          </Layout>
-        } />
+        {/* Públicas */}
+        <Route path="/" element={<Layout><ViewHome /></Layout>} />
+        <Route path="/login" element={<Layout><ViewLogin /></Layout>} />
+        <Route path="/register" element={<Layout><ViewRegistro /></Layout>} />
+        <Route path="/recover_password_request" element={<Layout><ViewRecuperarClave /></Layout>} />
+        <Route path="/change_password" element={<Layout><ViewCambiarClave /></Layout>} />
+
+        {/* Protegidas */}
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Layout><ViewHomeLogin /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my_profile"
+          element={
+            <PrivateRoute>
+              <Layout><ViewPerfil /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my_profile/edit"
+          element={
+            <PrivateRoute>
+              <Layout><ViewEditarPerfil /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my_profile/change_password"
+          element={
+            <PrivateRoute>
+              <Layout><ViewCambiarClaveLogued /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my_profile/picture"
+          element={
+            <PrivateRoute>
+              <Layout><></></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/education"
+          element={
+            <PrivateRoute>
+              <Layout><></></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <PrivateRoute>
+              <Layout><></></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/create_lost"
+          element={
+            <PrivateRoute>
+              <Layout><ViewCrearPerdida /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit_lost"
+          element={
+            <PrivateRoute>
+              <Layout><ViewEditarPerdida /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/create_seen"
+          element={
+            <PrivateRoute>
+              <Layout><ViewCrearAvistamiento /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit_seen"
+          element={
+            <PrivateRoute>
+              <Layout><ViewEditarAvistamiento /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/create_found"
+          element={
+            <PrivateRoute>
+              <Layout><ViewCrearHallazgo /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit_found"
+          element={
+            <PrivateRoute>
+              <Layout><ViewEditarHallazgo /></Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/report_details"
+          element={
+            <PrivateRoute>
+              <Layout><ViewVisualizarReportes /></Layout>
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/conn-test"
           element={
-            //<Layout>
-            <ConnTest />
-            //</Layout>
+            <PrivateRoute>
+              <ConnTest />
+            </PrivateRoute>
           }
         />
       </Routes>

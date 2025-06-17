@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const reportApi = axios.create({
-  baseURL: "http://localhost:5050",
+  baseURL: "http://localhost:5050/",
   timeout: 5000,
 });
 
 // Interceptor para añadir el token de autenticación si existe
 reportApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("authToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

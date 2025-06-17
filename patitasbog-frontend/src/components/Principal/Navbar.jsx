@@ -1,26 +1,31 @@
-import React from 'react';
-// Importa los hooks useLocation y useNavigate desde react-router-dom para manejar la navegación y la ubicación actual en la aplicación.
-import { useLocation, useNavigate } from 'react-router-dom'; 
+// src/components/layout/Navbar.jsx
+import React, { useContext } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/Navbar.css';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // [keynes] Detecta si el usuario está en /home para mostrar "Cerrar sesión"
-  const isLoggedIn = location.pathname === '/home';
+  // Traemos estado y acciones del contexto
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
-  // [keynes] Maneja el cierre de sesión y redirige al home principal
   const handleLogout = () => {
-    // [keynes] Aquí podrías limpiar el estado de autenticación si lo tienes
-    navigate('/'); // [keynes] Redirige al home principal
+    logout();          // Limpia el token y actualiza el contexto
+    navigate('/');     // Redirige al home principal
   };
+
   return (
-    <nav className="navbar" role="navigation" aria-label="Barra de navegación principal">
-      <a
-          href="/"
-          className="logo-link"
-          aria-label="Redirección a página de inicio"
+    <nav
+      className="navbar"
+      role="navigation"
+      aria-label="Barra de navegación principal"
+    >
+      <Link
+        to="/"
+        className="logo-link"
+        aria-label="Redirección a página de inicio"
       >
         <div className="logo-section">
           <div className="logo-container">
@@ -32,18 +37,20 @@ const Navbar = () => {
           </div>
           <span className="logo-text">PatitasBog</span>
         </div>
-      </a>
-      
+      </Link>
+
       <div className="nav-links">
-        <a
-          href="/register"
-          className="link-register"
-          aria-label="Registrarse en la aplicación"
-        >
-          Regístrate
-        </a>
-        {isLoggedIn ? (
-          // [keynes] Muestra "Cerrar sesión" si está logueado
+        {!isAuthenticated && (
+          <Link
+            to="/register"
+            className="link-register"
+            aria-label="Registrarse en la aplicación"
+          >
+            Regístrate
+          </Link>
+        )}
+
+        {isAuthenticated ? (
           <button
             className="btn-login"
             role="button"
@@ -53,19 +60,18 @@ const Navbar = () => {
             Cerrar sesión
           </button>
         ) : (
-          // [keynes] Muestra "Iniciar sesión" si no está logueado
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="btn-login"
             role="button"
             aria-label="Ir a la página de inicio de sesión"
           >
             Iniciar sesión
-          </a>
+          </Link>
         )}
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
