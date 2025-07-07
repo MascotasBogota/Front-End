@@ -8,17 +8,15 @@
   /* Tipografía */
   --font-logo: "Aventi", sans-serif;
   --font-main: "Satoshi", sans-serif;
-
   /* Tamaños de fuente */
-  --fs-base: 1rem;           /* 16px */
-  --fs-link: 1.5rem;         /* 24px */
-  --fs-logo: 2.5rem;           /* 64px */
-
+  --fs-base: 1rem; /* 16px */
+  --fs-link: 1.5rem; /* 24px */
+  --fs-logo: 2.5rem; /* 64px */
   /* Espaciados */
   --spacing-1: 1rem;
   --spacing-2: 2rem;
   --spacing-3: 3rem;
-  --spacing-4: 3rem;
+  --spacing-4: 6rem;
 }
 
 .home-container {
@@ -27,7 +25,7 @@
   width: 100%;
   height: 100%;
   padding: 0rem 0rem;
-  background-color: var(--color-neutro-1);
+  background-color: var(--color-principal-1);
   font-family: var(--font-main), sans-serif;
 }
 
@@ -46,7 +44,8 @@
   position: relative;
   width: 100%;
   max-width: 1300px;
-  margin: 0 auto;
+  margin: 0rem auto;
+
 }
 
 /* Navigation controls container */
@@ -55,9 +54,10 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  gap: 24px;
 }
 
-/* Navigation arrows - now outside the cards area */
+/* Navigation arrows */
 .carousel-nav {
   width: 60px;
   height: 60px;
@@ -93,19 +93,80 @@
   transform: scale(0.9);
 }
 
-/* Carousel title/counter */
-.carousel-info {
-  text-align: center;
-  color: var(--color-neutro-3);
+/* Filters container - centrado y mejor espaciado */
+.filters-container {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  justify-content: center;
+  flex: 1;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.filter-label {
+  font-size: 12px;
   font-weight: 600;
-  font-size: 18px;
+  color: var(--color-neutro-3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.filter-select {
+  padding: 12px 40px 12px 14px; /* Aumentar padding vertical */
+  border: 2px solid var(--color-neutro-2);
+  border-radius: 8px;
+  background-color: white;
+  color: var(--color-neutro-3);
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  height: 44px; /* Altura fija para asegurar espacio suficiente */
+  line-height: 1.2; /* Line height para centrar el texto */
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  display: flex;
+  align-items: center; /* Centrar verticalmente */
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-principal-2);
+  box-shadow: 0 0 0 3px rgba(147, 115, 21, 0.1);
+}
+
+.filter-select:hover {
+  border-color: var(--color-principal-2);
+}
+
+/* Results counter - mejor posicionado */
+.results-counter {
+  font-size: 14px;
+  color: var(--color-neutro-2);
+  font-weight: 500;
+  white-space: nowrap;
+  margin-left: 16px;
 }
 
 /* Cards container with horizontal scroll */
 .cards-carousel {
   display: flex;
   gap: 32px;
-  overflow: hidden; /* Changed from overflow-x: hidden */
+  overflow: hidden;
   scroll-behavior: smooth;
   padding: 20px 0;
 }
@@ -114,7 +175,7 @@
 .pet-card {
   flex-shrink: 0;
   width: 300px;
-  height: 520px; /* Fixed height for all cards */
+  height: 520px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -201,17 +262,20 @@
   color: var(--color-principal-2);
 }
 
-/* Pet description - flexible to fill space */
+/* Pet description - asegurar ellipsis */
 .pet-description {
   font-size: 16px;
   color: #4a5568;
   margin: 0;
   line-height: 1.5;
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 /* Carousel indicators */
@@ -244,6 +308,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
+  padding: var(--spacing-2) var(--spacing-2)
 }
 
 .bottom-notice p {
@@ -251,7 +316,7 @@
   color: var(--color-neutro-3);
   font-weight: 500;
   font-style: italic;
-  padding: var(--spacing-4) var(--spacing-4);
+  padding: var(--spacing-1) var(--spacing-1)
 }
 
 /* Loading state */
@@ -264,7 +329,29 @@
   color: var(--color-neutro-3);
 }
 
-/* Responsive design */
+/* No results state */
+.no-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  color: var(--color-neutro-2);
+}
+
+.no-results-container h3 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--color-neutro-3);
+}
+
+.no-results-container p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Responsive design actualizado */
 @media (max-width: 1200px) {
   .reports-scroll-container {
     padding: 48px 24px;
@@ -278,6 +365,19 @@
 
   .pet-card {
     height: 480px;
+  }
+
+  .carousel-controls {
+    gap: 16px;
+  }
+
+  .filters-container {
+    gap: 16px;
+    max-width: 500px;
+  }
+
+  .filter-group {
+    min-width: 120px;
   }
 }
 
@@ -302,7 +402,34 @@
   }
 
   .carousel-controls {
-    margin-bottom: 24px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .filters-container {
+    justify-content: center;
+    gap: 16px;
+    max-width: none;
+    margin: 0;
+  }
+
+  .filter-group {
+    min-width: 130px;
+  }
+
+  .results-counter {
+    margin-left: 0;
+    text-align: center;
+    order: 3;
+  }
+
+  /* Navegación en fila separada en móvil */
+  .carousel-nav-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    order: 1;
   }
 }
 
@@ -326,5 +453,58 @@
 
   .carousel-controls {
     margin-bottom: 20px;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filter-group {
+    min-width: auto;
+  }
+
+  .filter-select {
+    font-size: 16px; /* Evita zoom en iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  .reports-scroll-container {
+    padding: 24px 12px;
+  }
+
+  .pet-card {
+    width: 260px;
+    height: 440px;
+  }
+
+  .pet-image-container {
+    height: 260px;
+  }
+
+  .cards-carousel {
+    gap: 20px;
+  }
+
+  .carousel-controls {
+    margin-bottom: 20px;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filter-group {
+    min-width: auto;
+  }
+
+  .filter-select {
+    font-size: 16px; /* Evita zoom en iOS */
+    height: 48px; /* Altura mayor en móvil */
+    padding: 14px 40px 14px 16px;
   }
 }

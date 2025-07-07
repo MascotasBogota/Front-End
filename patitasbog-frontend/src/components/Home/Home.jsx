@@ -6,9 +6,15 @@ import { reportService } from "../../services/reportService"
 
 const Home = () => {
   const [reportes, setReportes] = useState([])
+  const [filteredReportes, setFilteredReportes] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(0)
   const carouselRef = useRef(null)
+
+  // Estados para filtros
+  const [radiusFilter, setRadiusFilter] = useState("all") // "all", "1", "5", "10", "25"
+  const [typeFilter, setTypeFilter] = useState("all") // "all", "perro", "gato", "otro"
+  const [userLocation, setUserLocation] = useState(null)
 
   // Número de tarjetas visibles según el tamaño de pantalla
   const [cardsPerView, setCardsPerView] = useState(4)
@@ -18,10 +24,13 @@ const Home = () => {
       try {
         const response = await reportService.getAllReports()
         console.log("Reportes recibidos:", response)
-        setReportes(Array.isArray(response) ? response : [])
+        const reportesArray = Array.isArray(response) ? response : []
+        setReportes(reportesArray)
+        setFilteredReportes(reportesArray)
       } catch (error) {
         console.error("Error al obtener reportes:", error)
         setReportes([])
+        setFilteredReportes([])
       } finally {
         setLoading(false)
       }
@@ -30,17 +39,73 @@ const Home = () => {
     fetchReports()
   }, [])
 
+  // Obtener ubicación del usuario
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          })
+        },
+        (error) => {
+          console.log("Error obteniendo ubicación:", error)
+          // Ubicación por defecto (Bogotá)
+          setUserLocation({ lat: 4.6097, lng: -74.0817 })
+        },
+      )
+    } else {
+      // Ubicación por defecto (Bogotá)
+      setUserLocation({ lat: 4.6097, lng: -74.0817 })
+    }
+  }, [])
+
+  // Función para calcular distancia entre dos puntos (en km)
+  const calculateDistance = (lat1, lng1, lat2, lng2) => {
+    const R = 6371 // Radio de la Tierra en km
+    const dLat = (lat2 - lat1) * (Math.PI / 180)
+    const dLng = (lng2 - lng1) * (Math.PI / 180)
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLng / 2) * Math.sin(dLng / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    return R * c
+  }
+
+  // Aplicar filtros
+  useEffect(() => {
+    let filtered = [...reportes]
+
+    // Filtro por tipo
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((reporte) => reporte.type?.toLowerCase() === typeFilter.toLowerCase())
+    }
+
+    // Filtro por radio de ubicación
+    if (radiusFilter !== "all" && userLocation) {
+      const maxDistance = Number.parseInt(radiusFilter)
+      filtered = filtered.filter((reporte) => {
+        if (!reporte.location?.coordinates) return false
+        const [lng, lat] = reporte.location.coordinates
+        const distance = calculateDistance(userLocation.lat, userLocation.lng, lat, lng)
+        return distance <= maxDistance
+      })
+    }
+
+    setFilteredReportes(filtered)
+    setCurrentIndex(0) // Resetear índice al aplicar filtros
+  }, [reportes, typeFilter, radiusFilter, userLocation])
+
   // Actualizar número de tarjetas visibles según el tamaño de pantalla
   useEffect(() => {
     const updateCardsPerView = () => {
       const width = window.innerWidth
-      const cardWidth = 300 + 32 // ancho de tarjeta + gap
-      const availableWidth = width - 200 // restamos padding y márgenes
+      const cardWidth = 300 + 32
+      const availableWidth = width - 200
 
-      // Calcular cuántas tarjetas caben completamente
       const maxCards = Math.floor(availableWidth / cardWidth)
 
-      // Establecer límites según breakpoints
       if (width < 480) {
         setCardsPerView(Math.min(1, maxCards))
       } else if (width < 768) {
@@ -131,7 +196,7 @@ const Home = () => {
 
   // Función para navegar hacia la derecha
   const scrollRight = () => {
-    const maxIndex = Math.max(0, reportes.length - cardsPerView)
+    const maxIndex = Math.max(0, filteredReportes.length - cardsPerView)
     if (currentIndex < maxIndex) {
       const newIndex = Math.min(maxIndex, currentIndex + cardsPerView)
       setCurrentIndex(newIndex)
@@ -158,19 +223,18 @@ const Home = () => {
   }
 
   // Calcular número total de "páginas" del carrusel
-  const totalPages = Math.ceil(reportes.length / cardsPerView)
+  const totalPages = Math.ceil(filteredReportes.length / cardsPerView)
 
   return (
     <div className="home-container">
       <div className="reports-scroll-container">
         {loading ? (
           <div className="loading-container">Cargando reportes...</div>
-        ) : reportes.length === 0 ? (
-          <div className="loading-container">No hay reportes disponibles</div>
         ) : (
           <div className="carousel-container">
-            {/* Navigation Controls - Outside cards area */}
+            {/* Navigation Controls with Filters */}
             <div className="carousel-controls">
+              {/* Navegación izquierda */}
               <button
                 className="carousel-nav"
                 onClick={scrollLeft}
@@ -180,14 +244,43 @@ const Home = () => {
                 ‹
               </button>
 
-              <div className="carousel-info">
-                {Math.min(currentIndex + cardsPerView, reportes.length)} de {reportes.length} reportes
+              {/* Filters */}
+              <div className="filters-container">
+                <div className="filter-group">
+                  <label className="filter-label">Radio</label>
+                  <select
+                    className="filter-select"
+                    value={radiusFilter}
+                    onChange={(e) => setRadiusFilter(e.target.value)}
+                  >
+                    <option value="all">Toda la ciudad</option>
+                    <option value="1">1 km</option>
+                    <option value="5">5 km</option>
+                    <option value="10">10 km</option>
+                    <option value="25">25 km</option>
+                  </select>
+                </div>
+
+                <div className="filter-group">
+                  <label className="filter-label">Tipo</label>
+                  <select className="filter-select" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                    <option value="all">Todas las mascotas</option>
+                    <option value="perro">Perros</option>
+                    <option value="gato">Gatos</option>
+                    <option value="otro">Otros</option>
+                  </select>
+                </div>
+
+                <div className="results-counter">
+                  {filteredReportes.length} resultado{filteredReportes.length !== 1 ? "s" : ""}
+                </div>
               </div>
 
+              {/* Navegación derecha */}
               <button
                 className="carousel-nav"
                 onClick={scrollRight}
-                disabled={currentIndex >= Math.max(0, reportes.length - cardsPerView)}
+                disabled={currentIndex >= Math.max(0, filteredReportes.length - cardsPerView)}
                 aria-label="Ver más reportes"
               >
                 ›
@@ -195,52 +288,59 @@ const Home = () => {
             </div>
 
             {/* Cards Carousel */}
-            <div className="cards-carousel" ref={carouselRef}>
-              {reportes.map((reporte, index) => {
-                const status = getStatus(reporte)
-                const petName = getPetName(reporte)
-                const imageUrl = getValidImage(reporte)
+            {filteredReportes.length === 0 ? (
+              <div className="no-results-container">
+                <h3>No se encontraron reportes</h3>
+                <p>Intenta ajustar los filtros para ver más resultados</p>
+              </div>
+            ) : (
+              <div className="cards-carousel" ref={carouselRef}>
+                {filteredReportes.map((reporte, index) => {
+                  const status = getStatus(reporte)
+                  const petName = getPetName(reporte)
+                  const imageUrl = getValidImage(reporte)
 
-                return (
-                  <div className="pet-card" key={reporte._id || index}>
-                    {/* Pet Image */}
-                    <div className="pet-image-container">
-                      <img
-                        src={imageUrl || "/placeholder.svg"}
-                        alt={petName}
-                        className="pet-image"
-                        onError={(e) => handleImageError(e, reporte.type)}
-                      />
+                  return (
+                    <div className="pet-card" key={reporte._id || index}>
+                      {/* Pet Image */}
+                      <div className="pet-image-container">
+                        <img
+                          src={imageUrl || "/placeholder.svg"}
+                          alt={petName}
+                          className="pet-image"
+                          onError={(e) => handleImageError(e, reporte.type)}
+                        />
 
-                      {/* Status Badge */}
-                      <div className={`status-badge ${status === "Perdido" ? "status-perdido" : "status-encontrado"}`}>
-                        {status}
-                      </div>
-                    </div>
-
-                    {/* Card Content */}
-                    <div className="pet-card-content">
-                      {/* Pet Name */}
-                      <h3 className="pet-name">{petName}</h3>
-
-                      {/* Status Text - Subtle label */}
-                      <div className={`pet-status-text ${status.toLowerCase()}`}>
-                        {status === "Perdido" ? "Se busca" : "Encontrado"}
+                        {/* Status Badge */}
+                        <div
+                          className={`status-badge ${status === "Perdido" ? "status-perdido" : "status-encontrado"}`}
+                        >
+                          {status}
+                        </div>
                       </div>
 
-                      {/* Description */}
-                      <p className="pet-description">
-                        {reporte.description && reporte.description !== "string"
-                          ? reporte.description
-                          : `${petName} reportado como perdido. Se busca información sobre su paradero.`}
-                      </p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+                      {/* Card Content */}
+                      <div className="pet-card-content">
+                        {/* Pet Name */}
+                        <h3 className="pet-name">{petName}</h3>
 
-            
+                        {/* Status Text - Subtle label */}
+                        <div className={`pet-status-text ${status.toLowerCase()}`}>
+                          {status === "Perdido" ? "Se busca" : "Encontrado"}
+                        </div>
+
+                        {/* Description */}
+                        <p className="pet-description">
+                          {reporte.description && reporte.description !== "string"
+                            ? reporte.description
+                            : `${petName} reportado como perdido. Se busca información sobre su paradero.`}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>
