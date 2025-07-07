@@ -1,105 +1,106 @@
-/*
-Este archivo define los estilos del componente Navbar.
+:root {
+  /* Colores */
+  --color-bg-nav: #F0EFE7;
+  --color-bg-bottom: #F1CA99;
+  --color-highlight: #C71C5E;
+  --color-dark: #281D04;
 
-Estilos generales:
-  - navbar: define la estética del contenedor principal, como su ubicación, color de fondo y tamaño.
-  - navbar a: aplica a todos los enlaces de navegación dentro de la Navbar.
+  /* Tipografía */
+  --font-logo: "Aventi", sans-serif;
+  --font-main: "Satoshi", sans-serif;
 
-Elementos internos del Navbar:
-  - logo-section: contenedor que agrupa el logo y el nombre de la aplicación.
-  - logo-container: contenedor exclusivo para el logo; restringe su tamaño.
-  - logo: estilos aplicados directamente a la imagen del logo.
-  - nav-links: sección que contiene los enlaces de registro e inicio de sesión.
-  - link-register: estilos del enlace de registro.
-    - link-register::after: genera una barra vertical decorativa junto al enlace.
-    - link-register:hover: define el estilo al pasar el cursor por encima del enlace.
-  - btn-login: botón personalizado para iniciar sesión.
-    - btn-login:hover: define el estilo del botón al pasar el cursor sobre él.
-*/
+  /* Tamaños de fuente */
+  --fs-base: 1rem;           /* 16px */
+  --fs-link: 1.5rem;         /* 24px */
+  --fs-logo: 2.5rem;           /* 64px */
 
-/*Estilos generales de la Navbar*/
-.navbar {
-  background-color: var(--orange2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem 1.5rem; 
-  color: var(--blue);
-  height: var(--navbar-height);
-  z-index: 997; 
+  /* Espaciados */
+  --spacing-1: 1rem;
+  --spacing-2: 2rem;
+  --spacing-3: 3rem;
+  --spacing-4: 6px;
 }
 
-.navbar a{
+/* Navbar */
+.navbar {
+  width: auto;
+  height: 10%;
+  background-color: var(--color-bg-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-1) var(--spacing-1); 
+}
+
+/* Logo */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1) var(--spacing-1);
   text-decoration: none;
 }
 
-/*Estilo de la sección de logo*/
-.logo-section {
-  display: flex;
-  align-items: center; 
-  gap: 0.2rem;
-  color: var(--blue);
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.logo-container {
-  height: 3rem; 
-  width: 3rem;  
-}
-
-.logo {
-  height: 100%;
-  width: 100%;
+.logo-icon {
+  height: clamp(40px, 5vh, 52px); /* Mínimo 40px, hasta 5vh, máximo 52px */
+  width: auto; /* Mantener la proporción */
   object-fit: contain;
 }
 
-/*Estilo de la sección de links*/
+.logo-text {
+  font-family: var(--font-logo);
+  /* Usar clamp para el tamaño de la fuente del logo */
+  font-size: clamp(1.5rem, 4vw, var(--fs-logo)); /* O 2rem si quieres que el máximo sea 32px */
+  color: var(--color-highlight);
+  font-weight: 700;
+  font-style: bold;
+  text-decoration: none;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Navegación */
 .nav-links {
   display: flex;
-  align-items: center; 
-  gap: 0; 
+  align-items: center;
 }
 
-/*Estilos del link de registro*/
-.link-register {
-  color: var(--blue); 
+.nav-links a,
+.logout-btn {
+  font-size: var(--fs-link);
+  font-weight: 900;
+  font-family: var(--font-main);
   text-decoration: none;
+  color: var(--color-highlight);
+  background: none;
+  border: none;
+  font-style: bold;
   cursor: pointer;
-  padding-right: 1.25rem; 
-  font-weight: bold;
-  position: relative; 
+  padding: 0;
+
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.5;
 }
 
-.link-register::after {
-  content: ''; 
-  position: absolute;
-  right: 0.6rem; 
-  top: 50%;
-  transform: translateY(-50%);
-  height: 100%; 
-  width: 2px; 
-  background-color: var(--blue);  
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2); 
+.nav-links a:hover,
+.logout-btn:hover {
+  text-decoration: underline;
 }
 
-.link-register:hover {
-  color: var(--orange1);
+.nav-links a:not(:last-child)::after {
+  content: '';
+  display: inline-block; /* Debe ser inline-block */
+  width: 2px;
+  height: 1.5em; 
+  background-color: var(--color-highlight); 
+  
+  vertical-align: middle; /* Manténlo aquí */
+  
+  margin-left: var(--spacing-1);
+  margin-right: var(--spacing-1);
 }
 
-/*Estilos del botón de inicio de sesión*/
-.btn-login {
-  background-color: var(--orange1); 
-  border-radius: 1rem;
-  color: var(--blue); 
-  cursor: pointer;
-  text-decoration: none;
-  font-weight: bold;
-  margin-left: 0.3rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--blue);
-}
 
-.btn-login:hover {
-  background-color: var(--gray);
-}
+

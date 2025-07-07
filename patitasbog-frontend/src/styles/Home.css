@@ -5,15 +5,27 @@
   --color-principal-1: #f1ca99;
   --color-principal-2: #937315;
   --color-principal-3: #c71c5e;
-  --font-main: "Satoshi Variable";
-  --font-logo: "Aventi";
+  /* Tipografía */
+  --font-logo: "Aventi", sans-serif;
+  --font-main: "Satoshi", sans-serif;
+
+  /* Tamaños de fuente */
+  --fs-base: 1rem;           /* 16px */
+  --fs-link: 1.5rem;         /* 24px */
+  --fs-logo: 2.5rem;           /* 64px */
+
+  /* Espaciados */
+  --spacing-1: 1rem;
+  --spacing-2: 2rem;
+  --spacing-3: 3rem;
+  --spacing-4: 3rem;
 }
 
 .home-container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding: 0rem 0rem;
   background-color: var(--color-neutro-1);
   font-family: var(--font-main), sans-serif;
@@ -22,8 +34,8 @@
 /* Scrollable reports container */
 .reports-scroll-container {
   flex: 1;
-  overflow: hidden;
-  padding: 96px 48px;
+  overflow-y: hidden;
+  padding: var(--spacing-4) var(--spacing-4);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,15 +45,20 @@
 .carousel-container {
   position: relative;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
-/* Navigation arrows */
+/* Navigation controls container */
+.carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+/* Navigation arrows - now outside the cards area */
 .carousel-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -55,55 +72,56 @@
   font-size: 24px;
   font-weight: bold;
   transition: all 0.3s ease;
-  z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .carousel-nav:hover {
   background-color: var(--color-principal-2);
   color: white;
-  transform: translateY(-50%) scale(1.1);
+  transform: scale(1.1);
 }
 
 .carousel-nav:disabled {
   opacity: 0.3;
   cursor: not-allowed;
-  transform: translateY(-50%) scale(0.9);
+  transform: scale(0.9);
 }
 
 .carousel-nav:disabled:hover {
   background-color: white;
   color: var(--color-principal-2);
-  transform: translateY(-50%) scale(0.9);
+  transform: scale(0.9);
 }
 
-.carousel-nav-left {
-  left: -30px;
-}
-
-.carousel-nav-right {
-  right: -30px;
+/* Carousel title/counter */
+.carousel-info {
+  text-align: center;
+  color: var(--color-neutro-3);
+  font-weight: 600;
+  font-size: 18px;
 }
 
 /* Cards container with horizontal scroll */
 .cards-carousel {
   display: flex;
   gap: 32px;
-  overflow-x: hidden;
+  overflow: hidden; /* Changed from overflow-x: hidden */
   scroll-behavior: smooth;
   padding: 20px 0;
 }
 
-/* Individual pet card - vertical/portrait style */
+/* Individual pet card - fixed height */
 .pet-card {
   flex-shrink: 0;
   width: 300px;
+  height: 520px; /* Fixed height for all cards */
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, transform 0.2s ease;
   overflow: hidden;
-  height: fit-content;
+  display: flex;
+  flex-direction: column;
 }
 
 .pet-card:hover {
@@ -116,6 +134,7 @@
   position: relative;
   width: 100%;
   height: 300px;
+  flex-shrink: 0;
   background-color: #f8f9fa;
 }
 
@@ -147,9 +166,12 @@
   background-color: var(--color-principal-2);
 }
 
-/* Card content */
+/* Card content - flexible to fill remaining space */
 .pet-card-content {
   padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Pet name */
@@ -157,18 +179,37 @@
   font-size: 24px;
   font-weight: 700;
   color: var(--color-neutro-3);
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   line-height: 1.2;
 }
 
-/* Pet description */
+/* Status text - subtle label below name */
+.pet-status-text {
+  font-size: 14px;
+  color: var(--color-neutro-2);
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pet-status-text.perdido {
+  color: var(--color-principal-3);
+}
+
+.pet-status-text.encontrado {
+  color: var(--color-principal-2);
+}
+
+/* Pet description - flexible to fill space */
 .pet-description {
   font-size: 16px;
   color: #4a5568;
   margin: 0;
   line-height: 1.5;
+  flex: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -198,17 +239,19 @@
 /* Bottom notice - always visible */
 .bottom-notice {
   background-color: var(--color-principal-1);
-  padding: 32px;
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
 }
 
 .bottom-notice p {
-  font-size: 18px;
+  font-size: var(--fs-link);
   color: var(--color-neutro-3);
   font-weight: 500;
   font-style: italic;
-  margin: 0;
+  padding: var(--spacing-4) var(--spacing-4);
 }
 
 /* Loading state */
@@ -233,12 +276,8 @@
     font-size: 20px;
   }
 
-  .carousel-nav-left {
-    left: -25px;
-  }
-
-  .carousel-nav-right {
-    right: -25px;
+  .pet-card {
+    height: 480px;
   }
 }
 
@@ -249,6 +288,7 @@
 
   .pet-card {
     width: 280px;
+    height: 460px;
   }
 
   .pet-image-container {
@@ -261,12 +301,8 @@
     font-size: 18px;
   }
 
-  .carousel-nav-left {
-    left: -22px;
-  }
-
-  .carousel-nav-right {
-    right: -22px;
+  .carousel-controls {
+    margin-bottom: 24px;
   }
 }
 
@@ -277,6 +313,7 @@
 
   .pet-card {
     width: 260px;
+    height: 440px;
   }
 
   .pet-image-container {
@@ -285,5 +322,9 @@
 
   .cards-carousel {
     gap: 20px;
+  }
+
+  .carousel-controls {
+    margin-bottom: 20px;
   }
 }
