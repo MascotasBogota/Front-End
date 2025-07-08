@@ -1,27 +1,12 @@
 :root {
-  --color-neutro-1: #f0efe7;
-  --color-neutro-2: #9d9c9c;
-  --color-neutro-3: #281d04;
-  --color-principal-1: #f1ca99;
-  --color-principal-2: #937315;
-  --color-principal-3: #c71c5e;
-
-  --font-logo: "Aventi", sans-serif;
-  --font-main: "Satoshi", sans-serif;
-
-  --fs-base: 1rem;
-  --fs-link: 1.5rem;
-  --fs-logo: 2.5rem;
-
-  --spacing-1: 1rem;
-  --spacing-2: 2rem;
-  --spacing-3: 3rem;
-  --spacing-4: 6rem;
-
   /* Variables responsivas para las cards */
   --card-width: 320px;
   --card-gap: 2rem;
   --animation-duration: 60s;
+}
+
+html, body {
+  overflow-y: auto;
 }
 
 .home-container {
