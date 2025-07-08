@@ -1,105 +1,224 @@
-/*
-Este archivo define los estilos del componente Navbar.
-
-Estilos generales:
-  - navbar: define la estética del contenedor principal, como su ubicación, color de fondo y tamaño.
-  - navbar a: aplica a todos los enlaces de navegación dentro de la Navbar.
-
-Elementos internos del Navbar:
-  - logo-section: contenedor que agrupa el logo y el nombre de la aplicación.
-  - logo-container: contenedor exclusivo para el logo; restringe su tamaño.
-  - logo: estilos aplicados directamente a la imagen del logo.
-  - nav-links: sección que contiene los enlaces de registro e inicio de sesión.
-  - link-register: estilos del enlace de registro.
-    - link-register::after: genera una barra vertical decorativa junto al enlace.
-    - link-register:hover: define el estilo al pasar el cursor por encima del enlace.
-  - btn-login: botón personalizado para iniciar sesión.
-    - btn-login:hover: define el estilo del botón al pasar el cursor sobre él.
-*/
-
-/*Estilos generales de la Navbar*/
+/* Navbar */
 .navbar {
-  background-color: var(--orange2);
+  width: auto;
+  height: 10%;
+  background-color: var(--color-neutro-1);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.2rem 1.5rem; 
-  color: var(--blue);
-  height: var(--navbar-height);
-  z-index: 997; 
+  justify-content: space-between;
+  padding: var(--spacing-1) var(--spacing-1);
+  position: relative;
+  z-index: 1000;
 }
 
-.navbar a{
-  text-decoration: none;
-}
-
-/*Estilo de la sección de logo*/
+/* Logo */
 .logo-section {
   display: flex;
-  align-items: center; 
-  gap: 0.2rem;
-  color: var(--blue);
-  font-weight: bold;
-  font-size: 1.2rem;
+  align-items: center;
+  gap: var(--spacing-1) var(--spacing-1);
+  text-decoration: none;
+  z-index: 1001;
 }
 
-.logo-container {
-  height: 3rem; 
-  width: 3rem;  
-}
-
-.logo {
-  height: 100%;
-  width: 100%;
+.logo-icon {
+  height: clamp(40px, 5vh, 52px);
+  width: auto;
   object-fit: contain;
 }
 
-/*Estilo de la sección de links*/
+.logo-text {
+  font-family: var(--font-logo);
+  font-size: clamp(1.5rem, 4vw, var(--fs-logo));
+  color: var(--color-principal-3);
+  font-weight: 700;
+  font-style: bold;
+  text-decoration: none;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Hamburger Menu Button - Solo visible en móvil */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.hamburger-line {
+  width: 30px;
+  height: 3px;
+  background-color: var(--color-principal-3);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animación del hamburger cuando está abierto */
+.hamburger-btn.open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Navegación Desktop */
 .nav-links {
   display: flex;
-  align-items: center; 
-  gap: 0; 
+  align-items: center;
 }
 
-/*Estilos del link de registro*/
-.link-register {
-  color: var(--blue); 
+.nav-links a,
+.logout-btn {
+  font-size: var(--fs-link);
+  font-weight: 900;
+  font-family: var(--font-main);
   text-decoration: none;
+  color: var(--color-principal-3);
+  background: none;
+  border: none;
+  font-style: bold;
   cursor: pointer;
-  padding-right: 1.25rem; 
-  font-weight: bold;
-  position: relative; 
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 2;
+  transition: all 0.3s ease;
 }
 
-.link-register::after {
-  content: ''; 
-  position: absolute;
-  right: 0.6rem; 
-  top: 50%;
-  transform: translateY(-50%);
-  height: 100%; 
-  width: 2px; 
-  background-color: var(--blue);  
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2); 
+.nav-links a:hover,
+.logout-btn:hover {
+  text-decoration: underline;
 }
 
-.link-register:hover {
-  color: var(--orange1);
+.nav-links a:not(:last-child)::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.5em;
+  background-color: var(--color-principal-3);
+  vertical-align: middle;
+  margin-left: var(--spacing-1);
+  margin-right: var(--spacing-1);
 }
 
-/*Estilos del botón de inicio de sesión*/
-.btn-login {
-  background-color: var(--orange1); 
-  border-radius: 1rem;
-  color: var(--blue); 
-  cursor: pointer;
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-neutro-1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile Navigation Links */
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.mobile-nav-links a,
+.mobile-nav-links .logout-btn {
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: var(--font-main);
   text-decoration: none;
-  font-weight: bold;
-  margin-left: 0.3rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--blue);
+  color: var(--color-principal-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  border-radius: 8px;
 }
 
-.btn-login:hover {
-  background-color: var(--gray);
+.mobile-nav-links a:hover,
+.mobile-nav-links .logout-btn:hover {
+  background-color: rgba(199, 28, 94, 0.1);
+  text-decoration: none;
+  transform: scale(1.05);
+}
+
+/* Remove separators in mobile */
+.mobile-nav-links a::after {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+  /* Ocultar navegación desktop */
+  .nav-links {
+    display: none;
+  }
+
+  /* Mostrar botón hamburguesa */
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo-text {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+  }
+
+  .mobile-nav-links a,
+  .mobile-nav-links .logout-btn {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .logo-icon {
+    height: clamp(32px, 4vh, 40px);
+  }
+
+  .mobile-nav-links a,
+  .mobile-nav-links .logout-btn {
+    font-size: 1.25rem;
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.mobile-menu-open {
+  overflow: hidden;
 }
