@@ -26,31 +26,6 @@ const Home = () => {
     fetchReports()
   }, [])
 
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    let animationFrameId
-    const velocity = 1.2 // ✅ aquí cambias la velocidad
-
-    const step = () => {
-      if (!container) return
-
-      container.scrollLeft += velocity
-
-      // Si llegamos al final de la primera mitad, reiniciamos al inicio
-      if (container.scrollLeft >= container.scrollWidth / 2) {
-        container.scrollLeft = 0
-      }
-
-      animationFrameId = requestAnimationFrame(step)
-    }
-
-    animationFrameId = requestAnimationFrame(step)
-
-    return () => cancelAnimationFrame(animationFrameId)
-  }, [reportes])
-
 
   const getPetName = (reporte) => {
     const petType = reporte.pet_type || reporte.type || reporte.animal_type || "Mascota"
@@ -100,6 +75,36 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="content-wrapper">
+        {/* Nueva sección de landing page */}
+        <div className="landing-hero-section">
+          <div className="hero-content">
+            <div className="hero-text-section">
+              <h1 className="hero-title">Encuentra a tu mascota perdida aquí</h1>
+
+              <div className="hero-questions">
+                <div className="question-item">
+                  <p>¿Alguna vez has visto un animal que parece perdido y no sabes a quién reportarlo?</p>
+                </div>
+                <div className="question-item">
+                  <p>¿Alguna vez has perdido a tu mascota y no sabes dónde pedir ayuda?</p>
+                </div>
+                <div className="question-item">
+                  <p>¿Se hace difícil seguir todos los avistamientos de tu mascota perdida?</p>
+                </div>
+              </div>
+
+              <div className="hero-solution">
+                <p>Aquí está la solución</p>
+              </div>
+            </div>
+
+            <div className="hero-image-section">
+              <div className="cat-illustration">
+                <img src="/images/cat.svg" alt="Ilustración de gato" className="cat-svg" />
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="reports-tape-section">
           {loading ? (
             <div className="loading-container">
@@ -113,7 +118,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="tape-container" ref={containerRef}>
-              <div className="infinite-tape">
+              <div className="infinite-tape animated">
                 {duplicatedReportes.map((reporte, index) => {
                   const status = getStatus(reporte)
                   const petName = getPetName(reporte)
