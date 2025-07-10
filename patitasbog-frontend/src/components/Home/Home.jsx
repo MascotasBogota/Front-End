@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import "../../styles/Home.css"
+import styles from "../../styles/Home.module.css"
 import { reportService } from "../../services/reportService"
 
 const Home = () => {
@@ -73,76 +73,84 @@ const Home = () => {
   const duplicatedReportes = [...reportes, ...reportes]
 
   return (
-    <div className="home-container">
-      <div className="content-wrapper">
-        {/* Nueva sección de landing page */}
-        <div className="landing-hero-section">
-          <div className="hero-content">
-            <div className="hero-text-section">
-              <h1 className="hero-title">Encuentra a tu mascota perdida aquí</h1>
+    <div className={styles.homeContainer}>
+      <div className={styles.contentWrapper}>
+        <div className={styles.landingHeroSection}>
+          <div className={styles.heroContent}>
+            <div className={styles.heroTextSection}>
+              <h1 className={styles.heroTitle}>Encuentra a tu mascota perdida aquí</h1>
 
-              <div className="hero-questions">
-                <div className="question-item">
+              <div className={styles.heroQuestions}>
+                <div className={styles.questionItem}>
                   <p>¿Alguna vez has visto un animal que parece perdido y no sabes a quién reportarlo?</p>
                 </div>
-                <div className="question-item">
+                <div className={styles.questionItem}>
                   <p>¿Alguna vez has perdido a tu mascota y no sabes dónde pedir ayuda?</p>
                 </div>
-                <div className="question-item">
+                <div className={styles.questionItem}>
                   <p>¿Se hace difícil seguir todos los avistamientos de tu mascota perdida?</p>
                 </div>
               </div>
 
-              <div className="hero-solution">
+              <div className={styles.heroSolution}>
                 <p>Aquí está la solución</p>
               </div>
             </div>
 
-            <div className="hero-image-section">
-              <div className="cat-illustration">
-                <img src="/images/cat.svg" alt="Ilustración de gato" className="cat-svg" />
+            <div className={styles.heroImageSection}>
+              <div className={styles.catIllustration}>
+                <img src="/images/cat.svg" alt="Ilustración de gato" className={styles.catSvg} />
               </div>
             </div>
           </div>
         </div>
-        <div className="reports-tape-section">
+
+        <div className={styles.reportsTapeSection}>
           {loading ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
+            <div className={styles.loadingContainer}>
+              <div className={styles.loadingSpinner}></div>
               <p>Cargando reportes...</p>
             </div>
           ) : reportes.length === 0 ? (
-            <div className="no-results-container">
+            <div className={styles.noResultsContainer}>
               <h3>No hay reportes disponibles</h3>
               <p>Vuelve pronto para ver nuevos reportes de mascotas</p>
             </div>
           ) : (
-            <div className="tape-container" ref={containerRef}>
-              <div className="infinite-tape animated">
+            <div className={styles.tapeContainer} ref={containerRef}>
+              <div className={`${styles.infiniteTape} ${styles.animated}`}>
                 {duplicatedReportes.map((reporte, index) => {
                   const status = getStatus(reporte)
                   const petName = getPetName(reporte)
                   const imageUrl = getValidImage(reporte)
 
                   return (
-                    <div className="pet-card" key={`${reporte._id || index}-${index}`}>
-                      <div className="pet-image-container">
+                    <div className={styles.petCard} key={`${reporte._id || index}-${index}`}>
+                      <div className={styles.petImageContainer}>
                         <img
                           src={imageUrl}
                           alt={petName}
-                          className="pet-image"
+                          className={styles.petImage}
                           onError={(e) => handleImageError(e, reporte.type)}
                         />
-                        <div className={`status-badge ${status === "Perdido" ? "status-perdido" : "status-encontrado"}`}>
+                        <div
+                          className={`${styles.statusBadge} ${
+                            status === "Perdido" ? styles.statusPerdido : styles.statusEncontrado
+                          }`}
+                        >
                           {status}
                         </div>
                       </div>
-                      <div className="pet-card-content">
-                        <h3 className="pet-name">{petName}</h3>
-                        <div className={`pet-status-text ${status.toLowerCase()}`}>
+                      <div className={styles.petCardContent}>
+                        <h3 className={styles.petName}>{petName}</h3>
+                        <div
+                          className={`${styles.petStatusText} ${
+                            status === "Perdido" ? styles.perdido : styles.encontrado
+                          }`}
+                        >
                           {status === "Perdido" ? "Se busca" : "Encontrado"}
                         </div>
-                        <p className="pet-description">
+                        <p className={styles.petDescription}>
                           {reporte.description && reporte.description !== "string"
                             ? reporte.description
                             : `${petName} reportado como perdido. Se busca información sobre su paradero.`}
@@ -157,7 +165,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="bottom-notice">
+      <div className={styles.bottomNotice}>
         <p>Para ver más detalles e interactuar con los reportes debes iniciar sesión</p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Success from '../../components/Principal/Success';
 import Fail from '../../components/Principal/Fail';
 import HomeLogin from '../../components/Home/HomeLogin';

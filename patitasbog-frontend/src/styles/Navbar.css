@@ -20,6 +20,8 @@
   z-index: 1001;
 }
 
+
+
 .logo-icon {
   height: clamp(40px, 5vh, 52px);
   width: auto;
