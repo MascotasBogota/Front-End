@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Success from '../../components/Principal/Success';
 import Fail from '../../components/Principal/Fail';
 import HomeLogin from '../../components/Home/HomeLogin';
 
 // Vista principal del home cuando el usuario está logueado
+// Necesito hacer push xd
 const ViewHomeLogin = () => {
   // Estados para mostrar el popup de éxito
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
