@@ -2,7 +2,7 @@
 
 import { useContext, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import "../../styles/Navbar.css"
+import styles from "../../styles/Navbar.module.css" 
 import { AuthContext } from "../../contexts/AuthContext"
 
 const Navbar = () => {
@@ -13,7 +13,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout()
     navigate("/")
-    setIsMobileMenuOpen(false) // Cerrar menú al hacer logout
+    setIsMobileMenuOpen(false)
   }
 
   const toggleMobileMenu = () => {
@@ -24,21 +24,19 @@ const Navbar = () => {
     setIsMobileMenuOpen(false)
   }
 
-  // Prevenir scroll del body cuando el menú móvil está abierto
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.classList.add("mobile-menu-open")
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.classList.remove("mobile-menu-open")
+      document.body.style.overflow = ""
     }
 
-    // Cleanup al desmontar el componente
     return () => {
-      document.body.classList.remove("mobile-menu-open")
+      document.body.style.overflow = ""
     }
   }, [isMobileMenuOpen])
 
-  // Cerrar menú al redimensionar la ventana (si se vuelve a desktop)
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 1280) {
@@ -52,14 +50,14 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar">
-        <Link to="/" className="logo-section" onClick={closeMobileMenu}>
-          <img src="/images/logo.svg" alt="Logo" className="logo-icon" />
-          <span className="logo-text">PatitasBog</span>
+      <nav className={styles.navbar}>
+        <Link to="/" className={styles.logoSection} onClick={closeMobileMenu}>
+          <img src="/images/logo.svg" alt="Logo" className={styles.logoIcon} />
+          <span className={styles.logoText}>PatitasBog</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="nav-links">
+        <div className={styles.navLinks}>
           <Link to="/about">Quiénes Somos</Link>
           <Link to="/educacion">Módulo Educativo</Link>
           {!isAuthenticated && (
@@ -72,7 +70,7 @@ const Navbar = () => {
             <>
               <Link to="/notificaciones">Notificaciones</Link>
               <Link to="/perfil">Mi Perfil</Link>
-              <button onClick={handleLogout} className="logout-btn">
+              <button onClick={handleLogout} className={styles.logoutBtn}>
                 Cerrar Sesión
               </button>
             </>
@@ -81,19 +79,19 @@ const Navbar = () => {
 
         {/* Hamburger Button */}
         <button
-          className={`hamburger-btn ${isMobileMenuOpen ? "open" : ""}`}
+          className={`${styles.hamburgerBtn} ${isMobileMenuOpen ? styles.open : ""}`}
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
         >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
+          <span className={styles.hamburgerLine}></span>
+          <span className={styles.hamburgerLine}></span>
+          <span className={styles.hamburgerLine}></span>
         </button>
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`}>
-        <div className="mobile-nav-links">
+      <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ""}`}>
+        <div className={styles.mobileNavLinks}>
           <Link to="/about" onClick={closeMobileMenu}>
             Quiénes Somos
           </Link>
@@ -118,7 +116,7 @@ const Navbar = () => {
               <Link to="/perfil" onClick={closeMobileMenu}>
                 Mi Perfil
               </Link>
-              <button onClick={handleLogout} className="logout-btn">
+              <button onClick={handleLogout} className={styles.logoutBtn}>
                 Cerrar Sesión
               </button>
             </>

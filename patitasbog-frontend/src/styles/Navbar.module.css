@@ -12,7 +12,7 @@
 }
 
 /* Logo */
-.logo-section {
+.logoSection {
   display: flex;
   align-items: center;
   gap: var(--spacing-1) var(--spacing-1);
@@ -22,13 +22,13 @@
 
 
 
-.logo-icon {
+.logoIcon {
   height: clamp(40px, 5vh, 52px);
   width: auto;
   object-fit: contain;
 }
 
-.logo-text {
+.logoText {
   font-family: var(--font-logo);
   font-size: clamp(1.5rem, 4vw, var(--fs-logo));
   color: var(--color-principal-3);
@@ -42,7 +42,7 @@
 }
 
 /* Hamburger Menu Button - Solo visible en móvil */
-.hamburger-btn {
+.hamburgerBtn {
   display: none;
   flex-direction: column;
   justify-content: space-around;
@@ -55,7 +55,7 @@
   z-index: 1001;
 }
 
-.hamburger-line {
+.hamburgerLine {
   width: 30px;
   height: 3px;
   background-color: var(--color-principal-3);
@@ -65,26 +65,26 @@
 }
 
 /* Animación del hamburger cuando está abierto */
-.hamburger-btn.open .hamburger-line:nth-child(1) {
+.hamburgerBtn.open .hamburgerLine:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
 
-.hamburger-btn.open .hamburger-line:nth-child(2) {
+.hamburgerBtn.open .hamburgerLine:nth-child(2) {
   opacity: 0;
 }
 
-.hamburger-btn.open .hamburger-line:nth-child(3) {
+.hamburgerBtn.open .hamburgerLine:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
 /* Navegación Desktop */
-.nav-links {
+.navLinks {
   display: flex;
   align-items: center;
 }
 
-.nav-links a,
-.logout-btn {
+.navLinks a,
+.logoutBtn {
   font-size: var(--fs-link);
   font-weight: 900;
   font-family: var(--font-main);
@@ -101,12 +101,12 @@
   transition: all 0.3s ease;
 }
 
-.nav-links a:hover,
-.logout-btn:hover {
+.navLinks a:hover,
+.logoutBtn:hover {
   text-decoration: underline;
 }
 
-.nav-links a:not(:last-child)::after {
+.navLinks a:not(:last-child)::after {
   content: "";
   display: inline-block;
   width: 2px;
@@ -118,7 +118,7 @@
 }
 
 /* Mobile Menu Overlay */
-.mobile-menu-overlay {
+.mobileMenuOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -135,21 +135,21 @@
   transition: all 0.3s ease;
 }
 
-.mobile-menu-overlay.open {
+.mobileMenuOverlay.open {
   opacity: 1;
   visibility: visible;
 }
 
 /* Mobile Navigation Links */
-.mobile-nav-links {
+.mobileNavLinks {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
 }
 
-.mobile-nav-links a,
-.mobile-nav-links .logout-btn {
+.mobileNavLinks a,
+.mobileNavLinks .logoutBtn {
   font-size: 2rem;
   font-weight: 900;
   font-family: var(--font-main);
@@ -164,27 +164,27 @@
   border-radius: 8px;
 }
 
-.mobile-nav-links a:hover,
-.mobile-nav-links .logout-btn:hover {
+.mobileNavLinks a:hover,
+.mobileNavLinks .logoutBtn:hover {
   background-color: rgba(199, 28, 94, 0.1);
   text-decoration: none;
   transform: scale(1.05);
 }
 
 /* Remove separators in mobile */
-.mobile-nav-links a::after {
+.mobileNavLinks a::after {
   display: none;
 }
 
 /* Responsive Design */
 @media (max-width: 1280px) {
   /* Ocultar navegación desktop */
-  .nav-links {
+  .navLinks {
     display: none;
   }
 
   /* Mostrar botón hamburguesa */
-  .hamburger-btn {
+  .hamburgerBtn {
     display: flex;
   }
 }
@@ -194,12 +194,12 @@
     padding: 0.75rem 1rem;
   }
 
-  .logo-text {
+  .logoText {
     font-size: clamp(1.2rem, 5vw, 2rem);
   }
 
-  .mobile-nav-links a,
-  .mobile-nav-links .logout-btn {
+  .mobileNavLinks a,
+  .mobileNavLinks .logoutBtn {
     font-size: 1.5rem;
   }
 }
@@ -209,18 +209,18 @@
     padding: 0.5rem 0.75rem;
   }
 
-  .logo-icon {
+  .logoIcon {
     height: clamp(32px, 4vh, 40px);
   }
 
-  .mobile-nav-links a,
-  .mobile-nav-links .logout-btn {
+  .mobileNavLinks a,
+  .mobileNavLinks .logoutBtn {
     font-size: 1.25rem;
     padding: 0.75rem 1.5rem;
   }
 }
 
 /* Prevent body scroll when mobile menu is open */
-body.mobile-menu-open {
+body.mobileMenuOpen {
   overflow: hidden;
 }
