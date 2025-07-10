@@ -155,17 +155,22 @@ html, body {
 }
 
 .tapeContainer {
-  overflow-x: scroll;
-  white-space: nowrap;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
   height: 520px;
   display: flex;
   align-items: center;
+}
+
+.tapeScroller {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.infiniteTape {
+  display: flex;
+  gap: var(--card-gap);
 }
 
 .tapeContainer::-webkit-scrollbar {
@@ -179,27 +184,6 @@ html, body {
   gap: var(--card-gap);
   padding: 1rem 0;
   min-width: max-content;
-}
-
-
-.infiniteTape.animated {
-  animation: moveLeft var(--animation-duration) linear infinite;
-  will-change: transform;
-}
-
-/* Animación lineal infinita */
-@keyframes moveLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-1 * (var(--card-width) + var(--card-gap)) * var(--cards-count, 10)));
-  }
-}
-
-/* Pausar animación al hacer hover */
-.tapeContainer:hover .infiniteTape {
-  animation-play-state: paused;
 }
 
 /* ===== PET CARDS ===== */

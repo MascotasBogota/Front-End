@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import styles from "../../styles/Home.module.css"
+import { motion } from "framer-motion"
 import { reportService } from "../../services/reportService"
 
 const Home = () => {
@@ -117,50 +118,57 @@ const Home = () => {
               <p>Vuelve pronto para ver nuevos reportes de mascotas</p>
             </div>
           ) : (
-            <div className={styles.tapeContainer} ref={containerRef}>
-              <div className={`${styles.infiniteTape} ${styles.animated}`}>
-                {duplicatedReportes.map((reporte, index) => {
-                  const status = getStatus(reporte)
-                  const petName = getPetName(reporte)
-                  const imageUrl = getValidImage(reporte)
+            <div className={styles.tapeContainer}>
+              <motion.div
+                className={styles.tapeScroller}
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+              >
+                <div className={styles.infiniteTape}>
+                  {[...reportes, ...reportes].map((reporte, index) => {
+                    const status = getStatus(reporte)
+                    const petName = getPetName(reporte)
+                    const imageUrl = getValidImage(reporte)
 
-                  return (
-                    <div className={styles.petCard} key={`${reporte._id || index}-${index}`}>
-                      <div className={styles.petImageContainer}>
-                        <img
-                          src={imageUrl}
-                          alt={petName}
-                          className={styles.petImage}
-                          onError={(e) => handleImageError(e, reporte.type)}
-                        />
-                        <div
-                          className={`${styles.statusBadge} ${
-                            status === "Perdido" ? styles.statusPerdido : styles.statusEncontrado
-                          }`}
-                        >
-                          {status}
+                    return (
+                      <div className={styles.petCard} key={`${reporte._id || index}-${index}`}>
+                        <div className={styles.petImageContainer}>
+                          <img
+                            src={imageUrl}
+                            alt={petName}
+                            className={styles.petImage}
+                            onError={(e) => handleImageError(e, reporte.type)}
+                          />
+                          <div
+                            className={`${styles.statusBadge} ${
+                              status === "Perdido" ? styles.statusPerdido : styles.statusEncontrado
+                            }`}
+                          >
+                            {status}
+                          </div>
+                        </div>
+                        <div className={styles.petCardContent}>
+                          <h3 className={styles.petName}>{petName}</h3>
+                          <div
+                            className={`${styles.petStatusText} ${
+                              status === "Perdido" ? styles.perdido : styles.encontrado
+                            }`}
+                          >
+                            {status === "Perdido" ? "Se busca" : "Encontrado"}
+                          </div>
+                          <p className={styles.petDescription}>
+                            {reporte.description && reporte.description !== "string"
+                              ? reporte.description
+                              : `${petName} reportado como perdido.`}
+                          </p>
                         </div>
                       </div>
-                      <div className={styles.petCardContent}>
-                        <h3 className={styles.petName}>{petName}</h3>
-                        <div
-                          className={`${styles.petStatusText} ${
-                            status === "Perdido" ? styles.perdido : styles.encontrado
-                          }`}
-                        >
-                          {status === "Perdido" ? "Se busca" : "Encontrado"}
-                        </div>
-                        <p className={styles.petDescription}>
-                          {reporte.description && reporte.description !== "string"
-                            ? reporte.description
-                            : `${petName} reportado como perdido. Se busca información sobre su paradero.`}
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+                    )
+                  })}
+                </div>
+              </motion.div>
             </div>
+
           )}
         </div>
       </div>
