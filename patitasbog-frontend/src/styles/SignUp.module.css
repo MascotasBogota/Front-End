@@ -663,21 +663,3 @@
     margin-top: 1rem;
   }
 }
-
-/* Pantallas muy grandes (1440px+) */
-@media (min-width: 1440px) {
-  .patitasMainCard,
-  .patitasEmailFormCard {
-    width: 30%;
-    max-width: 450px;
-  }
-
-  .patitasLogoText,
-  .logoText {
-    font-size: 2.25rem;
-  }
-
-  .patitasMainTitle {
-    font-size: 1.625rem;
-  }
-}

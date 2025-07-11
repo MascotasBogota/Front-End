@@ -16,8 +16,10 @@
   --fs-base: 1rem;
   --fs-label: 1.125rem;
   --fs-link: 1.5rem;
+  --fs-medium: 2rem;
   --fs-logo: 2.5rem;
   --fs-big-logo: 4rem;
+  --fs-big-title: 4.375rem;
   
   /*Espaciamientos*/
   --spacing-1: 0.6rem;
@@ -34,4 +36,5 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    scroll-behavior: smooth;
 }
