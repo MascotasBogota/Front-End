@@ -163,10 +163,10 @@ const SignUp = ({ onRegister, onFail }) => {
   if (showEmailForm) {
     return (
       <div className={styles.patitasContainer}>
-        <div className={styles.patitasLogoSection}>
-          <img src="/images/logo2.svg" alt="PatitasBog Logo" width="40" height="48" />
-          <h1 className={styles.patitasLogoText}>PatitasBog</h1>
-        </div>
+        <Link to="/" className={styles.patitasLogoSection}>
+          <img src="/images/logo2.svg" alt="Logo" className={styles.logoIcon} />
+          <span className={styles.logoText}>PatitasBog</span>
+        </Link>
         <div className={`${styles.patitasMainCard} ${styles.patitasEmailFormCard}`}>
           <div className={styles.patitasCardContent}>
             <div className={styles.patitasTitleSection}>
