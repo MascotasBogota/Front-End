@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import { Link } from "react-router-dom"
-//import PasswordInput from "../Login/PasswordInput"
 import apiService from "../../services/apiService"
-import "../../styles/SignUp.css"
+import styles from "../../styles/SignUp.module.css"
 
 const SignUp = ({ onRegister, onFail }) => {
   const [nombre, setNombre] = useState("")
@@ -15,14 +14,93 @@ const SignUp = ({ onRegister, onFail }) => {
   const [errorMessage, setErrorMessage] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
   const [showEmailForm, setShowEmailForm] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   // Validaciones
   const validarCorreo = (correo) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)
-
   const validarPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(password)
+
+  // Validaciones individuales para mostrar checks
+  const validaciones = {
+    longitud: password.length >= 6,
+    mayuscula: /[A-Z]/.test(password),
+    minuscula: /[a-z]/.test(password),
+    numero: /\d/.test(password),
+    coincide: password === confirmarPassword && password !== "",
+  }
 
   const handleEmailRegister = () => {
     setShowEmailForm(true)
+  }
+
+  // Función para manejar el registro con Google
+  const handleGoogleRegister = async () => {
+    try {
+      setIsLoading(true)
+      setErrorMessage("")
+
+      if (!window.google) {
+        setErrorMessage("Google Sign-In no está disponible. Por favor, recarga la página.")
+        setIsLoading(false)
+        return
+      }
+
+      window.google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: handleGoogleCallback,
+        auto_select: false,
+        cancel_on_tap_outside: true,
+      })
+
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          window.google.accounts.id.renderButton(document.getElementById("google-signin-button"), {
+            theme: "outline",
+            size: "large",
+            width: "100%",
+          })
+        }
+      })
+    } catch (error) {
+      console.error("Error al inicializar Google Sign-In:", error)
+      setErrorMessage("Error al conectar con Google. Inténtalo de nuevo.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleGoogleCallback = async (response) => {
+    try {
+      setIsLoading(true)
+      setErrorMessage("")
+
+      const credential = response.credential
+      const payload = JSON.parse(atob(credential.split(".")[1]))
+
+      const googleUserData = {
+        nombre: payload.name,
+        email: payload.email,
+        googleId: payload.sub,
+        picture: payload.picture,
+        provider: "google",
+      }
+
+      const backendResponse = await apiService.registerWithGoogle(googleUserData)
+      setSuccessMessage("¡Cuenta creada con éxito con Google! Redirigiendo...")
+
+      if (onRegister) {
+        onRegister("¡Cuenta creada con éxito!", "Redirigiendo a login...", "/login")
+      }
+    } catch (error) {
+      console.error("Error en registro con Google:", error)
+      setErrorMessage("No es posible registrarse con Google: " + (error.message || "Error desconocido"))
+      if (onFail) {
+        onFail("No es posible registrarse", error.message || "Error desconocido")
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -31,7 +109,6 @@ const SignUp = ({ onRegister, onFail }) => {
     setErrorMessage("")
     setSuccessMessage("")
 
-    // Validaciones con mensajes personalizados
     if (!nombre || !correo || !password || !confirmarPassword) {
       setErrorMessage("No es posible registrarse porque... Algún campo está vacío")
       setIsLoading(false)
@@ -83,158 +160,142 @@ const SignUp = ({ onRegister, onFail }) => {
     }
   }
 
-  // Componentes SVG (mantener los mismos)
-  const PawPrintLogo = () => (
-    <svg width="40" height="48" viewBox="0 0 40 48" fill="none">
-      {/* Location pin shape */}
-      <path d="M20 0C12.268 0 6 6.268 6 14c0 10.5 14 34 14 34s14-23.5 14-34c0-7.732-6.268-14-14-14z" fill="#937315" />
-      {/* Paw print */}
-      <g transform="translate(12, 8)">
-        {/* Main pad */}
-        <ellipse cx="8" cy="12" rx="4" ry="3" fill="#f0ca99" />
-        {/* Toe pads */}
-        <ellipse cx="4" cy="6" rx="2" ry="2.5" fill="#f0ca99" />
-        <ellipse cx="8" cy="4" rx="2" ry="2.5" fill="#f0ca99" />
-        <ellipse cx="12" cy="6" rx="2" ry="2.5" fill="#f0ca99" />
-        <ellipse cx="8" cy="8" rx="1.5" ry="2" fill="#f0ca99" />
-      </g>
-    </svg>
-  )
-
-  const GoogleLogo = () => (
-    <svg width="18" height="18" viewBox="0 0 18 18">
-      <path
-        fill="#4285F4"
-        d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"
-      />
-      <path
-        fill="#34A853"
-        d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04a4.8 4.8 0 0 1-2.7.75 4.8 4.8 0 0 1-4.52-3.26H1.83v2.07A8 8 0 0 0 8.98 17z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M4.46 10.51a4.8 4.8 0 0 1-.25-1.51c0-.52.09-1.03.25-1.51V5.42H1.83a8 8 0 0 0 0 7.16l2.63-2.07z"
-      />
-      <path
-        fill="#EA4335"
-        d="M8.98 3.58c1.32 0 2.5.45 3.44 1.35l2.54-2.54A8 8 0 0 0 8.98 1a8 8 0 0 0-7.15 4.42l2.63 2.07c.61-1.86 2.35-3.26 4.52-3.26z"
-      />
-    </svg>
-  )
-
-  const MailIcon = () => (
-    <svg className="patitas-mail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-      />
-    </svg>
-  )
-
   if (showEmailForm) {
     return (
-      <div className="patitas-container">
-        <div className="patitas-logo-section">
-          <PawPrintLogo />
-          <h1 className="patitas-logo-text">PatitasBog</h1>
+      <div className={styles.patitasContainer}>
+        <div className={styles.patitasLogoSection}>
+          <img src="/images/logo2.svg" alt="PatitasBog Logo" width="40" height="48" />
+          <h1 className={styles.patitasLogoText}>PatitasBog</h1>
         </div>
-
-        <div className="patitas-main-card patitas-email-form-card">
-          <div className="patitas-card-content">
-            <div className="patitas-title-section">
-              <h2 className="patitas-main-title">Registro</h2>
-              <p className="patitas-subtitle">Hazlo gratis. No se requiere ningún pago</p>
+        <div className={`${styles.patitasMainCard} ${styles.patitasEmailFormCard}`}>
+          <div className={styles.patitasCardContent}>
+            <div className={styles.patitasTitleSection}>
+              <h2 className={styles.patitasMainTitle}>Registrate</h2>
+              <p className={styles.patitasSubtitle}>Hazlo gratis. No se requiere ningún pago</p>
             </div>
-
-            <hr className="patitas-divider" />
-
-            <form onSubmit={handleSubmit} className="patitas-email-form">
-              <div className="patitas-form-row">
-                <div className="patitas-form-field">
-                  <label className="patitas-form-label">Nombre</label>
-                  <input
-                    type="text"
-                    className="patitas-form-input"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="patitas-form-field">
-                  <label className="patitas-form-label">Correo</label>
-                  <input
-                    type="email"
-                    className="patitas-form-input"
-                    value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
-                    required
-                  />
-                  <span className="patitas-form-help">Ingrese un correo electrónico válido</span>
-                </div>
+            <hr className={styles.patitasDivider} />
+            <form onSubmit={handleSubmit} className={styles.patitasEmailForm}>
+              {/* Nombre completo */}
+              <div className={styles.patitasFormFieldSingle}>
+                <label className={styles.patitasFormLabel}>Nombre completo</label>
+                <input
+                  type="text"
+                  className={styles.patitasFormInputSingle}
+                  placeholder="Ingresa tu nombre completo"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  required
+                />
               </div>
-
-              <div className="patitas-form-row">
-                <div className="patitas-form-field">
-                  <label className="patitas-form-label">Contraseña</label>
-                  <PasswordInput
-                    label=""
-                    id="registerPassword"
+              {/* Correo electrónico */}
+              <div className={styles.patitasFormFieldSingle}>
+                <label className={styles.patitasFormLabel}>Correo electrónico</label>
+                <input
+                  type="email"
+                  className={styles.patitasFormInputSingle}
+                  placeholder="Tu correo electrónico"
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                  required
+                />
+              </div>
+              {/* Contraseña */}
+              <div className={styles.patitasFormFieldSingle}>
+                <label className={styles.patitasFormLabel}>Contraseña</label>
+                <div className={styles.patitasPasswordContainer}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className={styles.patitasFormInputSingle}
+                    placeholder="Escribe una contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                  <span className="patitas-form-help">
-                    La contraseña debe tener al menos 6 caracteres e incluir una minúscula, mayúscula y un número
-                  </span>
+                  <button
+                    type="button"
+                    className={styles.patitasPasswordToggle}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <img
+                      src={showPassword ? "/icons/closed_eye.svg" : "/icons/open_eye.svg"}
+                      alt={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      width="20"
+                      height="20"
+                    />
+                  </button>
                 </div>
-                <div className="patitas-form-field">
-                  <label className="patitas-form-label">Confirmar Contraseña</label>
-                  <PasswordInput
-                    label=""
-                    id="confirmPassword"
+                {/* Validaciones visuales */}
+                <div className={styles.patitasValidationChecks}>
+                  <div className={`${styles.patitasValidationItem} ${validaciones.longitud ? styles.valid : ""}`}>
+                    <span className={styles.patitasCheckIcon}>{validaciones.longitud ? "✓" : "○"}</span>
+                    <span>Incluye 6 caracteres</span>
+                  </div>
+                  <div className={`${styles.patitasValidationItem} ${validaciones.mayuscula ? styles.valid : ""}`}>
+                    <span className={styles.patitasCheckIcon}>{validaciones.mayuscula ? "✓" : "○"}</span>
+                    <span>Incluye una mayúscula</span>
+                  </div>
+                  <div className={`${styles.patitasValidationItem} ${validaciones.minuscula ? styles.valid : ""}`}>
+                    <span className={styles.patitasCheckIcon}>{validaciones.minuscula ? "✓" : "○"}</span>
+                    <span>Incluye una minúscula</span>
+                  </div>
+                  <div className={`${styles.patitasValidationItem} ${validaciones.numero ? styles.valid : ""}`}>
+                    <span className={styles.patitasCheckIcon}>{validaciones.numero ? "✓" : "○"}</span>
+                    <span>Incluye un número</span>
+                  </div>
+                </div>
+              </div>
+              {/* Confirmación de contraseña */}
+              <div className={styles.patitasFormFieldSingle}>
+                <label className={styles.patitasFormLabel}>Confirmación de contraseña</label>
+                <div className={styles.patitasPasswordContainer}>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className={styles.patitasFormInputSingle}
+                    placeholder="Confirma tu contraseña"
                     value={confirmarPassword}
                     onChange={(e) => setConfirmarPassword(e.target.value)}
                     required
                   />
-                  <span className="patitas-form-help">
-                    La confirmación de contraseña debe coincidir con la contraseña ingresada
-                  </span>
+                  <button
+                    type="button"
+                    className={styles.patitasPasswordToggle}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    <img
+                      src={showConfirmPassword ? "/icons/closed_eye.svg" : "/icons/open_eye.svg"}
+                      alt={showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      width="20"
+                      height="20"
+                    />
+                  </button>
                 </div>
+                {/* Validación de coincidencia */}
+                {confirmarPassword && (
+                  <div className={`${styles.patitasValidationItem} ${validaciones.coincide ? styles.valid : ""}`}>
+                    <span className={styles.patitasCheckIcon}>{validaciones.coincide ? "✓" : "○"}</span>
+                    <span>Coincide con la contraseña ingresada</span>
+                  </div>
+                )}
+              </div>
+              {errorMessage && <div className={styles.patitasErrorMessage}>{errorMessage}</div>}
+              {successMessage && <div className={styles.patitasSuccessMessage}>{successMessage}</div>}
+              <button type="submit" className={styles.patitasCreateAccountBtn} disabled={isLoading}>
+                {isLoading ? "Creando cuenta..." : "Crear cuenta"}
+              </button>
+              <div className={styles.oSeparator}>
+                <span className={styles.horizontalLine}></span>
+                <p className={styles.o}>ó</p>
+                <span className={styles.horizontalLine}></span>
               </div>
 
-              {errorMessage && <div className="patitas-error-message">{errorMessage}</div>}
-              {successMessage && <div className="patitas-success-message">{successMessage}</div>}
-
-              <button type="submit" className="patitas-button patitas-email-button" disabled={isLoading}>
-                {isLoading ? "Registrando..." : "Registrarse"}
-              </button>
-
-              <button
-                type="button"
-                className="patitas-button patitas-google-button"
-                onClick={() => setShowEmailForm(false)}
-              >
-                ← Volver
-              </button>
+              <div className={styles.backTextContainer}>
+                <span className={styles.backText} onClick={() => setShowEmailForm(false)}>
+                  Volver a opciones de registro
+                </span>
+              </div>
             </form>
-
-            <div className="patitas-terms-section">
-              <p className="patitas-terms-text">
-                Al registrarte aceptas los{" "}
-                <a href="#" className="patitas-terms-link">
-                  Términos
-                </a>{" "}
-                y las{" "}
-                <a href="#" className="patitas-terms-link">
-                  Políticas de Privacidad
-                </a>
-              </p>
-            </div>
-
-            <div className="patitas-university-section">
-              <p className="patitas-university-text">
+            <div className={styles.patitasUniversitySection}>
+              <p className={styles.patitasUniversityText}>
                 Este es un proyecto realizado en la clase Ingeniería de Software 2, de
                 <br />
                 la Universidad Nacional de Colombia en el semestre 2025-1
@@ -242,11 +303,10 @@ const SignUp = ({ onRegister, onFail }) => {
             </div>
           </div>
         </div>
-
-        <div className="patitas-signin-section">
-          <p className="patitas-signin-text">
+        <div className={styles.patitasSigninSection}>
+          <p className={styles.patitasSigninText}>
             ¿Ya tienes una cuenta?{" "}
-            <Link to="/login" className="patitas-signin-link">
+            <Link to="/login" className={styles.patitasSigninLink}>
               Inicia Sesión
             </Link>
           </p>
@@ -256,48 +316,47 @@ const SignUp = ({ onRegister, onFail }) => {
   }
 
   return (
-    <div className="patitas-container">
-      <div className="patitas-logo-section">
-        <PawPrintLogo />
-        <h1 className="patitas-logo-text">PatitasBog</h1>
-      </div>
-
-      <div className="patitas-main-card">
-        <div className="patitas-card-content">
-          <div className="patitas-title-section">
-            <h2 className="patitas-main-title">Registrate</h2>
-            <p className="patitas-subtitle">Hazlo gratis. No se requiere ningún pago</p>
+    <div className={styles.patitasContainer}>
+      <Link to="/" className={styles.patitasLogoSection}>
+        <img src="/images/logo2.svg" alt="Logo" className={styles.logoIcon} />
+        <span className={styles.logoText}>PatitasBog</span>
+      </Link>
+      <div className={styles.patitasMainCard}>
+        <div className={styles.patitasCardContent}>
+          <div className={styles.patitasTitleSection}>
+            <h2 className={styles.patitasMainTitle}>Registrate</h2>
+            <p className={styles.patitasSubtitle}>Hazlo gratis. No se requiere ningún pago</p>
           </div>
-
-          <hr className="patitas-divider" />
-
-          <div className="patitas-buttons-section">
-            <button className="patitas-button patitas-google-button">
-              <GoogleLogo />
-              <span>Continuar con Google</span>
+          <hr className={styles.patitasDivider} />
+          <div className={styles.patitasButtonsSection}>
+            <button
+              className={`${styles.patitasButton} ${styles.patitasGoogleButton}`}
+              onClick={handleGoogleRegister}
+              disabled={isLoading}
+            >
+              <img src="/icons/google_icon.png" alt="Google" width="22" height="22" className={styles.googleIcon} />
+              <span>{isLoading ? "Conectando..." : "Continuar con Google"}</span>
             </button>
-
-            <button className="patitas-button patitas-email-button" onClick={handleEmailRegister}>
-              <MailIcon />
+            <div id="google-signin-button" style={{ display: "none" }}></div>
+            <button className={`${styles.patitasButton} ${styles.patitasEmailButton}`} onClick={handleEmailRegister}>
+              <img src="/icons/mail.svg" alt="Email" width="22" height="22" className={styles.patitasMailIcon} />
               <span>Continuar con correo</span>
             </button>
           </div>
-
-          <div className="patitas-terms-section">
-            <p className="patitas-terms-text">
+          <div className={styles.patitasTermsSection}>
+            <p className={styles.patitasTermsText}>
               Al registrarte aceptas los{" "}
-              <a href="#" className="patitas-terms-link">
+              <a href="#" className={styles.patitasTermsLink}>
                 Términos
               </a>{" "}
               y las{" "}
-              <a href="#" className="patitas-terms-link">
+              <a href="#" className={styles.patitasTermsLink}>
                 Políticas de Privacidad
               </a>
             </p>
           </div>
-
-          <div className="patitas-university-section">
-            <p className="patitas-university-text">
+          <div className={styles.patitasUniversitySection}>
+            <p className={styles.patitasUniversityText}>
               Este es un proyecto realizado en la clase Ingeniería de Software 2, de
               <br />
               la Universidad Nacional de Colombia en el semestre 2025-1
@@ -305,11 +364,10 @@ const SignUp = ({ onRegister, onFail }) => {
           </div>
         </div>
       </div>
-
-      <div className="patitas-signin-section">
-        <p className="patitas-signin-text">
+      <div className={styles.patitasSigninSection}>
+        <p className={styles.patitasSigninText}>
           ¿Ya tienes una cuenta?{" "}
-          <Link to="/login" className="patitas-signin-link">
+          <Link to="/login" className={styles.patitasSigninLink}>
             Inicia Sesión
           </Link>
         </p>

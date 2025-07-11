@@ -1,0 +1,665 @@
+/* contenedor general */
+.patitasContainer {
+  font-family: var(--font-main);
+  font-size: var(--fs-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-2);
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: var(--color-principal-1);
+}
+
+/* opciones de registro */
+.patitasLogoSection {
+  font-family: var(--font-logo);
+  font-size: var(--fs-big-logo);
+  color: var(--color-principal-2);
+  padding-bottom: var(--spacing-2);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.logoIcon {
+  width: auto;
+  height: 98px;
+}
+
+.patitasLogoText {
+  font-size: var(--fs-big-logo);
+  font-family: var(--font-logo);
+  font-weight: bold;
+  color: var(--color-principal-2);
+  margin: 0;
+}
+
+.logoText {
+  font-size: var(--fs-big-logo);
+  font-family: var(--font-logo);
+  font-weight: bold;
+  color: var(--color-principal-2);
+  margin: 0;
+}
+
+.patitasMainCard {
+  width: 36.46%;
+  height: fit-content;
+  background-color: var(--color-neutro-1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 1.5rem;
+  padding: var(--spacing-2);
+}
+
+.patitasCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.patitasTitleSection {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.patitasMainTitle {
+  font-size: var(--fs-logo);
+  padding: var(--spacing-1);
+  font-weight: 600;
+  color: var(--color-principal-2);
+  margin: 0;
+}
+
+.patitasSubtitle {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  color: #c71c5e;
+  margin: 0;
+}
+
+.patitasDivider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-principal-2);
+  border: none;
+}
+
+.patitasButtonsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.patitasButton {
+  width: 100%;
+  height: 3rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-1);
+  font-size: 0.875rem;
+}
+
+.patitasGoogleButton {
+  position: relative;
+  background-color: var(--color-neutro-1);
+  border: 2px solid var(--color-neutro-3);
+  color: var(--color-neutro-3);
+  margin-top: var(--spacing-1);
+  margin-bottom: var(--spacing-1);
+  padding: var(--spacing-3);
+}
+
+.patitasGoogleButton .googleIcon {
+  position: absolute;
+  left: var(--spacing-2);
+  width: 22px;
+  height: 22px;
+}
+
+.patitasGoogleButton img {
+  background-color: var(--color-neutro-1);
+}
+
+.patitasGoogleButton:hover {
+  background-color: var(--color-principal-1);
+}
+
+.googleIcon {
+  position: absolute;
+  left: var(--spacing-2);
+  width: 22px;
+  height: 22px;
+}
+
+.patitasEmailButton {
+  position: relative;
+  background-color: var(--color-neutro-2);
+  border: none;
+  margin-top: 0;
+  margin-bottom: var(--spacing-1);
+  padding: var(--spacing-3);
+  color: white;
+}
+
+.patitasEmailButton:hover {
+  background-color: #8a8989;
+}
+
+.patitasTermsSection {
+  text-align: center;
+}
+
+.patitasTermsText {
+  font-size: var(--fs-base);
+  color: #374151;
+  margin: 0;
+}
+
+.patitasTermsLink {
+  text-decoration: underline;
+  font-weight: 500;
+  color: #374151;
+}
+
+.patitasUniversitySection {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.patitasUniversityText {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.patitasSigninSection {
+  margin-top: 1.5rem;
+}
+
+.patitasSigninText {
+  font-size: var(--fs-base);
+  color: #281d04;
+  margin: 0;
+}
+
+.patitasSigninLink {
+  text-decoration: underline;
+  font-weight: 500;
+  color: #281d04;
+}
+
+.patitasMailIcon {
+  width: 30px;
+  height: 22px;
+  position: absolute;
+  left: var(--spacing-2);
+}
+
+/* ===== ESTILOS PARA EL FORMULARIO DE CORREO (NUEVA VERSIÓN) ===== */
+
+.patitasEmailFormCard {
+  width: 36.46%;
+  max-width: none;
+}
+
+.patitasEmailForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+/* Campos individuales en una sola columna */
+.patitasFormFieldSingle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.patitasFormLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-neutro-3);
+  margin: 0;
+}
+
+.patitasFormInputSingle {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.patitasFormInputSingle::placeholder {
+  color: #9ca3af;
+}
+
+.patitasFormInputSingle:focus {
+  outline: none;
+  border-color: var(--color-principal-2);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(147, 115, 21, 0.1);
+}
+
+/* Contenedor de contraseña con botón de mostrar/ocultar */
+.patitasPasswordContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.patitasPasswordToggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6b7280;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.patitasPasswordToggle:hover {
+  color: var(--color-principal-2);
+}
+
+/* Validaciones visuales */
+.patitasValidationChecks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.patitasValidationItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.patitasValidationItem.valid {
+  color: var(--color-principal-2);
+}
+
+.patitasCheckIcon {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.patitasValidationItem.valid .patitasCheckIcon {
+  color: var(--color-principal-2);
+}
+
+/* Botón de crear cuenta */
+.patitasCreateAccountBtn {
+  width: 100%;
+  padding: var(--spacing-2);
+  background-color: var(--color-principal-2);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.patitasCreateAccountBtn:hover {
+  background-color: #7a5f17;
+  transform: translateY(-1px);
+}
+
+.patitasCreateAccountBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mensajes de error y éxito */
+.patitasErrorMessage {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.patitasSuccessMessage {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.o {
+  text-align: center;
+}
+
+/* Texto de volver */
+.backTextContainer {
+  text-align: center;
+  margin-bottom: var(--spacing-1);
+}
+
+.backText {
+  font-size: 0.875rem;
+  color: var(--color-neutro-3);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.backText:hover {
+  color: var(--color-principal-2);
+  text-decoration: underline;
+}
+
+.backText:active {
+  color: #7a5f17;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets y pantallas medianas (768px - 1024px) */
+@media (max-width: 1024px) {
+  .patitasContainer {
+    padding: 1.5rem;
+  }
+
+  .patitasMainCard,
+  .patitasEmailFormCard {
+    width: 80%;
+    max-width: 500px;
+  }
+}
+
+/* Tablets pequeñas (481px - 768px) */
+@media (max-width: 768px) {
+  .patitasContainer {
+    padding: 1rem;
+    justify-content: flex-start;
+    padding-top: 2rem;
+  }
+
+  .patitasLogoSection {
+    margin-bottom: 1.5rem;
+  }
+
+  .patitasLogoText,
+  .logoText {
+    font-size: 1.75rem;
+  }
+
+  .patitasMainCard,
+  .patitasEmailFormCard {
+    width: 95%;
+    max-width: none;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+  }
+
+  .patitasMainTitle {
+    font-size: 1.375rem;
+  }
+
+  .patitasSubtitle {
+    font-size: 0.8125rem;
+  }
+
+  .patitasCardContent {
+    gap: 1.25rem;
+  }
+
+  .patitasButtonsSection {
+    gap: 0.875rem;
+  }
+
+  .patitasButton {
+    height: 2.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .patitasValidationChecks {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .patitasUniversityText {
+    font-size: 0.6875rem;
+  }
+
+  .patitasTermsText {
+    font-size: 0.6875rem;
+  }
+}
+
+/* Móviles (320px - 480px) */
+@media (max-width: 480px) {
+  .patitasContainer {
+    padding: 0.75rem;
+    padding-top: 1.5rem;
+    min-height: 100vh;
+  }
+
+  .patitasLogoSection {
+    margin-bottom: 1.25rem;
+    gap: 0.5rem;
+  }
+
+  .patitasLogoText,
+  .logoText {
+    font-size: 1.5rem;
+  }
+
+  .patitasMainCard,
+  .patitasEmailFormCard {
+    width: 100%;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .patitasMainTitle {
+    font-size: 1.25rem;
+  }
+
+  .patitasSubtitle {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .patitasCardContent {
+    gap: 1rem;
+  }
+
+  .patitasButtonsSection {
+    gap: 0.75rem;
+  }
+
+  .patitasButton {
+    height: 2.5rem;
+    font-size: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .patitasFormInputSingle {
+    padding: 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .patitasFormLabel {
+    font-size: 0.8125rem;
+  }
+
+  .patitasValidationChecks {
+    grid-template-columns: 1fr;
+  }
+
+  .patitasValidationItem {
+    font-size: 0.6875rem;
+  }
+
+  .patitasCreateAccountBtn {
+    padding: 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  .patitasErrorMessage,
+  .patitasSuccessMessage {
+    padding: 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  .patitasUniversitySection {
+    padding-top: 0.75rem;
+  }
+
+  .patitasUniversityText {
+    font-size: 0.625rem;
+    line-height: 1.4;
+  }
+
+  .patitasTermsText {
+    font-size: 0.625rem;
+    line-height: 1.4;
+  }
+
+  .patitasSigninSection {
+    margin-top: 1.25rem;
+  }
+
+  .patitasSigninText {
+    font-size: 0.8125rem;
+  }
+
+  .patitasMailIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* Móviles muy pequeños (hasta 320px) */
+@media (max-width: 320px) {
+  .patitasContainer {
+    padding: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  .patitasLogoText,
+  .logoText {
+    font-size: 1.375rem;
+  }
+
+  .patitasMainCard,
+  .patitasEmailFormCard {
+    padding: 1rem;
+  }
+
+  .patitasMainTitle {
+    font-size: 1.125rem;
+  }
+
+  .patitasSubtitle {
+    font-size: 0.6875rem;
+  }
+
+  .patitasButton {
+    height: 2.25rem;
+    font-size: 0.6875rem;
+  }
+
+  .patitasFormInputSingle {
+    padding: 0.75rem;
+  }
+
+  .patitasUniversityText,
+  .patitasTermsText {
+    font-size: 0.5625rem;
+  }
+}
+
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .patitasButton,
+  .patitasCreateAccountBtn {
+    min-height: 44px;
+  }
+
+  .patitasFormInputSingle {
+    min-height: 44px;
+    font-size: 16px; /* Previene zoom en iOS */
+  }
+
+  .patitasTermsLink,
+  .patitasSigninLink {
+    padding: 0.25rem;
+    margin: -0.25rem;
+  }
+}
+
+/* Orientación horizontal en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+  .patitasContainer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .patitasLogoSection {
+    margin-bottom: 1rem;
+  }
+
+  .patitasCardContent {
+    gap: 1rem;
+  }
+
+  .patitasSigninSection {
+    margin-top: 1rem;
+  }
+}
+
+/* Pantallas muy grandes (1440px+) */
+@media (min-width: 1440px) {
+  .patitasMainCard,
+  .patitasEmailFormCard {
+    width: 30%;
+    max-width: 450px;
+  }
+
+  .patitasLogoText,
+  .logoText {
+    font-size: 2.25rem;
+  }
+
+  .patitasMainTitle {
+    font-size: 1.625rem;
+  }
+}

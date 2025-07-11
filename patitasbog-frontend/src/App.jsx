@@ -16,8 +16,7 @@ function App() {
       <Routes>
         {/* Públicas */}
         <Route path="/" element={<Layout><ViewHome /></Layout>} />
-        <Route path="/register" element={<Layout><ViewSignUp /></Layout>} />
-
+        <Route path="/register" element={<ViewSignUp />} />
         {/* Protegidas */}
         
       </Routes>

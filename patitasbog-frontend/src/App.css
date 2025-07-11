@@ -14,14 +14,16 @@
 
   /*Tamaños de fuente*/
   --fs-base: 1rem;
+  --fs-label: 1.125rem;
   --fs-link: 1.5rem;
   --fs-logo: 2.5rem;
+  --fs-big-logo: 4rem;
   
   /*Espaciamientos*/
-  --spacing-1: 1rem;
-  --spacing-2: 2rem;
-  --spacing-3: 3rem;
-  --spacing-4: 6rem;
+  --spacing-1: 0.6rem;
+  --spacing-2: 1.3rem;
+  --spacing-3: 2rem;
+  --spacing-4: 4rem;
 }
 
 /*Configuración básica para eliminar márgenes del navegador*/
