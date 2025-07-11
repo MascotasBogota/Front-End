@@ -16,6 +16,9 @@ const SignUp = ({ onRegister, onFail }) => {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [googleError, setGoogleError] = useState("")
+  const [formError, setFormError] = useState("")
+
 
   // Validaciones
   const validarCorreo = (correo) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)
@@ -38,10 +41,10 @@ const SignUp = ({ onRegister, onFail }) => {
   const handleGoogleRegister = async () => {
     try {
       setIsLoading(true)
-      setErrorMessage("")
+      setGoogleError("")
 
       if (!window.google) {
-        setErrorMessage("Google Sign-In no está disponible. Por favor, recarga la página.")
+        setGoogleError("Google Sign-In no está disponible. Por favor, recarga la página.")
         setIsLoading(false)
         return
       }
@@ -64,7 +67,7 @@ const SignUp = ({ onRegister, onFail }) => {
       })
     } catch (error) {
       console.error("Error al inicializar Google Sign-In:", error)
-      setErrorMessage("Error al conectar con Google. Inténtalo de nuevo.")
+      setGoogleError("Error al conectar con Google. Inténtalo de nuevo.")
     } finally {
       setIsLoading(false)
     }
@@ -73,7 +76,7 @@ const SignUp = ({ onRegister, onFail }) => {
   const handleGoogleCallback = async (response) => {
     try {
       setIsLoading(true)
-      setErrorMessage("")
+      setGoogleError("")
 
       const credential = response.credential
       const payload = JSON.parse(atob(credential.split(".")[1]))
@@ -94,7 +97,7 @@ const SignUp = ({ onRegister, onFail }) => {
       }
     } catch (error) {
       console.error("Error en registro con Google:", error)
-      setErrorMessage("No es posible registrarse con Google: " + (error.message || "Error desconocido"))
+      setGoogleError("No es posible registrarse con Google: " + (error.message || "Error desconocido"))
       if (onFail) {
         onFail("No es posible registrarse", error.message || "Error desconocido")
       }
@@ -159,6 +162,13 @@ const SignUp = ({ onRegister, onFail }) => {
       setIsLoading(false)
     }
   }
+
+  const handleGoBack = () => {
+    setShowEmailForm(false)
+    setGoogleError("")
+    setFormError("")
+  }
+
 
   if (showEmailForm) {
     return (
@@ -289,7 +299,7 @@ const SignUp = ({ onRegister, onFail }) => {
               </div>
 
               <div className={styles.backTextContainer}>
-                <span className={styles.backText} onClick={() => setShowEmailForm(false)}>
+                <span className={styles.backText} onClick={handleGoBack}>
                   Volver a opciones de registro
                 </span>
               </div>
@@ -335,14 +345,17 @@ const SignUp = ({ onRegister, onFail }) => {
               disabled={isLoading}
             >
               <img src="/icons/google_icon.png" alt="Google" width="22" height="22" className={styles.googleIcon} />
-              <span>{isLoading ? "Conectando..." : "Continuar con Google"}</span>
+              <span className={styles.fullText}>{isLoading ? "Conectando..." : "Continuar con Google"}</span>
+              <span className={styles.shortText}>Google</span>
             </button>
             <div id="google-signin-button" style={{ display: "none" }}></div>
             <button className={`${styles.patitasButton} ${styles.patitasEmailButton}`} onClick={handleEmailRegister}>
               <img src="/icons/mail.svg" alt="Email" width="22" height="22" className={styles.patitasMailIcon} />
-              <span>Continuar con correo</span>
+              <span className={styles.fullText}>Continuar con correo</span>
+              <span className={styles.shortText}>Correo</span>
             </button>
           </div>
+          {googleError && <div className={styles.patitasErrorMessage}>{googleError}</div>}
           <div className={styles.patitasTermsSection}>
             <p className={styles.patitasTermsText}>
               Al registrarte aceptas los{" "}
