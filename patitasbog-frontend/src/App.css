@@ -16,20 +16,23 @@
   --fs-base: 1rem;
   --fs-link: 1.5rem;
   --fs-logo: 2.5rem;
+  --fs-form-title: 2.5rem; 
+  --fs-form-notes: 1.125rem;
   
   /*Espaciamientos*/
-  --spacing-1: 1rem;
-  --spacing-2: 2rem;
-  --spacing-3: 3rem;
-  --spacing-4: 6rem;
+  --spacing-1: 0.6rem;
+  --spacing-2: 1.3rem;
+  --spacing-3: 2rem;
+  --spacing-4: 4rem;
 }
 
 /*Configuración básica para eliminar márgenes del navegador*/
 html,
-body {
+body, #root {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: auto;
 }
