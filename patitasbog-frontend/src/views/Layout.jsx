@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'; // Importamos useState y useEffect
 import Navbar from '../components/Principal/Navbar'; 
-import '../../styles/Layout.css';
+import '../styles/Layout.module.css';
 
 const Layout = ({ children }) => {
 
