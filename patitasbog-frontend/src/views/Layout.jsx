@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; // Importamos useState y useEffect
-import Navbar from './Navbar'; 
+import Navbar from '../components/Principal/Navbar'; 
 import '../../styles/Layout.css';
 
 const Layout = ({ children }) => {

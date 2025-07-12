@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useContext } from 'react';
 import './App.css';
-import Layout from './components/Principal/Layout';
+import Layout from './views/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthContext } from './contexts/AuthContext';
 import ViewHome from './views/Home/ViewHome';
