@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import styles from '../../styles/Login.module.css';
 import { useGoogleLogin } from '@react-oauth/google';
 import { userService } from '../../services/userService';
+import { validarCorreo } from '../../utils/usuariosUtils';
 
 const FormLogin = () => {
     const { login } = useContext(AuthContext);
@@ -20,6 +21,12 @@ const FormLogin = () => {
         setIsLoading(true);
         setErrorMessage('');
         setSuccessMessage('');
+
+        if (!validarCorreo(correo)) {
+            setErrorMessage("No es posible inicar sesión porque... El correo no tiene un formato válido")
+            setIsLoading(false)
+            return
+        }
 
         try {
         const credentials = {
