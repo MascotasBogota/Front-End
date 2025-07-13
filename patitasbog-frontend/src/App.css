@@ -20,6 +20,8 @@
   --fs-logo: 2.5rem;
   --fs-big-logo: 4rem;
   --fs-big-title: 4.375rem;
+  --fs-form-title: 2.5rem; 
+  --fs-form-notes: 1.125rem;
   
   /*Espaciamientos*/
   --spacing-1: 0.6rem;
@@ -34,7 +36,8 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
     scroll-behavior: smooth;
 }

@@ -21,4 +21,17 @@ export const userService = {
   verifyToken: (token) => userApi.post("/api/auth/verify-token", { token }),
   resetPassword: (passwordData) =>
     userApi.post("/api/auth/reset-password", passwordData),
+
+  // Autenticación con Google OAuth2
+  /**
+   * Inicia sesión o registra al usuario usando un id_token de Google.
+   * @param {{ id_token: string }} tokenData
+   * @returns {Promise<Object>}  Datos del usuario y/o nuevo JWT emitido por tu API.
+   */
+  googleLogin: (tokenData) =>
+    userApi.post("/api/auth/google-login", tokenData, {
+      // Sobrescribimos Authorization solo para esta llamada,
+      // de modo que no se envíe el JWT local si existe.
+      headers: { Authorization: undefined },
+    }),
 };
