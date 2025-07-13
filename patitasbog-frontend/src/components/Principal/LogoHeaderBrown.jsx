@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import styles from "../../styles/SignUp.module.css"
+import styles from "../../styles/Principal.module.css"
 
 const LogoHeaderBrown = () => (
   <Link to="/" className={styles.patitasLogoSection}>
