@@ -9,7 +9,9 @@ import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewSignUp from './views/Register/ViewSignUp';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
+import ReportForm from './views/Reportes/ViewCreateReport'
 import ConnTest from "./views/conn-test/conn-test";
+import ViewCreateReport from './views/Reportes/ViewCreateReport';
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -27,6 +29,12 @@ function App() {
           path="/home"
           element={
             <PrivateRoute><Layout><ViewHomeLogin/></Layout></PrivateRoute>
+          }
+        />
+        <Route
+          path="/create-report"
+          element={
+            <PrivateRoute><Layout><ViewCreateReport/></Layout></PrivateRoute>
           }
         />
       </Routes>
