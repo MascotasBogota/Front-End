@@ -16,7 +16,7 @@ const FormProfile = () => {
                 <Link to="/change_password" className={styles.options_button2}>Cambiar contraseña</Link>
             </div>
             <div className={styles.fields_column}>
-                <label className={styles.inputLabel}>Nombre completo</label>
+                <label className={styles.firstinputLabel}>Nombre completo</label>
                 <input className={styles.formInput}></input>
                 <label className={styles.inputLabel}>Correo electrónico</label>
                 <input className={styles.formInput}></input>

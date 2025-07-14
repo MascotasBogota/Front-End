@@ -109,6 +109,13 @@
     margin-top: var(--spacing-2);
 }
 
+.firstinputLabel {
+    margin-top: 0;
+    line-height: 1;
+    color: var(--color-neutro-3);
+    box-sizing: border-box;
+}
+
 .formInput {
     padding: var(--spacing-1) var(--spacing-2);
     box-sizing: border-box;
