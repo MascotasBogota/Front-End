@@ -7,17 +7,24 @@ import FormRecoverPassword from '../../components/Login/FormRecoverPassword';
 
 const ViewRecoverPassword = () => {
   const [showForm, setShowForm] = useState(false);
+  const [correo, setCorreo] = useState('');
 
   const handleShowForm = () => {
     setShowForm(!showForm)
+  }
+  
+  const handleChangeCorreo = (correo) => {
+    setCorreo(correo)
   }
 
   return (
       <div className={showForm ? styles.background2 : styles.background}>
         {!showForm && (<LogoHeaderPink />)}
         {showForm && (<LogoHeaderBrown />)}
-        {!showForm && (<RequestRecoverPassword handleShowForm={handleShowForm}/>)}
-        {showForm && (<FormRecoverPassword />)}
+        {!showForm && (<RequestRecoverPassword 
+          handleShowForm={handleShowForm}
+          handleChangeCorreo={handleChangeCorreo}/>)}
+        {showForm && (<FormRecoverPassword correo={correo}/>)}
       </div>
   );
 };

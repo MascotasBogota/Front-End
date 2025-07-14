@@ -17,8 +17,8 @@ export const userService = {
     }),
 
   // Métodos para recuperar contraseña
-  requestPasswordReset: () => userApi.post("/api/auth/forgot-password"),
-  verifyToken: (token) => userApi.post("/api/auth/verify-token", { token }),
+  requestPasswordReset: ({email}) => userApi.post("/api/auth/forgot-password", { email }),
+  verifyToken: ({ email, token }) => userApi.post("/api/auth/verify-token", { email, token }),
   resetPassword: (passwordData) =>
     userApi.post("/api/auth/reset-password", passwordData),
 

@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import styles from '../../styles/RecoverPassword.module.css';
-import { useGoogleLogin } from '@react-oauth/google';
 import { userService } from '../../services/userService';
-import { getPasswordValidations } from "../../utils/usuariosUtils"
+import { validarPassword, getPasswordValidations } from "../../utils/usuariosUtils";
 
-const FormRecoverPassword = () => {
+const FormRecoverPassword = ( { correo } ) => {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [codigo, setCodigo] = useState('');
@@ -19,6 +18,60 @@ const FormRecoverPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        setErrorMessage('');
+        setSuccessMessage('');
+            
+        if (!validarPassword(password)) {
+            setErrorMessage("No es posible registrarse porque... La contraseña no cumple los estándares")
+            setIsLoading(false)
+            if (onFail) onFail("No es posible registrarse", "La contraseña no cumple los estándares")
+            return
+        }
+        
+        if (password !== confirmPassword) {
+            setErrorMessage("No es posible registrarse porque... La confirmación no coincide con la contraseña")
+            setIsLoading(false)
+            if (onFail) onFail("No es posible registrarse", "La confirmación no coincide con la contraseña")
+            return
+        }
+            
+        try {
+            const response1 = await userService.verifyToken({
+                email: correo,      
+                token: codigo       
+            });
+
+            if (response1.error) {
+                setErrorMessage(response1.message);   
+                return
+            }
+
+            const passwordData = {
+                token: codigo,
+                newPassword: password,
+            }
+            
+            const response2 = await userService.resetPassword(passwordData);
+            
+            if (response2.message) {
+                setSuccessMessage(response2.message || "¡Contraseña cambiada correctamente!");   
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1500);
+            }
+
+        } catch (error) {
+            if (error.message === "Network Error") {
+                setErrorMessage("No se pudo conectar con el servidor. Revisa tu conexión o inténtalo más tarde.");
+            } else if (error.response?.data?.message) {
+                setErrorMessage(error.response.data.message);
+            } else {
+                setErrorMessage("Ocurrió un error inesperado. Inténtalo más tarde.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const validaciones = getPasswordValidations(password, confirmPassword)
