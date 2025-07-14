@@ -1,39 +1,32 @@
-import { getPetName, getStatus, getValidImage, getDefaultImage } from "../../utils/reportUtils.js";
-import styles from "../../styles/Home.module.css";
+"use client"
+import { getPetName, getStatus, getValidImage, getDefaultImage } from "../../utils/reportUtils"
+import styles from "../../styles/HomeLoggedIn.module.css"
 
 const PetCard = ({ reporte }) => {
-  const status = getStatus(reporte);
-  const petName = getPetName(reporte);
-  const imageUrl = getValidImage(reporte);
-
+  const status = getStatus(reporte)
+  const petName = getPetName(reporte)
+  const imageUrl = getValidImage(reporte)
   const handleImageError = (e) => {
-    e.target.src = getDefaultImage(reporte.type);
-  };
-
+    e.target.src = getDefaultImage(reporte.type)
+  }
   return (
     <div className={styles.petCard}>
       <div className={styles.petImageContainer}>
         <img
-          src={imageUrl}
+          src={imageUrl || "/placeholder.svg"}
           alt={petName}
           className={styles.petImage}
           onError={handleImageError}
         />
         <div
-          className={`${styles.statusBadge} ${
-            status === "Perdido" ? styles.statusPerdido : styles.statusEncontrado
-          }`}
+          className={`${styles.statusBadge} ${status === "Perdido" ? styles.statusPerdido : styles.statusEncontrado}`}
         >
           {status}
         </div>
       </div>
       <div className={styles.petCardContent}>
         <h3 className={styles.petName}>{petName}</h3>
-        <div
-          className={`${styles.petStatusText} ${
-            status === "Perdido" ? styles.perdido : styles.encontrado
-          }`}
-        >
+        <div className={`${styles.petStatusText} ${status === "Perdido" ? styles.perdido : styles.encontrado}`}>
           {status === "Perdido" ? "Se busca" : "Encontrado"}
         </div>
         <p className={styles.petDescription}>
@@ -43,7 +36,7 @@ const PetCard = ({ reporte }) => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PetCard;
+export default PetCard

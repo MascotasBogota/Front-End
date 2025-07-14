@@ -1,62 +1,155 @@
-import { useState } from 'react';
-import Success from '../../components/Principal/Success';
-import Fail from '../../components/Principal/Fail';
-import HomeLogin from '../../components/Home/HomeLogin';
+"use client"
 
-// Vista principal del home cuando el usuario está logueado
-// Necesito hacer push xd
+import { useState, useEffect } from "react"
+import { reportService } from "../../services/reportService"
+import styles from "../../styles/HomeLoggedIn.module.css"
+import FilterControls from "../../components/Home/FilterControls"
+import ReportButtons from "../../components/Home/ReportButtons"
+import ReportGrid from "../../components/Home/ReportGrid"
+
 const ViewHomeLogin = () => {
-  // Estados para mostrar el popup de éxito
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [titleSuccess, setTitleSuccess] = useState('');
-  const [endSuccess, setEndSuccess] = useState('');
-  const [redirectSuccess, setRedirectSuccess] = useState('');
+  const [reportes, setReportes] = useState([])
+  const [filteredReportes, setFilteredReportes] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [radiusFilter, setRadiusFilter] = useState("all")
+  const [typeFilter, setTypeFilter] = useState("all")
+  const [userLocation, setUserLocation] = useState(null)
+  const [showMyReportsOnly, setShowMyReportsOnly] = useState(false) // Nuevo estado para el filtro "Mis Reportes"
 
-  // Handler para mostrar el popup de éxit
-  const handleChangeSuccess = (title, end, redirect) => {
-    setTitleSuccess(title);
-    setEndSuccess(end);
-    setRedirectSuccess(redirect);
-    setShowSuccessPopup(true);
-  };
+  // Mock user ID for demonstration purposes.
+  // In a real application, this would come from your authentication context/state.
+  const mockUserId = "user123"
 
-  // Estados para mostrar el popup de error
-  const [showFailPopup, setShowFailPopup] = useState(false);
-  const [titleFail, setTitleFail] = useState('');
-  const [bodyFail, setBodyFail] = useState('');
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12 // Increased number of reports per page
 
-  // Handler para mostrar el popup de error
-  const handleChangeFail = (title, body) => {
-    setTitleFail(title);
-    setBodyFail(body);
-    setShowFailPopup(true);
-  };
+  // Fetch reports on component mount
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await reportService.getAllReports()
+        console.log("Reportes recibidos:", response)
+        const reportesArray = Array.isArray(response) ? response : []
+        setReportes(reportesArray)
+        setFilteredReportes(reportesArray) // Initialize filtered reports
+      } catch (error) {
+        console.error("Error al obtener reportes:", error)
+        setReportes([])
+        setFilteredReportes([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchReports()
+  }, [])
+
+  // Get user location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          })
+        },
+        (error) => {
+          console.log("Error obteniendo ubicación:", error)
+          // Default location (Bogotá)
+          setUserLocation({ lat: 4.6097, lng: -74.0817 })
+        },
+      )
+    } else {
+      // Default location (Bogotá)
+      setUserLocation({ lat: 4.6097, lng: -74.0817 })
+    }
+  }, [])
+
+  // Function to calculate distance between two points (in km)
+  const calculateDistance = (lat1, lng1, lat2, lng2) => {
+    const R = 6371 // Radius of Earth in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180)
+    const dLng = (lng2 - lng1) * (Math.PI / 180)
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLng / 2) * Math.sin(dLng / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    return R * c
+  }
+
+  // Apply filters
+  useEffect(() => {
+    let filtered = [...reportes]
+
+    // Filter by type
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((reporte) => reporte.type?.toLowerCase() === typeFilter.toLowerCase())
+    }
+
+    // Filter by radius
+    if (radiusFilter !== "all" && userLocation) {
+      const maxDistance = Number.parseInt(radiusFilter)
+      filtered = filtered.filter((reporte) => {
+        if (!reporte.location?.coordinates) return false
+        const [lng, lat] = reporte.location.coordinates
+        const distance = calculateDistance(userLocation.lat, userLocation.lng, lat, lng)
+        return distance <= maxDistance
+      })
+    }
+
+    // Filter by "Mis Reportes"
+    if (showMyReportsOnly) {
+      // Assuming each report has a 'userId' property
+      // Replace 'mockUserId' with the actual user ID from your authentication system
+      filtered = filtered.filter((reporte) => reporte.userId === mockUserId)
+    }
+
+    setFilteredReportes(filtered)
+    setCurrentPage(1) // Reset to first page when filters change
+  }, [reportes, typeFilter, radiusFilter, userLocation, showMyReportsOnly, mockUserId]) // Add showMyReportsOnly and mockUserId to dependencies
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredReportes.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedReports = filteredReportes.slice(startIndex, endIndex)
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
 
   return (
-    <div className="generic-container">
-      {/* Componente central que muestra la barra superior y los reportes */}
-      <HomeLogin
-        onChangeSuccess={handleChangeSuccess}
-        onChangeFail={handleChangeFail}
-      />
-      {/* Popup de éxito */}
-      {showSuccessPopup && (
-        <Success
-          title={titleSuccess}
-          end={endSuccess}
-          redirect={redirectSuccess}
-        />
-      )}
-      {/* Popup de error */}
-      {showFailPopup && (
-        <Fail
-          setShowFailPopup={setShowFailPopup}
-          title={titleFail}
-          body={bodyFail}
-        />
+    <div className={styles.homeContainer}>
+      {loading ? (
+        <div className={styles.loadingContainer}>Cargando reportes...</div>
+      ) : (
+        <>
+          <div className={styles.topControls}>
+            <FilterControls
+              radiusFilter={radiusFilter}
+              setRadiusFilter={setRadiusFilter}
+              typeFilter={typeFilter}
+              setTypeFilter={setTypeFilter}
+              totalResults={filteredReportes.length}
+            />
+            <ReportButtons
+              showMyReportsOnly={showMyReportsOnly}
+              toggleMyReports={() => setShowMyReportsOnly((prev) => !prev)}
+            />
+          </div>
+
+          <ReportGrid
+            reports={paginatedReports}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ViewHomeLogin;
+export default ViewHomeLogin
+

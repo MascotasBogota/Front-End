@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-// import PetCard from "./PetCard";
+import PetCard from "./PetCard";
 import styles from "../../styles/Home.module.css";
 
 const ReportsTape = ({ reportes, loading }) => {
