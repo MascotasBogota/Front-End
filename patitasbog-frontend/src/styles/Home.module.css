@@ -263,7 +263,7 @@ html, body {
 
 .petDescription {
   font-size: 13px;
-  color: #4a5568;
+  color: var(--color-neutro-3);
   line-height: 1.4;
   margin: 0;
   flex: 1;

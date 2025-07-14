@@ -5,6 +5,7 @@ import Layout from './views/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthContext } from './contexts/AuthContext';
 import ViewHome from './views/Home/ViewHome';
+import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewSignUp from './views/Register/ViewSignUp';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
@@ -22,7 +23,12 @@ function App() {
         <Route path="/login" element={<ViewLogin />} />
         <Route path="/recover_password" element={<ViewRecoverPassword />} />
         {/* Protegidas */}
-        
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute><Layout><ViewHomeLogin/></Layout></PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
