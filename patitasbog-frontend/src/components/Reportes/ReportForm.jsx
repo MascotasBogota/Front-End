@@ -1,39 +1,49 @@
 "use client"
 
 import { useState } from "react"
-import MapaSelector from "./MapaSelector" // Importa el componente de mapa selector
-import styles from "../../styles/ReportForm.module.css" // Estilos específicos para el formulario
+import MapaSelector from "./MapaSelector"
+import styles from "../../styles/ReportForm.module.css"
+import { useNavigate } from "react-router-dom"
 
-// Props:
-// - type: "lost" | "sighting" | "found" (determina el tipo de reporte)
-// - initialData: Objeto con datos pre-cargados si es una respuesta (ej. { petName: "Copito", location: { lat, lng } })
-// - onSubmit: Función a llamar al enviar el formulario
-// - onDiscard: Función a llamar al descartar
+
 const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) => {
   const [petName, setPetName] = useState(initialData.petName || "")
+  const [petType, setPetType] = useState(initialData.petType || "")
   const [details, setDetails] = useState(initialData.details || "")
-  const [location, setLocation] = useState(initialData.location || null) // { lat, lng }
-  const [photo, setPhoto] = useState(null) // Para manejar la carga de archivos
+  const [location, setLocation] = useState(initialData.location || null)
+  const [photos, setPhotos] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState({ type: "", text: "" })
 
-  // Determinar el título del formulario y el texto del campo de tipo
-  const formTitle = type === "lost" ? "Crear Reporte" : "Responder Reporte"
-  const typeLabel = type === "lost" ? "Perdida" : type === "sighting" ? "Avistamiento" : "Encontrado"
+  const isLost = type === "lost"
+  const isFound = type === "found"
+  const isEdit = type === "updating"
+  const isSighting = type === "sighting"
 
-  // Campos obligatorios (ejemplo, ajusta según tu backend)
-  const requiredFields = ["petName", "details", "location", "photo"]
+  const formTitle = isEdit ? "Editar Reporte" : isLost ? "Crear Reporte" : "Responder Reporte"
+  const typeLabel = isEdit ? "Perdida" : isLost ? "Perdida" : type === "sighting" ? "Avistamiento" : "Encontrado"
+
+  const requiredFields = ["petName", "petType", "details", "location"]
+  if (isLost || isFound) requiredFields.push("photos")
+
+  const navigate = useNavigate()
+
+  const handleDiscard = () => {
+    navigate(-1) // Volver a la página anterior
+  }
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setMessage({ type: "", text: "" })
 
-    // Validaciones básicas
-    const formData = { petName, details, location, photo, type }
+    const formData = { petName, petType, details, location, photos, type }
+
     const missingFields = requiredFields.filter((field) => {
       if (field === "location") return !location
-      if (field === "photo") return !photo
+      if (field === "photos") return photos.length === 0
       return !formData[field]
     })
 
@@ -43,15 +53,20 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
       return
     }
 
+    const payload = {
+      pet_name: petName,
+      type: petType.toLowerCase(),
+      description: details,
+      location: {
+        type: "Point",
+        coordinates: [location.lng, location.lat],
+      },
+      images: photos.map((file) => URL.createObjectURL(file)), // reemplazar por URLs reales en producción
+    }
+
     try {
-      // Aquí llamarías a tu servicio de API para enviar el reporte
-      // Por ahora, solo simulamos una llamada
-      console.log("Enviando reporte:", formData)
-      await new Promise((resolve) => setTimeout(resolve, 1500)) // Simular API call
+      await onSubmit?.(payload)
       setMessage({ type: "success", text: "Reporte enviado con éxito!" })
-      if (onSubmit) onSubmit(formData)
-      // Opcional: resetear formulario o redirigir
-      // setPetName(""); setDetails(""); setLocation(null); setPhoto(null);
     } catch (error) {
       console.error("Error al enviar reporte:", error)
       setMessage({ type: "error", text: "Error al enviar el reporte. Inténtalo de nuevo." })
@@ -61,9 +76,13 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
   }
 
   const handlePhotoChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setPhoto(e.target.files[0])
+    if (e.target.files && e.target.files.length > 0) {
+      setPhotos(Array.from(e.target.files))
     }
+  }
+
+  const handleRemovePhoto = (index) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index))
   }
 
   return (
@@ -71,10 +90,13 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
       <div className={styles.formCard}>
         <h2 className={styles.formTitle}>{formTitle}</h2>
         <hr className={styles.divider} />
-        <p className={styles.requiredFieldsNotice}>Los campos de nombre, detalles, ubicación y foto son obligatorios</p>
+        <p className={styles.requiredFieldsNotice}>
+          Los campos de nombre, tipo de mascota, detalles y ubicación son obligatorios.
+          {(isLost || isFound) && " También se requiere al menos una foto."}
+        </p>
 
         <form onSubmit={handleSubmit} className={styles.formGrid}>
-          {/* Tipo de reporte (read-only) */}
+          {/* Tipo de reporte */}
           <div className={styles.formFieldFull}>
             <label className={styles.formLabel}>Tipo de reporte</label>
             <input type="text" value={typeLabel} className={styles.formInput} readOnly />
@@ -89,10 +111,28 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
               className={styles.formInput}
               value={petName}
               onChange={(e) => setPetName(e.target.value)}
-              // El nombre es editable solo si es un reporte "lost" o si no hay initialData
-              readOnly={type !== "lost" && initialData.petName}
-              required
+              readOnly={!isLost && !isEdit}
             />
+          </div>
+
+          {/* Tipo de mascota */}
+          <div className={styles.formFieldFull}>
+            <label className={styles.formLabel}>Tipo de mascota</label>
+            <select
+              name="petType"
+              value={petType}
+              onChange={(e) => setPetType(e.target.value)}
+              className={styles.formInput}
+              disabled={!isLost && !isEdit}
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+              <option value="Otro">Otro</option>
+            </select>
+            {message.type === "error" && !petType && (
+              <p className={styles.errorText}>Por favor selecciona el tipo de mascota.</p>
+            )}
           </div>
 
           {/* Detalles */}
@@ -107,7 +147,7 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
             />
           </div>
 
-          {/* Ubicación */}
+          {/* Mapa ubicación */}
           <div className={styles.formField}>
             <label className={styles.formLabel}>Ubicación</label>
             <div className={styles.mapContainer}>
@@ -120,47 +160,60 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
             )}
           </div>
 
-          {/* Foto */}
+          {/* Fotos */}
           <div className={styles.formField}>
-            <label className={styles.formLabel}>Foto</label>
+            <label className={styles.formLabel}>Fotos</label>
             <div className={styles.photoUploadContainer}>
-              {photo ? (
-                <img
-                  src={URL.createObjectURL(photo) || "/placeholder.png"}
-                  alt="Vista previa"
-                  className={styles.photoPreview}
-                />
-              ) : (
-                <div className={styles.photoPlaceholder}>
-                  <img src="/placeholder.png?height=100&width=100" alt="Placeholder" />
-                </div>
-              )}
+              <div className={styles.photoPreviewGrid}>
+                {photos.length > 0 ? (
+                  photos.map((file, idx) => (
+                    <div key={idx} className={styles.photoFileItem}>
+                      📎 {file.name}
+                      <button type="button" onClick={() => handleRemovePhoto(idx)} className={styles.removePhotoButton}>
+                        ×
+                      </button>
+                    </div>
+                  ))
+                ) : initialData.photoURLs?.length ? (
+                  initialData.photoURLs.map((url, idx) => (
+                    <img key={idx} src={url} alt={`Foto existente ${idx + 1}`} className={styles.photoPreview} />
+                  ))
+                ) : (
+                  <div className={styles.photoPlaceholder}>
+                    <p></p>
+                  </div>
+                )}
+              </div>
+
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handlePhotoChange}
                 className={styles.fileInput}
                 id="photo-upload"
-                required
+                required={isLost || isFound}
               />
               <label htmlFor="photo-upload" className={styles.uploadButton}>
-                Subir foto
+                Subir fotos
               </label>
             </div>
           </div>
 
+          {/* Mensaje */}
           {message.text && (
             <div className={`${styles.messageBox} ${message.type === "error" ? styles.error : styles.success}`}>
               {message.text}
             </div>
           )}
 
+          {/* Acciones */}
           <div className={styles.formActions}>
-            <button type="button" onClick={onDiscard} className={styles.discardButton} disabled={isSubmitting}>
+            <button type="button" onClick={() => navigate(-1)} className={styles.discardButton} disabled={isSubmitting}>
               Descartar
             </button>
             <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-              {isSubmitting ? "Enviando..." : "Cambiar"}
+              {isSubmitting ? "Enviando..." : isEdit ? "Actualizar" : "Enviar"}
             </button>
           </div>
         </form>

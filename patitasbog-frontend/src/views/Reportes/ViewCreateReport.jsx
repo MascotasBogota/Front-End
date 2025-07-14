@@ -1,14 +1,26 @@
 "use client"
 
-import { useState, useEffect } from "react"
+//import { useRouter } from "next/router"
 import { reportService } from "../../services/reportService"
-import styles from "../../styles/ReportForm.module.css"
 import ReportForm from "../../components/Reportes/ReportForm"
 
 const ViewCreateReport = () => {
+  //const router = useRouter()
 
   return (
-    <ReportForm/>
+    <ReportForm
+      type="lost"
+      onSubmit={async (formData) => {
+        try {
+          await reportService.createReport(formData)
+          alert("Reporte creado con éxito")
+          //router.push("/home") 
+        } catch (err) {
+          alert("Error al crear el reporte")
+        }
+      }}
+      onDiscard={() => router.back()}
+    />
   )
 }
 

@@ -141,14 +141,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start; /* 👈 para que el scroll empiece arriba */
   gap: 0.75rem;
-  border: 2px dashed #d9d9d9; /* Borde punteado */
+  border: 2px dashed #d9d9d9;
   border-radius: 0.75rem;
-  height: 200px; /* Altura fija para el área de foto */
-  justify-content: center;
-  position: relative;
-
+  overflow-y: auto;
+  width: 100%;
+  max-width: 400px;
+  height: 200px;
+  padding: 0.75rem; /* 👈 espacio interno para margen superior/inferior */
+  box-sizing: border-box; /* 👈 asegurar que padding no desborde */
 }
+
+
+.photoUploadContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.photoUploadContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.photoUploadContainer::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
 
 .photoPlaceholder {
   display: flex;
@@ -193,6 +211,30 @@
   background-color: #8a8989; /* Gris más oscuro */
 }
 
+.photoFileItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: fit-content;
+  background-color: #f4f4f4;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #333;
+  margin-bottom: 0.3rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.removePhotoButton {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  color: #b00000;
+  cursor: pointer;
+}
+
+
 /* Mensajes de estado */
 .messageBox {
   grid-column: 1 / -1;
@@ -222,6 +264,12 @@
   justify-content: center; /* Alinear a la derecha */
   gap: var(--spacing-2);
   margin-top: var(--spacing-1);
+}
+
+.errorText {
+  color: #e63946;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
 }
 
 .discardButton,
