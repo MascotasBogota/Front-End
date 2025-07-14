@@ -8,6 +8,7 @@ import ViewHome from './views/Home/ViewHome';
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewSignUp from './views/Register/ViewSignUp';
 import ViewLogin from './views/Login/ViewLogin';
+import ViewChangePassword from './views/Profile/ViewChangePassword';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
 import ConnTest from "./views/conn-test/conn-test";
 import ViewCreateReport from './views/Reportes/ViewCreateReport';
@@ -26,6 +27,7 @@ function App() {
           <Route path="/register" element={<ViewSignUp />} />
           <Route path="/login" element={<ViewLogin />} />
           <Route path="/recover_password" element={<ViewRecoverPassword />} />
+          <Route path="/change_password" element={<Layout><ViewChangePassword /></Layout>} />
           
           {/* Protegidas */}
           <Route
