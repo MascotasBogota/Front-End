@@ -1,13 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { reportService } from "../../services/reportService"
 import styles from "../../styles/HomeLoggedIn.module.css"
 import FilterControls from "../../components/Home/FilterControls"
 import ReportButtons from "../../components/Home/ReportButtons"
 import ReportGrid from "../../components/Home/ReportGrid"
+import { AuthContext } from "../../contexts/AuthContext"
 
 const ViewHomeLogin = () => {
+  const { user } = useContext(AuthContext);
+
+
   const [reportes, setReportes] = useState([])
   const [filteredReportes, setFilteredReportes] = useState([])
   const [loading, setLoading] = useState(true)
@@ -15,10 +19,6 @@ const ViewHomeLogin = () => {
   const [typeFilter, setTypeFilter] = useState("all")
   const [userLocation, setUserLocation] = useState(null)
   const [showMyReportsOnly, setShowMyReportsOnly] = useState(false) // Nuevo estado para el filtro "Mis Reportes"
-
-  // Mock user ID for demonstration purposes.
-  // In a real application, this would come from your authentication context/state.
-  const mockUserId = "user123"
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1)
@@ -99,15 +99,29 @@ const ViewHomeLogin = () => {
     }
 
     // Filter by "Mis Reportes"
-    if (showMyReportsOnly) {
-      // Assuming each report has a 'userId' property
-      // Replace 'mockUserId' with the actual user ID from your authentication system
-      filtered = filtered.filter((reporte) => reporte.userId === mockUserId)
+    const currentUserId = user?._id || user?.userId;
+    if (showMyReportsOnly && currentUserId) {
+      filtered = filtered.filter((reporte) => {
+        const reportUserId = typeof reporte.user_id === "object" && "$oid" in reporte.user_id
+          ? reporte.user_id.$oid
+          : reporte.user_id;
+
+        return reportUserId === currentUserId;
+      });
     }
+
+
+
+
+
+    
+
+
+
 
     setFilteredReportes(filtered)
     setCurrentPage(1) // Reset to first page when filters change
-  }, [reportes, typeFilter, radiusFilter, userLocation, showMyReportsOnly, mockUserId]) // Add showMyReportsOnly and mockUserId to dependencies
+  }, [reportes, typeFilter, radiusFilter, userLocation, showMyReportsOnly, user]) 
 
   // Pagination logic
   const totalPages = Math.ceil(filteredReportes.length / itemsPerPage)

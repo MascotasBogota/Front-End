@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate} from "react-router-dom"
 import apiService from "../../services/apiService"
 import styles from "../../styles/SignUp.module.css"
 import { validarCorreo, validarPassword, getPasswordValidations } from "../../utils/usuariosUtils"
 
 const SignUpEmailForm = ({ onRegister, onFail, handleShowEmailForm, setGoogleError }) => {
+    const navigate = useNavigate();
     const [nombre, setNombre] = useState("")
     const [correo, setCorreo] = useState("")
     const [password, setPassword] = useState("")
@@ -52,17 +53,23 @@ const SignUpEmailForm = ({ onRegister, onFail, handleShowEmailForm, setGoogleErr
 
         try {
             const userData = {
-                nombre,
+                full_name: nombre,
                 email: correo,
                 password,
             }
 
             const response = await apiService.register(userData)
+
             setSuccessMessage("¡Cuenta creada con éxito! Redirigiendo a login...")
 
             if (onRegister) {
-                onRegister("¡Cuenta creada con éxito!", "Redirigiendo a login...", "/login")
+                onRegister("¡Cuenta creada con éxito!", "Redirigiendo a login...", "/login");
             }
+
+            setTimeout(() => {
+                navigate("/login");
+            }, 1500);
+            
         } catch (error) {
             setErrorMessage("No es posible registrarse porque... " + (error.message || "Error desconocido"))
             if (onFail) {
