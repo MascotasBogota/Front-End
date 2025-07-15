@@ -324,7 +324,6 @@ const ReportForm = ({ type = "lost" }) => {
                   ))
                 ) : (
                   <div className={styles.photoPlaceholder}>
-                    <img src="/placeholder.svg?height=100&width=100" alt="Placeholder" />
                     <p>No has subido ninguna foto.</p>
                   </div>
                 )}

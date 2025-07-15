@@ -34,11 +34,11 @@ function App() {
             }
           />
           <Route
-            path="/create-report/:reportId"
+            path="/create-report"
             element={
               <PrivateRoute>
                 <Layout>
-                  <ReportForm type="found" reportId="6875b99c65e48c170d58747b"/>
+                  <ReportForm type="lost"/>
                 </Layout>
               </PrivateRoute>
             }
