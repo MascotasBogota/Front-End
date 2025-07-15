@@ -28,6 +28,8 @@
   --spacing-2: 1.3rem;
   --spacing-3: 2rem;
   --spacing-4: 4rem;
+
+  --navbar-height: 10%;
 }
 
 /*Configuración básica para eliminar márgenes del navegador*/

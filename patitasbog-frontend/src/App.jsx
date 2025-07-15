@@ -9,10 +9,10 @@ import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewSignUp from './views/Register/ViewSignUp';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewChangePassword from './views/Profile/ViewChangePassword';
+import ViewProfile from './views/Profile/ViewProfile';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
 import ConnTest from "./views/conn-test/conn-test";
-import ViewCreateReport from './views/Reportes/ViewCreateReport';
-
+import ReportForm from "./components/Reportes/ReportForm"
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
           <Route path="/recover_password" element={<ViewRecoverPassword />} />
           <Route path="/change_password" element={<Layout><ViewChangePassword /></Layout>} />
           
+          <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
           {/* Protegidas */}
           <Route
             path="/home"
@@ -39,7 +40,11 @@ function App() {
           <Route
             path="/create-report"
             element={
-              <PrivateRoute><Layout><ViewCreateReport /></Layout></PrivateRoute>
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="lost"/>
+                </Layout>
+              </PrivateRoute>
             }
           />
         </Routes>

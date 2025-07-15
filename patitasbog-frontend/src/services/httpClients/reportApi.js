@@ -2,7 +2,7 @@ import axios from "axios";
 
 const reportApi = axios.create({
   baseURL: "http://localhost:5050/",
-  timeout: 5000,
+  timeout: 10000,
 });
 
 // Interceptor para añadir el token de autenticación si existe

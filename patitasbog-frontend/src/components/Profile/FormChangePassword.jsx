@@ -9,7 +9,6 @@ const FormChangePassword = ( { correo } ) => {
     const [showActualPassword, setShowActualPassword] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-    const [codigo, setCodigo] = useState('');
     const [actualPassword, setActualPassword] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -25,41 +24,29 @@ const FormChangePassword = ( { correo } ) => {
         setSuccessMessage('');
             
         if (!validarPassword(password)) {
-            setErrorMessage("No es posible registrarse porque... La contraseña no cumple los estándares")
+            setErrorMessage("No es posible cambiar la contraseña porque... La contraseña no cumple los estándares")
             setIsLoading(false)
-            if (onFail) onFail("No es posible registrarse", "La contraseña no cumple los estándares")
+            if (onFail) onFail("No es posible cambiar la contraseña", "La contraseña no cumple los estándares")
             return
         }
         
         if (password !== confirmPassword) {
-            setErrorMessage("No es posible registrarse porque... La confirmación no coincide con la contraseña")
+            setErrorMessage("No es posible cambiar la contraseña porque... La confirmación no coincide con la contraseña")
             setIsLoading(false)
-            if (onFail) onFail("No es posible registrarse", "La confirmación no coincide con la contraseña")
+            if (onFail) onFail("No es posible cambiar la contraseña", "La confirmación no coincide con la contraseña")
             return
         }
             
         try {
-            const response1 = await userService.verifyToken({
-                email: correo,      
-                token: codigo       
+            const response = await userService.verifyToken({
+                currentPassword: actualPassword,      
+                newPassword: password,       
             });
-
-            if (response1.error) {
-                setErrorMessage(response1.message);   
-                return
-            }
-
-            const passwordData = {
-                token: codigo,
-                newPassword: password,
-            }
             
-            const response2 = await userService.resetPassword(passwordData);
-            
-            if (response2.message) {
-                setSuccessMessage(response2.message || "¡Contraseña cambiada correctamente!");   
+            if (response.message) {
+                setSuccessMessage(response.message || "¡Contraseña cambiada correctamente!");   
                 setTimeout(() => {
-                    navigate('/login');
+                    navigate('/home');
                 }, 1500);
             }
 
