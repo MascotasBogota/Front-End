@@ -106,7 +106,7 @@
     line-height: 1;
     color: var(--color-neutro-3);
     box-sizing: border-box;
-    margin-top: var(--spacing-2);
+    margin-top: var(--spacing-1);
 }
 
 .firstinputLabel {
@@ -124,6 +124,24 @@
     border: 1px solid var(--color-neutro-2);
     background-color: var(--color-neutro-1);
     width: 100%;
+}
+
+.mensaje_error{
+    display: block;
+    width: fit-content;
+    margin-top: var(--spacing-1);
+    line-height: 1;
+    color: var(--color-principal-3);
+    text-decoration: none;
+}
+
+.mensaje_exito{
+    display: block;
+    width: fit-content;
+    margin-top: var(--spacing-1);
+    line-height: 1;
+    color: var(--color-principal-2);
+    text-decoration: none;
 }
 
 @media(max-width:700px){
