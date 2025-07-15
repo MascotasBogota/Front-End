@@ -6,10 +6,10 @@ import { userService } from '../../services/userService';
 import { validarPassword, getPasswordValidations } from "../../utils/usuariosUtils";
 
 const FormChangePassword = ( { correo } ) => {
-    const [showActualPassword, setShowActualPassword] = useState(false)
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-    const [actualPassword, setActualPassword] = useState('');
+    const [currentPassword, setCurrentPassword] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
@@ -38,9 +38,9 @@ const FormChangePassword = ( { correo } ) => {
         }
             
         try {
-            const response = await userService.verifyToken({
-                currentPassword: actualPassword,      
-                newPassword: password,       
+            const response = await userService.changePassword({
+                currentPassword: currentPassword,      
+                newPassword: password       
             });
             
             if (response.message) {
@@ -49,6 +49,8 @@ const FormChangePassword = ( { correo } ) => {
                     navigate('/home');
                 }, 1500);
             }
+
+            console.log(response);
 
         } catch (error) {
             if (error.message === "Network Error") {
@@ -78,20 +80,20 @@ const FormChangePassword = ( { correo } ) => {
                     </label>
                     <div className={styles.patitasPasswordContainer}>
                         <input
-                            type={showActualPassword ? "text" : "password"}
+                            type={showCurrentPassword ? "text" : "password"}
                             className={styles.formInput}
-                            value={actualPassword}
-                            onChange={(e) => setActualPassword(e.target.value)}
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
                             required
                         />
                         <button
                             type="button"
                             className={styles.patitasPasswordToggle}
-                            onClick={() => setShowActualPassword(!showActualPassword)}
+                            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                         >
                             <img
-                                src={showActualPassword ? "/icons/closed_eye.svg" : "/icons/open_eye.svg"}
-                                alt={showActualPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                                src={showCurrentPassword ? "/icons/closed_eye.svg" : "/icons/open_eye.svg"}
+                                alt={showCurrentPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                                 width="20"
                                 height="20"
                             />
