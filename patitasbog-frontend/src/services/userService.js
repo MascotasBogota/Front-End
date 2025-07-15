@@ -5,8 +5,8 @@ export const userService = {
   registerUser: (userData) => userApi.post("/api/users/register", userData),
   loginUser: (credentials) => userApi.post("/api/users/login", credentials),
   // Método para obtener el perfil del usuario
-  getUserProfile: () => userApi.get("/api/profile"),
-  updateUserProfile: (userData) => userApi.put("/api/profile", userData),
+  getUserProfile: () => userApi.get("/api/profile/"),
+  updateUserProfile: (userData) => userApi.put("/api/profile/", userData),
   changePassword: (passwordData) =>
     userApi.put("/api/profile/change-password", passwordData),
   uploadProfilePicture: (formData) =>
@@ -29,7 +29,7 @@ export const userService = {
    * @returns {Promise<Object>}  Datos del usuario y/o nuevo JWT emitido por tu API.
    */
   googleLogin: (tokenData) =>
-    userApi.post("/api/auth/google-login", tokenData, {
+    userApi.post("/api/auth/google_login", tokenData, {
       // Sobrescribimos Authorization solo para esta llamada,
       // de modo que no se envíe el JWT local si existe.
       headers: { Authorization: undefined },

@@ -9,6 +9,6 @@
 .main-content-wrapper {
   display: flex; 
   height: calc(100vh - var(--navbar-height));
-  width: 100%;
+  min-width: 100%;
   box-sizing: border-box; 
 }
