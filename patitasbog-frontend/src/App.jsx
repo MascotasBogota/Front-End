@@ -10,8 +10,7 @@ import ViewSignUp from './views/Register/ViewSignUp';
 import ViewLogin from './views/Login/ViewLogin';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
 import ConnTest from "./views/conn-test/conn-test";
-import ViewCreateReport from './views/Reportes/ViewCreateReport';
-
+import ReportForm from "./components/Reportes/ReportForm"
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
@@ -35,9 +34,13 @@ function App() {
             }
           />
           <Route
-            path="/create-report"
+            path="/create-report/:reportId"
             element={
-              <PrivateRoute><Layout><ViewCreateReport /></Layout></PrivateRoute>
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="found" reportId="6875b99c65e48c170d58747b"/>
+                </Layout>
+              </PrivateRoute>
             }
           />
         </Routes>

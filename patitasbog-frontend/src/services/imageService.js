@@ -1,5 +1,11 @@
-import reportApi from "./httpClients/reportApi";
+import reportApi from "./httpClients/reportApi"
 
 export const imageService = {
-  uploadImage: (imageData) => reportApi.post("/images/upload", imageData),
-};
+  // Método para cargar una imagen. imageData debe ser un objeto FormData.
+  uploadImage: (imageData) =>
+    reportApi.post("/images/upload", imageData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Importante para el envío de archivos
+      },
+    }),
+}

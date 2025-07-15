@@ -1,74 +1,173 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import MapaSelector from "./MapaSelector"
 import styles from "../../styles/ReportForm.module.css"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { reportService } from "../../services/reportService"
+import { responseService } from "../../services/responseService"
+import { imageService } from "../../services/imageService" // Importar imageService
 
-
-const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) => {
-  const [petName, setPetName] = useState(initialData.petName || "")
-  const [petType, setPetType] = useState(initialData.petType || "")
-  const [details, setDetails] = useState(initialData.details || "")
-  const [location, setLocation] = useState(initialData.location || null)
-  const [photos, setPhotos] = useState([])
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [message, setMessage] = useState({ type: "", text: "" })
+const ReportForm = ({ type = "lost" }) => {
+  const { reportId } = useParams()
 
   const isLost = type === "lost"
   const isFound = type === "found"
   const isEdit = type === "updating"
   const isSighting = type === "sighting"
 
-  const formTitle = isEdit ? "Editar Reporte" : isLost ? "Crear Reporte" : "Responder Reporte"
-  const typeLabel = isEdit ? "Perdida" : isLost ? "Perdida" : type === "sighting" ? "Avistamiento" : "Encontrado"
+  const [isLoading, setIsLoading] = useState((isEdit || isFound || isSighting) && !!reportId)
+  const [petName, setPetName] = useState("")
+  const [petType, setPetType] = useState("")
+  const [details, setDetails] = useState("")
+  const [location, setLocation] = useState(null) // { lat, lng }
+  const [newPhotos, setNewPhotos] = useState([]) // Ahora contendrá objetos File
+  const [existingPhotoURLs, setExistingPhotoURLs] = useState([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [missingFieldsState, setMissingFieldsState] = useState([])
+  const [message, setMessage] = useState({ type: "", text: "" })
 
-  const requiredFields = ["petName", "petType", "details", "location"]
-  if (isLost || isFound) requiredFields.push("photos")
+  const formTitle = isEdit ? "Editar Reporte" : isLost ? "Crear Reporte" : "Responder Reporte"
+  const typeLabel = isEdit ? "Perdida" : isLost ? "Perdida" : isSighting ? "Avistamiento" : "Encontrado"
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const loadReport = async () => {
+      if (!reportId || isLost) {
+        setIsLoading(false)
+        return
+      }
+
+      setIsLoading(true)
+      try {
+        const report = await reportService.getReportById(reportId)
+
+        if (!report) {
+          setMessage({ type: "error", text: "Reporte no encontrado." })
+          return
+        }
+
+        if (isEdit) {
+          setPetName(report.pet_name || "")
+          setPetType(report.type ? report.type.charAt(0).toUpperCase() + report.type.slice(1) : "")
+          setDetails(report.description || "")
+          setLocation(
+            report.location?.coordinates
+              ? { lat: report.location.coordinates[1], lng: report.location.coordinates[0] }
+              : null,
+          )
+          if (report.images?.length) {
+            setExistingPhotoURLs(report.images)
+          }
+        } else if (isFound || isSighting) {
+          setPetName(report.pet_name || "")
+          setPetType(report.type ? report.type.charAt(0).toUpperCase() + report.type.slice(1) : "")
+          setDetails("")
+          setLocation(null)
+          setExistingPhotoURLs([])
+          setNewPhotos([])
+        }
+      } catch (err) {
+        setMessage({ type: "error", text: "Error al cargar el reporte. Inténtalo de nuevo." })
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadReport()
+  }, [reportId, isEdit, isFound, isSighting, isLost])
+
   const handleDiscard = () => {
-    navigate(-1) // Volver a la página anterior
+    navigate(-1)
   }
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setMessage({ type: "", text: "" })
+    setMissingFieldsState([])
 
-    const formData = { petName, petType, details, location, photos, type }
+    const requiredFields = ["details", "location"]
+    if (isLost || isEdit || isFound || isSighting) {
+      requiredFields.push("photos")
+    }
+    if (isLost || isEdit) {
+      requiredFields.push("petName", "petType")
+    }
+
+    const allCurrentPhotosForValidation = [...existingPhotoURLs, ...newPhotos]
+    const formDataForValidation = { petName, petType, details, location, photos: allCurrentPhotosForValidation, type }
 
     const missingFields = requiredFields.filter((field) => {
       if (field === "location") return !location
-      if (field === "photos") return photos.length === 0
-      return !formData[field]
+      if (field === "photos") return allCurrentPhotosForValidation.length === 0
+      if ((field === "petName" && (isLost || isEdit)) || (field === "petType" && (isLost || isEdit))) {
+        return !formDataForValidation[field]
+      }
+      return !formDataForValidation[field]
     })
 
     if (missingFields.length > 0) {
+      setMissingFieldsState(missingFields)
       setMessage({ type: "error", text: "Por favor, completa todos los campos obligatorios." })
       setIsSubmitting(false)
       return
     }
 
-    const payload = {
-      pet_name: petName,
-      type: petType.toLowerCase(),
-      description: details,
-      location: {
-        type: "Point",
-        coordinates: [location.lng, location.lat],
-      },
-      images: photos.map((file) => URL.createObjectURL(file)), // reemplazar por URLs reales en producción
-    }
+    setMissingFieldsState([])
 
+    const uploadedImageUrls = []
     try {
-      await onSubmit?.(payload)
-      setMessage({ type: "success", text: "Reporte enviado con éxito!" })
+      for (const file of newPhotos) {
+        const formData = new FormData()
+        formData.append("image", file)
+        const response = await imageService.uploadImage(formData)
+
+        if (response && response.imageUrl) {
+          uploadedImageUrls.push(response.imageUrl)
+        } else {
+          throw new Error("URL de imagen no recibida después de la carga.")
+        }
+      }
+
+      const allPhotosForBackend = [...existingPhotoURLs, ...uploadedImageUrls]
+
+      let backendPayload
+      if (isLost || isEdit) {
+        backendPayload = {
+          pet_name: petName,
+          type: petType.toLowerCase(),
+          description: details,
+          location: {
+            type: "Point",
+            coordinates: [location.lng, location.lat],
+          },
+          images: allPhotosForBackend,
+        }
+        if (isEdit) {
+          await reportService.updateReport(reportId, backendPayload)
+          setMessage({ type: "success", text: "Reporte actualizado con éxito!" })
+        } else if (isLost) {
+          await reportService.createReport(backendPayload)
+          setMessage({ type: "success", text: "Reporte de mascota perdida creado con éxito!" })
+        }
+      } else if (isSighting || isFound) {
+        backendPayload = {
+          type: isSighting ? "avistamiento" : "hallazgo",
+          comment: details,
+          location: {
+            type: "Point",
+            coordinates: [location.lng, location.lat],
+          },
+          images: allPhotosForBackend,
+        }
+        await responseService.createResponse(reportId, backendPayload)
+        setMessage({ type: "success", text: "Respuesta enviada con éxito!" })
+      }
+
+      setTimeout(() => navigate(-1), 1500)
     } catch (error) {
-      console.error("Error al enviar reporte:", error)
+      console.error("Error al enviar el reporte:", error)
       setMessage({ type: "error", text: "Error al enviar el reporte. Inténtalo de nuevo." })
     } finally {
       setIsSubmitting(false)
@@ -77,13 +176,30 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
 
   const handlePhotoChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setPhotos(Array.from(e.target.files))
+      setNewPhotos(Array.from(e.target.files))
     }
   }
 
-  const handleRemovePhoto = (index) => {
-    setPhotos((prev) => prev.filter((_, i) => i !== index))
+  const handleRemoveNewPhoto = (index) => {
+    setNewPhotos((prev) => prev.filter((_, i) => i !== index))
   }
+
+  const handleRemoveExistingPhoto = (index) => {
+    setExistingPhotoURLs((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  if (isLoading) {
+    return (
+      <div className={styles.reportFormContainer}>
+        <p className={styles.loadingText}>Cargando datos del reporte...</p>
+      </div>
+    )
+  }
+
+  const allPhotosToDisplay = [
+    ...existingPhotoURLs.map((url) => ({ type: "url", value: url })),
+    ...newPhotos.map((file) => ({ type: "file", value: file })),
+  ]
 
   return (
     <div className={styles.reportFormContainer}>
@@ -92,37 +208,36 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
         <hr className={styles.divider} />
         <p className={styles.requiredFieldsNotice}>
           Los campos de nombre, tipo de mascota, detalles y ubicación son obligatorios.
-          {(isLost || isFound) && " También se requiere al menos una foto."}
+          {(isLost || isFound || isEdit || isSighting) && " También se requiere al menos una foto."}
         </p>
-
         <form onSubmit={handleSubmit} className={styles.formGrid}>
-          {/* Tipo de reporte */}
           <div className={styles.formFieldFull}>
             <label className={styles.formLabel}>Tipo de reporte</label>
             <input type="text" value={typeLabel} className={styles.formInput} readOnly />
           </div>
 
-          {/* Nombre mascota */}
           <div className={styles.formFieldFull}>
             <label className={styles.formLabel}>Nombre mascota</label>
             <input
               type="text"
               placeholder="Escribe el nombre de tu mascota"
-              className={styles.formInput}
+              className={`${styles.formInput} ${missingFieldsState.includes("petName") ? styles.inputError : ""}`}
               value={petName}
               onChange={(e) => setPetName(e.target.value)}
               readOnly={!isLost && !isEdit}
             />
+            {missingFieldsState.includes("petName") && (
+              <p className={styles.errorText}>El nombre de la mascota es obligatorio.</p>
+            )}
           </div>
 
-          {/* Tipo de mascota */}
           <div className={styles.formFieldFull}>
             <label className={styles.formLabel}>Tipo de mascota</label>
             <select
               name="petType"
               value={petType}
               onChange={(e) => setPetType(e.target.value)}
-              className={styles.formInput}
+              className={`${styles.formInput} ${missingFieldsState.includes("petType") ? styles.inputError : ""}`}
               disabled={!isLost && !isEdit}
             >
               <option value="">Selecciona una opción</option>
@@ -130,27 +245,27 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
               <option value="Gato">Gato</option>
               <option value="Otro">Otro</option>
             </select>
-            {message.type === "error" && !petType && (
-              <p className={styles.errorText}>Por favor selecciona el tipo de mascota.</p>
+            {missingFieldsState.includes("petType") && (
+              <p className={styles.errorText}>Debes seleccionar un tipo de mascota.</p>
             )}
           </div>
 
-          {/* Detalles */}
           <div className={styles.formFieldFull}>
             <label className={styles.formLabel}>Detalles</label>
             <textarea
               placeholder="Escribe los detalles importantes"
-              className={`${styles.formInput} ${styles.textarea}`}
+              className={`${styles.formInput} ${styles.textarea} ${missingFieldsState.includes("details") ? styles.inputError : ""}`}
               value={details}
               onChange={(e) => setDetails(e.target.value)}
-              required
             />
+            {missingFieldsState.includes("details") && <p className={styles.errorText}>Los detalles son requeridos.</p>}
           </div>
 
-          {/* Mapa ubicación */}
           <div className={styles.formField}>
             <label className={styles.formLabel}>Ubicación</label>
-            <div className={styles.mapContainer}>
+            <div
+              className={`${styles.mapContainer} ${missingFieldsState.includes("location") ? styles.inputError : ""}`}
+            >
               <MapaSelector setUbicacion={setLocation} ubicacionInicial={location} />
             </div>
             {location && (
@@ -158,33 +273,62 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
                 Ubicación seleccionada: {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
               </p>
             )}
+            {missingFieldsState.includes("location") && (
+              <p className={styles.errorText}>Debes seleccionar una ubicación en el mapa.</p>
+            )}
           </div>
 
-          {/* Fotos */}
           <div className={styles.formField}>
             <label className={styles.formLabel}>Fotos</label>
-            <div className={styles.photoUploadContainer}>
+            <div
+              className={`${styles.photoUploadContainer} ${missingFieldsState.includes("photos") ? styles.inputError : ""}`}
+            >
               <div className={styles.photoPreviewGrid}>
-                {photos.length > 0 ? (
-                  photos.map((file, idx) => (
-                    <div key={idx} className={styles.photoFileItem}>
-                      📎 {file.name}
-                      <button type="button" onClick={() => handleRemovePhoto(idx)} className={styles.removePhotoButton}>
-                        ×
-                      </button>
+                {allPhotosToDisplay.length > 0 ? (
+                  allPhotosToDisplay.map((item, idx) => (
+                    <div key={idx} className={styles.photoItem}>
+                      {item.type === "file" ? (
+                        <>
+                          <img
+                            src={URL.createObjectURL(item.value) || "/placeholder.svg"}
+                            alt={`Nueva foto ${idx + 1}`}
+                            className={styles.photoPreview}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveNewPhoto(idx)}
+                            className={styles.removePhotoButton}
+                          >
+                            ×
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src={item.value || "/placeholder.svg"}
+                            alt={`Foto existente ${idx + 1}`}
+                            className={styles.photoPreview}
+                          />
+                          {isEdit && (
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveExistingPhoto(idx)}
+                              className={styles.removePhotoButton}
+                            >
+                              ×
+                            </button>
+                          )}
+                        </>
+                      )}
                     </div>
-                  ))
-                ) : initialData.photoURLs?.length ? (
-                  initialData.photoURLs.map((url, idx) => (
-                    <img key={idx} src={url} alt={`Foto existente ${idx + 1}`} className={styles.photoPreview} />
                   ))
                 ) : (
                   <div className={styles.photoPlaceholder}>
-                    <p></p>
+                    <img src="/placeholder.svg?height=100&width=100" alt="Placeholder" />
+                    <p>No has subido ninguna foto.</p>
                   </div>
                 )}
               </div>
-
               <input
                 type="file"
                 accept="image/*"
@@ -192,24 +336,24 @@ const ReportForm = ({ type = "lost", initialData = {}, onSubmit, onDiscard }) =>
                 onChange={handlePhotoChange}
                 className={styles.fileInput}
                 id="photo-upload"
-                required={isLost || isFound}
               />
               <label htmlFor="photo-upload" className={styles.uploadButton}>
                 Subir fotos
               </label>
             </div>
+            {missingFieldsState.includes("photos") && (
+              <p className={styles.errorText}>Debes subir al menos una foto.</p>
+            )}
           </div>
 
-          {/* Mensaje */}
           {message.text && (
             <div className={`${styles.messageBox} ${message.type === "error" ? styles.error : styles.success}`}>
               {message.text}
             </div>
           )}
 
-          {/* Acciones */}
           <div className={styles.formActions}>
-            <button type="button" onClick={() => navigate(-1)} className={styles.discardButton} disabled={isSubmitting}>
+            <button type="button" onClick={handleDiscard} className={styles.discardButton} disabled={isSubmitting}>
               Descartar
             </button>
             <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
