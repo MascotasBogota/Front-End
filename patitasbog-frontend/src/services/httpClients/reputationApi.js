@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const reportApi = axios.create({
-  baseURL: "http://localhost:5050/",
-  timeout: 10000,
+const reputationApi = axios.create({
+  baseURL: "http://localhost:5100/",
+  timeout: 5000,
 });
 
 // Interceptor para añadir el token de autenticación si existe
-reportApi.interceptors.request.use((config) => {
+reputationApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -15,7 +15,7 @@ reportApi.interceptors.request.use((config) => {
 });
 
 // Interceptor para manejar errores globales
-reportApi.interceptors.response.use(
+reputationApi.interceptors.response.use(
   (response) => response.data, // Solo devolvemos el data
   (error) => {
     console.error("HTTP error:", error);
@@ -23,4 +23,4 @@ reportApi.interceptors.response.use(
   }
 );
 
-export default reportApi;
+export default reputationApi;

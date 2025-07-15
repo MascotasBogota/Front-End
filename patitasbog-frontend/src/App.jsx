@@ -11,28 +11,42 @@ import ViewLogin from './views/Login/ViewLogin';
 import ViewProfile from './views/Profile/ViewProfile';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
 import ConnTest from "./views/conn-test/conn-test";
+import ReportForm from "./components/Reportes/ReportForm"
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <Router>
-      <Routes>
-        {/* Públicas */}
-        <Route path="/" element={<Layout><ViewHome /></Layout>} />
-        <Route path="/register" element={<ViewSignUp />} />
-        <Route path="/login" element={<ViewLogin />} />
-        <Route path="/recover_password" element={<ViewRecoverPassword />} />
-        <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
-        {/* Protegidas */}
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute><Layout><ViewHomeLogin/></Layout></PrivateRoute>
-          }
-        />
-      </Routes>
-    </Router>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <Router>
+        <Routes>
+          {/* Públicas */}
+          <Route path="/" element={<Layout><ViewHome /></Layout>} />
+          <Route path="/register" element={<ViewSignUp />} />
+          <Route path="/login" element={<ViewLogin />} />
+          <Route path="/recover_password" element={<ViewRecoverPassword />} />
+          <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
+          {/* Protegidas */}
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute><Layout><ViewHomeLogin /></Layout></PrivateRoute>
+            }
+          />
+          <Route
+            path="/create-report"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="lost"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 

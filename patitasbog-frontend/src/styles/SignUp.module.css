@@ -43,6 +43,7 @@
   font-weight: 600;
   color: var(--color-principal-2);
   margin: 0;
+  text-align: center;
 }
 
 .patitasSubtitle {
@@ -50,6 +51,7 @@
   font-weight: 500;
   color: #c71c5e;
   margin: 0;
+  text-align: center;
 }
 
 .patitasDivider {
