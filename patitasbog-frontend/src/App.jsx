@@ -8,6 +8,7 @@ import ViewHome from './views/Home/ViewHome';
 import ViewHomeLogin from './views/Home/ViewHomeLogin';
 import ViewSignUp from './views/Register/ViewSignUp';
 import ViewLogin from './views/Login/ViewLogin';
+import ViewChangePassword from './views/Profile/ViewChangePassword';
 import ViewProfile from './views/Profile/ViewProfile';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
 import ViewEducation from './views/Education/ViewEducation';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/register" element={<ViewSignUp />} />
           <Route path="/login" element={<ViewLogin />} />
           <Route path="/recover_password" element={<ViewRecoverPassword />} />
+          <Route path="/change_password" element={<Layout><ViewChangePassword /></Layout>} />
           <Route path="/education" element={<Layout><ViewEducation /></Layout>} />
           <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
           {/* Protegidas */}
