@@ -11,6 +11,7 @@ import ViewLogin from './views/Login/ViewLogin';
 import ViewChangePassword from './views/Profile/ViewChangePassword';
 import ViewProfile from './views/Profile/ViewProfile';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
+import ViewEducation from './views/Education/ViewEducation';
 import ConnTest from "./views/conn-test/conn-test";
 import ReportForm from "./components/Reportes/ReportForm"
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -28,7 +29,7 @@ function App() {
           <Route path="/login" element={<ViewLogin />} />
           <Route path="/recover_password" element={<ViewRecoverPassword />} />
           <Route path="/change_password" element={<Layout><ViewChangePassword /></Layout>} />
-          
+          <Route path="/education" element={<Layout><ViewEducation /></Layout>} />
           <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
           {/* Protegidas */}
           <Route

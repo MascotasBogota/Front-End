@@ -59,7 +59,7 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className={styles.navLinks}>
           <Link to="/about">Quiénes Somos</Link>
-          <Link to="/educacion">Módulo Educativo</Link>
+          <Link to="/education">Módulo Educativo</Link>
           {!isAuthenticated && (
             <>
               <Link to="/register">Registrarse</Link>
@@ -95,7 +95,7 @@ const Navbar = () => {
           <Link to="/about" onClick={closeMobileMenu}>
             Quiénes Somos
           </Link>
-          <Link to="/educacion" onClick={closeMobileMenu}>
+          <Link to="/education" onClick={closeMobileMenu}>
             Módulo Educativo
           </Link>
           {!isAuthenticated && (
