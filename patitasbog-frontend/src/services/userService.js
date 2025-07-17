@@ -8,7 +8,7 @@ export const userService = {
   getUserProfile: () => userApi.get("/api/profile/"),
   updateUserProfile: (userData) => userApi.put("/api/profile/", userData),
   changePassword: (passwordData) =>
-    userApi.put("/api/profile/password", passwordData),
+    userApi.put("/api/profile/change-password", passwordData),
   uploadProfilePicture: (formData) =>
     userApi.post("/api/profile/upload-picture", formData, {
       headers: {

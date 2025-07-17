@@ -38,10 +38,17 @@ const FormChangePassword = ( { correo } ) => {
         }
             
         try {
-            const response = await userService.changePassword({
+            const data = {
                 currentPassword: currentPassword,      
-                newPassword: password       
-            });
+                newPassword: password 
+            }
+
+            console.log(data);
+            console.log(localStorage.getItem("authToken"));
+
+            const response = await userService.changePassword(data);
+
+            console.log(response);
             
             if (response.message) {
                 setSuccessMessage(response.message || "¡Contraseña cambiada correctamente!");   
