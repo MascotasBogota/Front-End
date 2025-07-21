@@ -31,9 +31,10 @@ function App() {
           <Route path="/recover_password" element={<ViewRecoverPassword />} />
           <Route path="/change_password" element={<Layout><ViewChangePassword /></Layout>} />
           <Route path="/education" element={<Layout><ViewEducation /></Layout>} />
-          <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
-          <Route path="/reporte" element={<Layout><ViewDetailsReport /></Layout>} />
+          
           {/* Protegidas */}
+          <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
+          <Route path="/reportes/:idReporte" element={<Layout><ViewDetailsReport /></Layout>} />
           <Route
             path="/home"
             element={
@@ -46,6 +47,37 @@ function App() {
               <PrivateRoute>
                 <Layout>
                   <ReportForm type="lost"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/updating/:reportId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="updating"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sighting/:reportId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="sighting"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/found/:reportId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="found"/>
                 </Layout>
               </PrivateRoute>
             }

@@ -15,7 +15,8 @@ export const userService = {
         "Content-Type": "multipart/form-data",
       },
     }),
-
+  
+  getUserById: (userId) => userApi.get(`/api/profile/user/${userId}`),
   // Métodos para recuperar contraseña
   requestPasswordReset: ({email}) => userApi.post("/api/auth/forgot-password", { email }),
   verifyToken: ({ email, token }) => userApi.post("/api/auth/verify-token", { email, token }),
