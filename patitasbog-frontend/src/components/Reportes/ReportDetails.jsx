@@ -19,6 +19,10 @@ const ReportDetails = () => {
                                 <p className={styles.nombre}>
                                     Gustavo Petro
                                 </p>
+                                <img src='/icons/star.svg' className={styles.reputation_icon} />
+                                <p className={styles.nombre}>
+                                    5.0
+                                </p>
                             </div>
                             <p className={styles.username}>
                                 @gustavito1234
