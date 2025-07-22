@@ -131,10 +131,11 @@ const ReportDetails = ( { idviewer, report } ) => {
                     <div className={styles.user_data}>
                         <div className={styles.profile_photo_container}>
                             <img
-                                src={userphoto ? `http://localhost:5000${userphoto}` : '/images/sin_foto_perfil.png'}
-                                alt="Foto de perfil"
-                                className={styles.profile_photo}
+                            src={userphoto || '/images/sin_foto_perfil.png'}
+                            alt="Foto de perfil"
+                            className={styles.profile_photo}
                             />
+
                         </div>
                         
                         <div className={styles.user_text_container}>

@@ -37,8 +37,6 @@ const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
         setPetPhoto(data.images[0]);
         setType(data.type);
         setIdReponse(data.id)
-        console.log("id de respuesta");
-        console.log(data.id);
 
         const fetchUser = async () => {
             try{
@@ -116,7 +114,11 @@ const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
     return (
         <div className={styles.response_box}>   
             <div className={styles.response_header}>
-                <img src={userphoto ? `http://localhost:5000${userphoto}` : '/images/sin_foto_perfil.png'} className={styles.response_profile_photo}></img>
+                <img
+                src={userphoto || '/images/sin_foto_perfil.png'}
+                alt="Foto de perfil"
+                className={styles.response_profile_photo}
+                />
                 <div className={styles._response_user_text_container}>
                     <div className={styles.response_principal_text}>
                         <p className={styles.response_nombre}>
