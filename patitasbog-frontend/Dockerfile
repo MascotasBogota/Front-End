@@ -11,8 +11,10 @@ RUN npm install
 
 COPY . .
 
+ARG CACHEBUST=1
+
 # Exponer el puerto que Vite usa por defecto
 EXPOSE 5173
 
 # Comando por defecto: correr el frontend en modo dev
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["npm", "run", "dev", "--", "--host","0.0.0.0"]

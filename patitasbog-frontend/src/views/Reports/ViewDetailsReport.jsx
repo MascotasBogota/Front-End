@@ -46,22 +46,30 @@ const ViewDetailsReport = () => {
       }
     }   
 
+    fetchViewerUser();
     fetchResponses();
   }, []);
 
   return (
       <div className={styles.background}>  
         <div className={styles.view_column_left}>
-          <ReportDetails idviewer={idvieweruser}/>
+          {!loading && idvieweruser && (
+            <ReportDetails idviewer={idvieweruser}/>
+          )
+        }
         </div>
         <div className={styles.view_column_right}>
-          {loading && <p className={styles.loadingmessage}>Cargando...</p>}
-          {!loading && responses && responses.length > 0 ? (
+          {!loading && idvieweruser && responses && responses.length > 0 ? (
             responses.map((response) => (
-              <ResponseDetails key={response.id} data={response} idviewer={idvieweruser} idreport={idReporte}/>
+              <ResponseDetails
+                key={response.id}
+                data={response}
+                idviewer={idvieweruser}
+                idreport={idReporte}
+              />
             ))
           ) : (
-            <p className={styles.loadingmessage}>No hay respuestas aún.</p>
+           !loading && <p className={styles.loadingmessage}>No hay respuestas aún.</p>
           )}
         </div>
       </div>

@@ -82,6 +82,26 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/sighting_edit/:reportId/:responseId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="sightingEdit"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/found_edit/:reportId/:responseId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="foundEdit"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </Router>
     </GoogleOAuthProvider>

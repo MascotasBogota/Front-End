@@ -29,7 +29,7 @@ const ReportsTape = ({ reportes, loading }) => {
                 <motion.div
                     className={styles.tapeScroller}
                     animate={{ x: ["0%", "-50%"] }}
-                    transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+                    transition={{ repeat: Infinity, duration: 150, ease: "linear" }}
                 >
                     <div className={styles.infiniteTape}>
                         {duplicatedReportes.map((reporte, index) => (

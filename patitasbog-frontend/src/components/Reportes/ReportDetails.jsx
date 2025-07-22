@@ -59,6 +59,8 @@ const ReportDetails = ( { idviewer } ) => {
                 setUserPhoto(response2.user.profile_picture);
                 setIdReportUser(response2.user.id);
                 console.log("Datos de reporte obtenidos con éxito");
+                console.log(response2.user.id);
+                console.log(idviewer);
             }
             catch(error){
                 setErrorMessage(`Error obteniendo datos del usuario creador del reporte: ${error.message}`);

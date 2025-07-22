@@ -105,7 +105,12 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
     }
 
     const handleEdit = () => {
-        navigate(`/updating/${idReporte}`);
+        if(type == 'avistamiento'){
+            navigate(`/sighting_edit/${idreport}/${idresponse}`);
+        }
+        else {
+            navigate(`/found_edit/${idreport}/${idresponse}`);
+        }
     }
 
     return (
@@ -128,7 +133,7 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
                 </div>
                 <span className={styles.response_type_label}>{type == "avistamiento" ? "Avistamiento" : "Encontrado"}</span>
                 {idvieweruser == idresponseUser && (
-                    <img src='/icons/pencil.svg' className={styles.response_change_icon} />
+                    <img src='/icons/pencil.svg' className={styles.response_change_icon} onClick={handleEdit}/>
                 )
                 }
                 {idvieweruser == idresponseUser && (
@@ -153,29 +158,31 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
                     <img src={petphoto} className={styles.response_photo} />    
                 </div>
             </div>
-            <div className={styles.response_footer}>
-                <p className={styles.reputation_text}>¿Fue útil esta respuesta?</p>
-                {!like_clicked && (
-                        <img src='/icons/grey_like.svg' alt='Like' 
-                        className={styles.response_calification_icon} onClick={handle_like_click}/>
-                    )
-                }
-                {like_clicked && (
-                        <img src='/icons/green_like.svg' alt='Like' 
-                        className={styles.response_calification_icon} onClick={handle_like_click}/>
-                    )
-                }
-                {!dislike_clicked && (
-                        <img src='/icons/grey_dislike.svg' alt='Dislike' 
-                        className={styles.response_calification_icon} onClick={handle_dislike_click}/>
-                    )
-                }
-                {dislike_clicked && (
-                        <img src='/icons/red_dislike.svg' alt='Dislike' 
-                        className={styles.response_calification_icon} onClick={handle_dislike_click}/>
-                    )
-                }
-            </div>
+            {idvieweruser == idresponseUser && (
+                <div className={styles.response_footer}>
+                    <p className={styles.reputation_text}>¿Fue útil esta respuesta?</p>
+                    {!like_clicked && (
+                            <img src='/icons/grey_like.svg' alt='Like' 
+                            className={styles.response_calification_icon} onClick={handle_like_click}/>
+                        )
+                    }
+                    {like_clicked && (
+                            <img src='/icons/green_like.svg' alt='Like' 
+                            className={styles.response_calification_icon} onClick={handle_like_click}/>
+                        )
+                    }
+                    {!dislike_clicked && (
+                            <img src='/icons/grey_dislike.svg' alt='Dislike' 
+                            className={styles.response_calification_icon} onClick={handle_dislike_click}/>
+                        )
+                    }
+                    {dislike_clicked && (
+                            <img src='/icons/red_dislike.svg' alt='Dislike' 
+                            className={styles.response_calification_icon} onClick={handle_dislike_click}/>
+                        )
+                    }
+                </div>
+            )}
         </div>
     )
 }
