@@ -36,7 +36,7 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
         setTime(hora);
         setComment(data.comment);
         setLocation(data.location);
-        setPetPhoto(data.photo);
+        setPetPhoto(data.images[0]);
         setType(data.type);
         setIdReponse(data.id)
 
