@@ -133,11 +133,11 @@ const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
                 </div>
                 <span className={styles.response_type_label}>{type == "avistamiento" ? "Avistamiento" : "Encontrado"}</span>
 
-                {idvieweruser == idresponseUser && (
+                {idviewer == idresponseUser && (
                     <img src='/icons/pencil.svg' className={styles.response_change_icon} onClick={handleEdit}/>
                 )
                 }
-                {idvieweruser == idresponseUser && (
+                {idviewer == idresponseUser && (
                     <img src='/icons/trash.svg' alt='trash-response' className={styles.response_change_icon} onClick={handleDelete}/>
                 )
                 }
