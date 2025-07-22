@@ -236,11 +236,23 @@
 }
 
 .categoryDescription {
+  display: none;
   font-size: 0.9rem;
   color: inherit;
   opacity: 0.8;
   margin-bottom: var(--spacing-2);
 }
+
+.categoryDescription p {
+  margin-bottom: 0.6rem;      /* Espacio entre cada tip */
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.categoryCard:hover .categoryDescription {
+  display: block;
+}
+
 
 .categoryArrow {
   font-size: 1.5rem;
