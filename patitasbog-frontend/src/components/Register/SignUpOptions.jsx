@@ -70,6 +70,7 @@ const SignUpOptions = ({ handleShowEmailForm }) => {
           </button>
 
           <button
+            data-testid="signup-email-button"
             className={`${styles.patitasButton} ${styles.patitasEmailButton}`}
             onClick={handleShowEmailForm}
           >
@@ -77,6 +78,7 @@ const SignUpOptions = ({ handleShowEmailForm }) => {
             <span className={styles.fullText}>Continuar con correo</span>
             <span className={styles.shortText}>Correo</span>
           </button>
+
         </div>
 
         {googleError && <div className={styles.patitasErrorMessage}>{googleError}</div>}

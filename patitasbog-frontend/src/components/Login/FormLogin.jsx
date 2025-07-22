@@ -113,7 +113,7 @@ const FormLogin = () => {
                     </label>
                     <input 
                         className={styles.formInput}
-                        type="email"
+                        type="email" data-testid="login-email-input"
                         value={correo}
                         onChange={(e) => setCorreo(e.target.value)}
                         required
@@ -123,7 +123,7 @@ const FormLogin = () => {
                     </label>
                     <div className={styles.patitasPasswordContainer}>
                         <input
-                            type={showPassword ? "text" : "password"}
+                            type={showPassword ? "text" : "password"} data-testid="login-password-input"
                             className={styles.formInput}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -146,7 +146,7 @@ const FormLogin = () => {
                         ¿Olvidaste tu contraseña?
                     </Link>
                     <br />
-                    <button className={styles.loginButton}
+                    <button className={styles.loginButton} data-testid="login-submit-button"
                         disabled={isLoading}
                     >
                         {isLoading && !successMessage ? 'Iniciando sesión...' : 'Iniciar Sesión'}
