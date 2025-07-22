@@ -57,10 +57,11 @@ const ReportForm = ({ type = "lost" }) => {
         let report
         if (isFoundEdit || isSightingEdit) {
           const responseData = await responseService.getResponseById(reportId, responseId)
-          report = responseData.data
+          report = responseData
+          console.log(report)
           const reportData = await reportService.getReportById(reportId)
-          setPetName(reportData.data.pet_name || "")
-          setPetType(reportData.data.type ? reportData.data.type.charAt(0).toUpperCase() + reportData.data.type.slice(1) : "")
+          setPetName(reportData.pet_name || "")
+          setPetType(reportData.type ? reportData.type.charAt(0).toUpperCase() + reportData.type.slice(1) : "")
           setDetails(report.comment || "")
           setLocation(
             report.location?.coordinates
@@ -71,19 +72,22 @@ const ReportForm = ({ type = "lost" }) => {
             setExistingPhotoURLs(report.images)
           }
         } else {
-          report = await reportService.getReportById(reportId)
-          const data = report.data
-          setPetName(data.pet_name || "")
-          setPetType(data.type ? data.type.charAt(0).toUpperCase() + data.type.slice(1) : "")
-          setDetails(data.description || "")
-          setLocation(
-            data.location?.coordinates
-              ? { lat: data.location.coordinates[1], lng: data.location.coordinates[0] }
-              : null
-          )
-          if (data.images?.length) {
-            setExistingPhotoURLs(data.images)
+          const report = await reportService.getReportById(reportId)
+          
+          setPetName(report.pet_name || "")
+          setPetType(report.type ? report.type.charAt(0).toUpperCase() + report.type.slice(1) : "")
+          if(isEdit){
+            setDetails(report.description || "")
+            setLocation(
+              report.location?.coordinates
+                ? { lat: report.location.coordinates[1], lng: report.location.coordinates[0] }
+                : null
+            )
+            if (report.images?.length) {
+              setExistingPhotoURLs(report.images)
+            }
           }
+          
         }
       } catch (err) {
         setMessage({ type: "error", text: "Error al cargar el reporte. Inténtalo de nuevo." })
@@ -119,7 +123,7 @@ const ReportForm = ({ type = "lost" }) => {
     setMissingFieldsState([])
 
     const requiredFields = ["details", "location"]
-    if (isLost || isEdit || isFound || isSighting || isFoundEdit || isSightingEdit) {
+    if (isLost || isEdit || isFound || isFoundEdit) {
       requiredFields.push("photos")
     }
     if (isLost || isEdit) {
@@ -178,7 +182,7 @@ const ReportForm = ({ type = "lost" }) => {
         }
       } else if (isSighting || isFound || isSightingEdit || isFoundEdit) {
         backendPayload = {
-          type: isSighting || isSightingEdit ? "avistamiento" : "hallazgo",
+          type: "avistamiento",
           comment: details,
           location: { type: "Point", coordinates: [location.lng, location.lat] },
           images: allPhotosForBackend,

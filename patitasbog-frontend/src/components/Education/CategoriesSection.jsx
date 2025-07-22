@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/Education.module.css';
 
 const CategoriesSection = ({ selectedCategory, setSelectedCategory }) => {
+  const [clickedCategory, setClickedCategory] = useState(null);
+  
+  const handleCategoryClick = (categoryId) => {
+    // Efecto de click temporal
+    setClickedCategory(categoryId);
+    setTimeout(() => setClickedCategory(null), 300);
+    
+    setSelectedCategory(categoryId);
+  };
   const categories = [
     {
       id: 'general',
@@ -55,7 +64,7 @@ description: [
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>Categorías de Aprendizaje</h2>
         <p className={styles.sectionDescription}>
-          Selecciona una categoría para ver consejos específicos
+          Haz clic en una categoría para ver sus consejos y obtener información detallada
         </p>
       </div>
       
@@ -65,8 +74,8 @@ description: [
             key={category.id}
             className={`${styles.categoryCard} ${
               selectedCategory === category.id ? styles.categoryActive : ''
-            }`}
-            onClick={() => setSelectedCategory(category.id)}
+            } ${clickedCategory === category.id ? styles.categoryClicked : ''}`}
+            onClick={() => handleCategoryClick(category.id)}
           >
             <div className={styles.categoryIcon}>{category.icon}</div>
             <h3 className={styles.categoryTitle}>{category.name}</h3>
@@ -76,7 +85,9 @@ description: [
               ))}
             </div>
 
-            <div className={styles.categoryArrow}>→</div>
+            <div className={styles.categoryArrow}>
+              {selectedCategory === category.id ? '↓' : '→'}
+            </div>
           </div>
         ))}
       </div>
