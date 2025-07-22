@@ -5,18 +5,18 @@ import { userService } from '../../services/userService';
 import styles from '../../styles/DetailsReport.module.css';
 import MapaLectura from './MapaLectura';
 
-const ReportDetails = () => {
+const ReportDetails = ( { idviewer } ) => {
     const { idReporte } = useParams();
     const navigate = useNavigate();
     const [petname, setPetName] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
-    const [petphoto, setPetPhoto] = useState('');
+    const [petphoto, setPetPhoto] = useState('/images/sin_foto_mascota');
     const [location, setLocation] = useState(null);
     const [description, setDescription] = useState('');
     const [user, setUser] = useState('');
     const [name, setName] = useState('');
-    const [userphoto, setUserPhoto] = useState('');
+    const [userphoto, setUserPhoto] = useState('/images/sin_foto_perfil');
     const [reputation, setReputation] = useState('');   
     const [status, setStatus] = useState('open');
     const [idreportuser, setIdReportUser] = useState('');
@@ -26,6 +26,7 @@ const ReportDetails = () => {
     const [successmessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
+        setIdViewerUser(idviewer);
         const fetchReporte = async () => {
             setLoading(true);
             try {
@@ -72,23 +73,8 @@ const ReportDetails = () => {
             setLoading(false);
         }
         };
-
-        const fetchViewerUser = async () => {
-            try{
-                const response3 = await userService.getUserProfile();
-                setIdViewerUser(response3.profile._id);
-            }
-            catch(error){
-                setErrorMessage(`Error obteniendo el id del usuario logueado`);
-            }
-            finally{
-                setLoading(false);
-            }
-        }        
-
+     
         fetchReporte();
-        fetchViewerUser();
-
     }, []);
 
     const handleDelete = async () => {

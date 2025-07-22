@@ -1,62 +1,156 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate} from 'react-router-dom';
 import styles from '../../styles/DetailsReport.module.css';
 import MapaLectura from './MapaLectura';
+import { userService } from '../../services/userService';
+import { reputationService } from '../../services/reputationService';
+import { responseService } from '../../services/responseService';
 
-const ResponseDetails = () => {
+const ResponseDetails = ( { data, idviewer, idreport } ) => {
+    const [idresponse, setIdReponse] = useState('');
     const [like_clicked, setLike_Clicked] = useState(false);
     const [dislike_clicked, setDislike_Clicked] = useState(false);
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [comment, setComment] = useState('');
+    const [location, setLocation] = useState(null);
+    const [petphoto, setPetPhoto] = useState('/images/sin_foto_mascota');
+    const [nombre, setNombre] = useState('');
+    const [idresponseUser, setIdResponseUser] = useState('');
+    const [user, setUser] = useState('');
+    const [userphoto, setUserPhoto] =useState('');
+    const [type, setType] = useState('');
+    const [reputation, setReputation] = useState('');
+    const [idvieweruser, setIdViewerUser] = useState('');
+    const [loading, setLoading] = useState('');
+    const [errormessage, setErrorMessage] = useState('');
+    const [successmessage, setSuccessMessage] = useState('');
 
-    const handle_like_click = () => {
+    useEffect(()=>{
+        setIdViewerUser(idviewer);
+        const fechaHora = data.created_at;
+        const [fecha, horaCompleta] = fechaHora.split("T");
+        const hora = horaCompleta.slice(0, 5);
+        setDate(fecha);
+        setTime(hora);
+        setComment(data.comment);
+        setLocation(data.location);
+        setPetPhoto(data.photo);
+        setType(data.type);
+        setIdReponse(data.id)
+
+        const fetchUser = async () => {
+            try{
+                const response = await userService.getUserById(data.resp_user_id);
+                setUser(response.user.username);
+                setNombre(response.user.full_name);
+                setReputation(response.user.reputation);
+                setUserPhoto(response.user.profile_picture);
+                setIdResponseUser(response.user.id);
+                console.log("Datos de reporte obtenidos con éxito");
+                console.log("viewer");
+                console.log(idvieweruser);
+                console.log("response");
+                console.log(idresponseUser);
+            }
+            catch(error){
+                setErrorMessage(`Error obteniendo datos del usuario creador de la respuesta: ${error.message}`);
+            }
+            finally{
+                setLoading(false);
+            }
+        }
+
+        fetchUser();
+        
+    }, [])
+
+    const handle_like_click = async () => {
         setLike_Clicked(!like_clicked);
+        setDislike_Clicked(false);
+        const respuesta = await reputationService.rateResponse(idreport, idresponse, "useful");
+        console.log(respuesta);
     }
 
-    const handle_dislike_click = () => {
+    const handle_dislike_click = async () => {
+        if(type=="avistamiento"){
+            const respuesta = await reputationService.rateResponse(idreport, idresponse, "not_useful");
+            console.log(respuesta);
+        }
+        else{
+            const respuesta = await reputationService.rateResponse(idreport, idresponse, "false_finding");
+            console.log(respuesta);
+        }
         setDislike_Clicked(!dislike_clicked);
+        setLike_Clicked(false);
+    }
+
+    const handleDelete = async () => {
+        setLoading(true);
+        try{
+            const response4 = await responseService.deleteResponse(idreport, idresponse);
+            console.log(response4);
+            setLoading(false);
+            setSuccessMessage("Reporte eliminado correctamente, redirigiendo...");
+            setTimeout(() => {
+                navigate(`/home`);
+            }, 2000);
+        }
+        catch(error){
+            setErrorMessage(`Error al eliminar el reporte`);
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
+    const handleEdit = () => {
+        navigate(`/updating/${idReporte}`);
     }
 
     return (
         <div className={styles.response_box}>   
             <div className={styles.response_header}>
-                <img src='/images/sin_foto_perfil.png' className={styles.response_profile_photo}></img>
+                <img src={userphoto ? `http://localhost:5000${userphoto}` : '/images/sin_foto_perfil.png'} className={styles.response_profile_photo}></img>
                 <div className={styles._response_user_text_container}>
                     <div className={styles.response_principal_text}>
                         <p className={styles.response_nombre}>
-                            Gustavo Petro
+                            {nombre}
                         </p>
                         <img src='/icons/star.svg' className={styles.response_reputation_icon} />
                         <p className={styles.response_nombre}>
-                            5.0
+                            {reputation}
                         </p>
                     </div>
                     <p className={styles.response_username}>
-                        @gustavito1234
+                        @{user}
                     </p>
                 </div>
-                <span className={styles.response_type_label}>Avistamiento</span>
-                <img src='/icons/pencil.svg' className={styles.response_change_icon} />
-                <img src='/icons/trash.svg' className={styles.response_change_icon} />
+                <span className={styles.response_type_label}>{type == "avistamiento" ? "Avistamiento" : "Encontrado"}</span>
+                {idvieweruser == idresponseUser && (
+                    <img src='/icons/pencil.svg' className={styles.response_change_icon} />
+                )
+                }
+                {idvieweruser == idresponseUser && (
+                    <img src='/icons/trash.svg' className={styles.response_change_icon} onClick={handleDelete}/>
+                )
+                }
             </div>
             <div className={styles.datetime_container_response}>
-                <p className={styles.datetime_text_response}>Fecha: 06/30/2025</p>
-                <p className={styles.datetime_text_response}>Hora: 1:31 A.M.</p>
+                <p className={styles.datetime_text_response}>Fecha: {date}</p>
+                <p className={styles.datetime_text_response}>Hora: {time}</p>
             </div>
             <p className={styles.response_description_text}>
-                Es muy amigable, pero puede estar asustado. 
-                Llevaba un collar rojo sin placa cuando se escapó. 
-                Tiene una cicatriz pequeña en la oreja izquierda y 
-                responde cuando lo llaman por su nombre. Es parte 
-                de nuestra familia desde cachorro. Nunca se ha 
-                perdido antes y estamos muy angustiados. Si alguien 
-                lo ha visto o tiene alguna información, por favor...
+                {comment}
             </p>
             <div className={styles.response_location_photo}>
-                
                 <div className={styles.map_response_container}>
-                    <MapaLectura ubicacion={[4.711, -74.0721]} dragging={true}/> 
+                    {location?.coordinates && (
+                        <MapaLectura ubicacion={[location.coordinates[1], location.coordinates[0]]} dragging={true} />
+                    )}
                 </div>
                 <div className={styles.response_photo_container}>
-                    <img src='/images/sin_foto_mascota.jpg' className={styles.response_photo} />    
+                    <img src={petphoto} className={styles.response_photo} />    
                 </div>
             </div>
             <div className={styles.response_footer}>
