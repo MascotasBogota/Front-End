@@ -1,7 +1,7 @@
 import notificationApi from "./httpClients/notificationApi";
 
 export const notificationService = {
-  getCurrentUserNotifications: () => notificationApi.get("/notifications"),
+  getCurrentUserNotifications: () => notificationApi.get("/notifications/"),
 
   markAllAsRead: () => notificationApi.patch("/notifications/read-all"),
 
