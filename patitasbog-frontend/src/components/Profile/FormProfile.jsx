@@ -146,24 +146,28 @@ const FormProfile = () => {
                     <label className={styles.firstinputLabel}>Nombre completo*</label>
                     <input type='text' className={styles.formInput}
                         value={nombre}
+                        data-testid="profile-name-input"
                         onChange={(e) => setNombre(e.target.value)}
                         required
                     ></input>
                     <label className={styles.inputLabel}>Correo electrónico*</label>
                     <input type='email' className={styles.formInput}
                         value={email}
+                        data-testid="profile-email-input"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     ></input>
                     <label className={styles.inputLabel}>Usuario</label>
                     <input type='text' className={styles.formInput}
                         value={user}
+                        data-testid="profile-username-input"
                         onChange={(e) => setUser(e.target.value)}
                     ></input>
                     <label className={styles.inputLabel}>Sexo</label>
                     <select
                         className={styles.formInput}
                         value={genero}
+                        data-testid="profile-gender-select"
                         onChange={(e) => setGenero(e.target.value)}
                         required
                         >
@@ -176,11 +180,13 @@ const FormProfile = () => {
                     <label className={styles.inputLabel}>Dirección</label>
                     <input type='text' className={styles.formInput}
                         value={direccion}
+                        data-testid="profile-direction-input"
                         onChange={(e) => setDireccion(e.target.value)}
                     ></input>
                     <label className={styles.inputLabel}>Número de teléfono</label>
                     <input type='text' className={styles.formInput}
                         value={telefono}
+                        data-testid="profile-phone-input"
                         onChange={(e) => setTelefono(e.target.value)}
                     ></input>
                     <p>Los campos marcados con * son obligatorios</p>

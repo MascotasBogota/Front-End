@@ -12,7 +12,7 @@ const ReportGrid = ({ reports, currentPage, totalPages, onPageChange }) => {
           <p>Intenta ajustar los filtros para ver más resultados</p>
         </div>
       ) : (
-        <div className={styles.reportsGrid}>
+        <div className={styles.reportsGrid} data-testid="report-card">
           {reports.map((reporte) => (
             <Link key={reporte._id} to={`/reportes/${reporte._id}`} style={{ textDecoration: "none" }}>
               <PetCard reporte={reporte} />
@@ -25,7 +25,7 @@ const ReportGrid = ({ reports, currentPage, totalPages, onPageChange }) => {
         <div className={styles.paginationControls}>
           <button
             className={styles.paginationButton}
-            onClick={() => onPageChange(currentPage - 1)}
+            onClick={() => onPageChange(currentPage - 1)} data-testid="pagination-previous-button"
             disabled={currentPage === 1}
             aria-label="Página anterior"
           >
@@ -36,7 +36,7 @@ const ReportGrid = ({ reports, currentPage, totalPages, onPageChange }) => {
           </span>
           <button
             className={styles.paginationButton}
-            onClick={() => onPageChange(currentPage + 1)}
+            onClick={() => onPageChange(currentPage + 1)} data-testid="pagination-next-button"
             disabled={currentPage === totalPages}
             aria-label="Página siguiente"
           >

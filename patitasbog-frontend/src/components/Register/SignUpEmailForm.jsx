@@ -106,27 +106,27 @@ const SignUpEmailForm = ({ onRegister, onFail, handleShowEmailForm, setGoogleErr
                             placeholder="Ingresa tu nombre completo"
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
-                        required
-                        />
+                            required
+                            data-testid="signup-name-input"     // ← AÑADE ESTO
+                            />
                     </div>
                     {/* Correo electrónico */}
-                    <div className={styles.patitasFormFieldSingle}>
-                        <label className={styles.patitasFormLabel}>Correo electrónico</label>
-                        <input
-                            type="email"
-                            className={styles.patitasFormInputSingle}
-                            placeholder="Tu correo electrónico"
-                            value={correo}
-                            onChange={(e) => setCorreo(e.target.value)}
-                            required
+                    <input
+                        type="email"
+                        className={styles.patitasFormInputSingle}
+                        placeholder="Tu correo electrónico"
+                        value={correo}
+                        onChange={(e) => setCorreo(e.target.value)}
+                        required
+                        data-testid="signup-email-input"    // ← AÑADE ESTO
                         />
-                    </div>
+
                     {/* Contraseña */}
                     <div className={styles.patitasFormFieldSingle}>
                         <label className={styles.patitasFormLabel}>Contraseña</label>
                         <div className={styles.patitasPasswordContainer}>
                             <input
-                                type={showPassword ? "text" : "password"}
+                                type={showPassword ? "text" : "password"} data-testid="signup-password-input"
                                 className={styles.patitasFormInputSingle}
                                 placeholder="Escribe una contraseña"
                                 value={password}
@@ -171,7 +171,7 @@ const SignUpEmailForm = ({ onRegister, onFail, handleShowEmailForm, setGoogleErr
                         <label className={styles.patitasFormLabel}>Confirmación de contraseña</label>
                         <div className={styles.patitasPasswordContainer}>
                             <input
-                                type={showConfirmPassword ? "text" : "password"}
+                                type={showConfirmPassword ? "text" : "password"} data-testid="signup-confirm-password-input"
                                 className={styles.patitasFormInputSingle}
                                 placeholder="Confirma tu contraseña"
                                 value={confirmarPassword}
@@ -201,7 +201,7 @@ const SignUpEmailForm = ({ onRegister, onFail, handleShowEmailForm, setGoogleErr
                     </div>
                     {errorMessage && <div className={styles.patitasErrorMessage}>{errorMessage}</div>}
                     {successMessage && <div className={styles.patitasSuccessMessage}>{successMessage}</div>}
-                    <button type="submit" className={styles.patitasCreateAccountBtn} disabled={isLoading}>
+                    <button type="submit" data-testid="signup-submit-button" className={styles.patitasCreateAccountBtn} disabled={isLoading}>
                         {isLoading ? "Creando cuenta..." : "Crear cuenta"}
                     </button>
                     <div className={styles.oSeparator}>

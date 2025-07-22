@@ -182,7 +182,7 @@ const ReportForm = ({ type = "lost" }) => {
         }
       } else if (isSighting || isFound || isSightingEdit || isFoundEdit) {
         backendPayload = {
-          type: "avistamiento",
+          type: (isFound || isFoundEdit) ? "hallazgo" : "avistamiento",
           comment: details,
           location: { type: "Point", coordinates: [location.lng, location.lat] },
           images: allPhotosForBackend,

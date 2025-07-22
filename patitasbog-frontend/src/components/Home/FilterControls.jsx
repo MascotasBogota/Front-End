@@ -8,8 +8,7 @@ const FilterControls = ({ radiusFilter, setRadiusFilter, typeFilter, setTypeFilt
         <label htmlFor="radius-filter" className={styles.filterLabel}>
           Radio
         </label>
-        <select
-          id="radius-filter"
+        <select id="radius-filter" data-testid="filter-radius"
           className={styles.filterSelect}
           value={radiusFilter}
           onChange={(e) => setRadiusFilter(e.target.value)}
@@ -25,8 +24,7 @@ const FilterControls = ({ radiusFilter, setRadiusFilter, typeFilter, setTypeFilt
         <label htmlFor="type-filter" className={styles.filterLabel}>
           Tipo
         </label>
-        <select
-          id="type-filter"
+        <select id="type-filter" data-testid="filter-type"
           className={styles.filterSelect}
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
