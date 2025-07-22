@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { imageService } from '../../services/imageService'; // Agrega esta línea
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../../styles/Profile.module.css';
 import { userService } from '../../services/userService';
@@ -29,7 +30,7 @@ const FormProfile = () => {
                 setDireccion(profile.address);
                 setTelefono(profile.phoneNumber);
                 setFoto(profile.profilePicture);
-                setPreviewFoto(`http://localhost:5000${profile.profilePicture}` || '/images/sin_foto_perfil.png');
+                setPreviewFoto(profile.profilePicture || '/images/sin_foto_perfil.png');
             } catch (error) {
                 setErrorMessage("Error cargando perfil");
                 console.log(error);
@@ -43,25 +44,24 @@ const FormProfile = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-            const formData = new FormData();
-            formData.append('file', file)
+        const formData = new FormData();
+        formData.append('image', file);
 
-            try {
-                const response = await userService.uploadProfilePicture(formData);
-                console.log('Imagen subida:', response);
+        try {
+            const response = await imageService.uploadImage(formData);
+            console.log('Imagen subida:', response);
 
-                if (response.profile_picture) {
-                    setFoto(response.profile_picture); 
-                    const previewURL = URL.createObjectURL(file);
-                    setPreviewFoto(previewURL);
-                } else {
-                    console.warn('No se recibió la URL de la imagen');
-                }
-
-            } catch (error) {
-                console.error('Error al subir imagen:', error);
+            if (response?.imageUrl) {
+            setFoto(response.imageUrl); // Guardamos la URL en estado
+            setPreviewFoto(response.imageUrl); // Mostramos la imagen directamente desde la URL
+            } else {
+            console.warn('No se recibió la URL de la imagen');
             }
-    }
+        } catch (error) {
+            console.error('Error al subir imagen:', error);
+            setErrorMessage("Error al subir la imagen.");
+        }
+        };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
