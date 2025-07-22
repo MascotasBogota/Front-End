@@ -5,7 +5,7 @@ import { userService } from '../../services/userService';
 import styles from '../../styles/DetailsReport.module.css';
 import MapaLectura from './MapaLectura';
 
-const ReportDetails = ( { idviewer } ) => {
+const ReportDetails = ( { idviewer, report } ) => {
     const { idReporte } = useParams();
     const navigate = useNavigate();
     const [petname, setPetName] = useState('');
@@ -28,30 +28,26 @@ const ReportDetails = ( { idviewer } ) => {
     useEffect(() => {
         setIdViewerUser(idviewer);
         const fetchReporte = async () => {
-            setLoading(true);
-            try {
-                const response = await reportService.getReportById(idReporte);
+            const fechaHora = report.created_at;
+            const [fecha, horaCompleta] = fechaHora.split("T");
+            const hora = horaCompleta.slice(0, 5);
 
-                const fechaHora = response.created_at;
-                const [fecha, horaCompleta] = fechaHora.split("T");
-                const hora = horaCompleta.slice(0, 5);
+            setPetName(report.pet_name);
+            setDate(fecha);
+            setTime(hora);
+            setPetPhoto(report.images[0]);
+            setLocation(report.location);
+            setDescription(report.description);
 
-                setPetName(response.pet_name);
-                setDate(fecha);
-                setTime(hora);
-                setPetPhoto(response.images[0]);
-                setLocation(response.location);
-                setDescription(response.description);
-
-                if(response.status == 'open'){
-                    setStatus('Perdido');
-                }
-                else{
-                    setStatus('Encontrado');
-                }
+            if(report.status == 'open'){
+                setStatus('Perdido');
+            }
+            else{
+                setStatus('Encontrado');
+            }
 
             try{
-                const response2 = await userService.getUserById(response.user_id);
+                const response2 = await userService.getUserById(report.user_id);
 
                 setUser(response2.user.username);
                 setName(response2.user.full_name);
@@ -59,8 +55,6 @@ const ReportDetails = ( { idviewer } ) => {
                 setUserPhoto(response2.user.profile_picture);
                 setIdReportUser(response2.user.id);
                 console.log("Datos de reporte obtenidos con éxito");
-                console.log(response2.user.id);
-                console.log(idviewer);
             }
             catch(error){
                 setErrorMessage(`Error obteniendo datos del usuario creador del reporte: ${error.message}`);
@@ -68,12 +62,6 @@ const ReportDetails = ( { idviewer } ) => {
             finally{
                 setLoading(false);
             }
-        } catch (error) {
-            setErrorMessage(`Error al cargar el reporte: ${error.message}`);
-        }
-        finally{
-            setLoading(false);
-        }
         };
      
         fetchReporte();

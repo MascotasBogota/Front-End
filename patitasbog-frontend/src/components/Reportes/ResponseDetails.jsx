@@ -6,7 +6,7 @@ import { userService } from '../../services/userService';
 import { reputationService } from '../../services/reputationService';
 import { responseService } from '../../services/responseService';
 
-const ResponseDetails = ( { data, idviewer, idreport } ) => {
+const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
     const [idresponse, setIdReponse] = useState('');
     const navigate = useNavigate();
     const [like_clicked, setLike_Clicked] = useState(false);
@@ -22,13 +22,11 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
     const [userphoto, setUserPhoto] =useState('');
     const [type, setType] = useState('');
     const [reputation, setReputation] = useState('');
-    const [idvieweruser, setIdViewerUser] = useState('');
     const [loading, setLoading] = useState('');
     const [errormessage, setErrorMessage] = useState('');
     const [successmessage, setSuccessMessage] = useState('');
 
     useEffect(()=>{
-        setIdViewerUser(idviewer);
         const fechaHora = data.created_at;
         const [fecha, horaCompleta] = fechaHora.split("T");
         const hora = horaCompleta.slice(0, 5);
@@ -39,6 +37,8 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
         setPetPhoto(data.images[0]);
         setType(data.type);
         setIdReponse(data.id)
+        console.log("id de respuesta");
+        console.log(data.id);
 
         const fetchUser = async () => {
             try{
@@ -48,10 +48,6 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
                 setReputation(response.user.reputation);
                 setUserPhoto(response.user.profile_picture);
                 setIdResponseUser(response.user.id);
-                console.log("Datos de reporte obtenidos con éxito");
-                console.log("viewer");
-                console.log(idvieweruser);
-                console.log("response");
                 console.log(idresponseUser);
             }
             catch(error){
@@ -69,21 +65,24 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
     const handle_like_click = async () => {
         setLike_Clicked(!like_clicked);
         setDislike_Clicked(false);
+        console.log(idreport);
+        console.log(idresponse);
         const respuesta = await reputationService.rateResponse(idreport, idresponse, "useful");
         console.log(respuesta);
     }
 
     const handle_dislike_click = async () => {
+        
+        setDislike_Clicked(!dislike_clicked);
+        setLike_Clicked(false);
         if(type=="avistamiento"){
-            const respuesta = await reputationService.rateResponse(idreport, idresponse, "not_useful");
-            console.log(respuesta);
+             const respuesta = await reputationService.rateResponse(idreport, idresponse, "not_useful");
+             console.log(respuesta);
         }
-        else{
+         else{
             const respuesta = await reputationService.rateResponse(idreport, idresponse, "false_finding");
             console.log(respuesta);
         }
-        setDislike_Clicked(!dislike_clicked);
-        setLike_Clicked(false);
     }
 
     const handleDelete = async () => {
@@ -159,7 +158,7 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
                     <img src={petphoto} className={styles.response_photo} />    
                 </div>
             </div>
-            {idvieweruser == idresponseUser && (
+            {idviewer == report.user_id && (
                 <div className={styles.response_footer}>
                     <p className={styles.reputation_text}>¿Fue útil esta respuesta?</p>
                     {!like_clicked && (
