@@ -39,11 +39,11 @@ function App() {
             }
           />
           <Route
-            path="/create-report"
+            path="/create-report/:reportId/:responseId"
             element={
               <PrivateRoute>
                 <Layout>
-                  <ReportForm type="lost"/>
+                  <ReportForm type="sightingEdit"/>
                 </Layout>
               </PrivateRoute>
             }

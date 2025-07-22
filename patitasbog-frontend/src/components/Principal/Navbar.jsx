@@ -51,10 +51,12 @@ const Navbar = () => {
   return (
     <>
       <nav className={styles.navbar}>
-        <Link to="/" className={styles.logoSection} onClick={closeMobileMenu}>
+        
+        <Link to={isAuthenticated ? "/home" : "/"} className={styles.logoSection} onClick={closeMobileMenu}>
           <img src="/images/logo.svg" alt="Logo" className={styles.logoIcon} />
           <span className={styles.logoText}>PatitasBog</span>
         </Link>
+
 
         {/* Desktop Navigation */}
         <div className={styles.navLinks}>
