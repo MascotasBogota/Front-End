@@ -1,4 +1,29 @@
 /* Education Module Styles */
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .educationContainer {
   display: flex;
   flex-direction: column;
@@ -169,12 +194,12 @@
 
 /* === CATEGORIES SECTION === */
 .categoriesSection {
-  padding: var(--spacing-6) 0;
+  padding: var(--spacing-4) 0;
 }
 
 .sectionHeader {
   text-align: center;
-  margin-bottom: var(--spacing-6);
+  margin-bottom: var(--spacing-4);
 }
 
 .sectionTitle {
@@ -203,33 +228,40 @@
   background: var(--color-neutro-1);
   border: 2px solid var(--color-neutro-3);
   border-radius: var(--border-radius);
-  padding: var(--spacing-4);
+  padding: var(--spacing-3);
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
+  transform: translateY(0);
 }
 
 .categoryCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-principal);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-secundario);
 }
 
 .categoryActive {
   border-color: var(--color-principal);
   background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-secundario) 100%);
   color: var(--color-neutro-1);
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+}
+
+.categoryClicked {
+  animation: pulse 0.3s ease-out;
 }
 
 .categoryIcon {
-  font-size: 3rem;
-  margin-bottom: var(--spacing-2);
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-1);
 }
 
 .categoryTitle {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: var(--spacing-1);
   color: inherit;
@@ -239,8 +271,12 @@
   display: none;
   font-size: 0.9rem;
   color: inherit;
-  opacity: 0.8;
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-1);
+  padding-top: var(--spacing-1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
 }
 
 .categoryDescription p {
@@ -249,25 +285,29 @@
   opacity: 0.85;
 }
 
-.categoryCard:hover .categoryDescription {
+.categoryActive .categoryDescription {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
 .categoryArrow {
   font-size: 1.5rem;
   color: var(--color-principal);
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(0);
 }
 
 .categoryActive .categoryArrow {
   color: var(--color-neutro-1);
-  transform: translateX(10px);
+  transform: translateX(10px) scale(1.1);
 }
 
 /* === TIPS SECTION === */
 .tipsSection {
   padding: var(--spacing-6) 0;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .tipsGrid {
@@ -285,7 +325,15 @@
   padding: var(--spacing-4);
   transition: all 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
 }
+
+/* Animaciones escalonadas para las tarjetas */
+.tipCard:nth-child(1) { animation-delay: 0.1s; }
+.tipCard:nth-child(2) { animation-delay: 0.2s; }
+.tipCard:nth-child(3) { animation-delay: 0.3s; }
+.tipCard:nth-child(4) { animation-delay: 0.4s; }
 
 .tipCard:hover {
   transform: translateY(-3px);
@@ -379,14 +427,22 @@
 .tipsSummary {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-6);
+  align-items: center;
+  gap: var(--spacing-4);
   font-size: 0.9rem;
   color: var(--color-neutro-6);
+  flex-wrap: wrap;
 }
 
 .tipsCount {
   font-weight: 600;
   color: var(--color-principal);
+}
+
+.tipsCount::after {
+  content: " • ";
+  margin: 0 var(--spacing-2);
+  color: var(--color-neutro-4);
 }
 
 .tipsPriority {
@@ -405,9 +461,11 @@
 }
 
 .bottomNotice p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
+  color: #000000;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* === RESPONSIVE DESIGN === */
