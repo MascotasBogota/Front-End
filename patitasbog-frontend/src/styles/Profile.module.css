@@ -37,7 +37,17 @@
     height: auto;
 }
 
+.foto_perfil_container{
+    width: 361px;
+    height: 361px;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
 .foto_perfil {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 25px;
 }
 

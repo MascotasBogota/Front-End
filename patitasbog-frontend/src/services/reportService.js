@@ -17,5 +17,5 @@ export const reportService = {
   // Método para eliminar un reporte
   deleteReport: (reportId) => reportApi.delete(`/reports/${reportId}`),
 
-  markAsClosed: (reportId) => reportApi.put(`/reports/${reportId}/close`),
+  markAsClosed: (reportId) => reportApi.post(`/reports/${reportId}/close`),
 };

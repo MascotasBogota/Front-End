@@ -11,6 +11,7 @@ import ViewLogin from './views/Login/ViewLogin';
 import ViewChangePassword from './views/Profile/ViewChangePassword';
 import ViewProfile from './views/Profile/ViewProfile';
 import ViewRecoverPassword from './views/Login/ViewRecoverPassword';
+import ViewDetailsReport from './views/Reports/ViewDetailsReport';
 import ViewEducation from './views/Education/ViewEducation';
 import ConnTest from "./views/conn-test/conn-test";
 import ReportForm from "./components/Reportes/ReportForm"
@@ -30,8 +31,10 @@ function App() {
           <Route path="/recover_password" element={<ViewRecoverPassword />} />
           <Route path="/change_password" element={<Layout><ViewChangePassword /></Layout>} />
           <Route path="/education" element={<Layout><ViewEducation /></Layout>} />
-          <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
+          
           {/* Protegidas */}
+          <Route path="/perfil" element={<Layout><ViewProfile /></Layout>} />
+          <Route path="/reportes/:idReporte" element={<Layout><ViewDetailsReport /></Layout>} />
           <Route
             path="/home"
             element={
@@ -44,6 +47,57 @@ function App() {
               <PrivateRoute>
                 <Layout>
                   <ReportForm type="lost"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/updating/:reportId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="updating"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sighting/:reportId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="sighting"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/found/:reportId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="found"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sighting_edit/:reportId/:responseId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="sightingEdit"/>
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/found_edit/:reportId/:responseId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ReportForm type="foundEdit"/>
                 </Layout>
               </PrivateRoute>
             }

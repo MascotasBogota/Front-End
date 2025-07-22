@@ -5,6 +5,6 @@ export const reputationService = {
   // rating para hallazgos puede ser {useful,false_finding}
   rateResponse: (reportId, responseId, rating) =>
     reputationApi.post(`/api/rate-response/${reportId}/${responseId}`, {
-      rating,
+      "rating":rating,
     }),
 };

@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet"
-import "../styles/Map.css" // Asegúrate de que esta ruta sea correcta
+import "../../styles/Map.module.css"
 import "leaflet/dist/leaflet.css"
 import "leaflet-defaulticon-compatibility"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"

@@ -10,7 +10,8 @@ const FormProfile = () => {
     const [genero, setGenero] = useState('');
     const [direccion, setDireccion] = useState('');
     const [telefono, setTelefono] = useState ('');
-    const [foto, setFoto] = useState ('/images/sin_foto_perfil.png');
+    const [foto, setFoto] = useState ('');
+    const [previewfoto, setPreviewFoto] = useState('/images/sin_foto_perfil.png');
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState ('');
     const [errorMessage, setErrorMessage] = useState ('');
@@ -27,6 +28,8 @@ const FormProfile = () => {
                 setGenero(profile.gender);
                 setDireccion(profile.address);
                 setTelefono(profile.phoneNumber);
+                setFoto(profile.profilePicture);
+                setPreviewFoto(`http://localhost:5000${profile.profilePicture}` || '/images/sin_foto_perfil.png');
             } catch (error) {
                 setErrorMessage("Error cargando perfil");
                 console.log(error);
@@ -35,6 +38,30 @@ const FormProfile = () => {
 
         fetchData(); 
     }, []);
+
+    const handleUploadPhoto = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file)
+
+            try {
+                const response = await userService.uploadProfilePicture(formData);
+                console.log('Imagen subida:', response);
+
+                if (response.profile_picture) {
+                    setFoto(response.profile_picture); 
+                    const previewURL = URL.createObjectURL(file);
+                    setPreviewFoto(previewURL);
+                } else {
+                    console.warn('No se recibió la URL de la imagen');
+                }
+
+            } catch (error) {
+                console.error('Error al subir imagen:', error);
+            }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,7 +88,7 @@ const FormProfile = () => {
                 phoneNumber: telefono,
                 profilePicture: foto,
             };
-        
+            
             const response = await userService.updateUserProfile(profileData);
         
             console.log(response);
@@ -92,10 +119,26 @@ const FormProfile = () => {
             <p className={styles.title}>Mi Perfil</p>
             <form className={styles.form} onSubmit={handleSubmit}>
                 <div className={styles.options_column}>
-                    <img src={foto}
+                    <div className={styles.foto_perfil_container}>
+                        <img src={previewfoto}
                         className={styles.foto_perfil}
                     ></img>
-                    <button type="button" className={styles.options_button}>Subir foto de perfil</button>
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="fileInput"
+                        onChange={handleUploadPhoto}
+                    />
+
+                    <button
+                        type="button"
+                        className={styles.options_button}
+                        onClick={() => document.getElementById('fileInput').click()}
+                    >
+                        Subir foto de perfil
+                    </button>
                     <button type="submit" className={styles.options_button}>{isLoading ? 'Guardando cambios...' : 'Guardar cambios'}</button>
                     <Link to="/change_password" className={styles.options_button2}>Cambiar contraseña</Link>
                 </div>
