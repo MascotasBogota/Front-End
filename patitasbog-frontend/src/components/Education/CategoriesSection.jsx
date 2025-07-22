@@ -7,25 +7,46 @@ const CategoriesSection = ({ selectedCategory, setSelectedCategory }) => {
       id: 'general',
       name: 'Consejos Generales',
       icon: '🏠',
-      description: 'Fundamentos básicos para cuidar tu mascota'
+      description: [
+                    'Identificación de mascotas',
+                    'Mantenimiento de fotos actualizadas',
+                    'Conocimiento del vecindario',
+                    'Red de contactos'
+                  ]
+
     },
     {
       id: 'prevention',
       name: 'Prevención',
       icon: '🛡️',
-      description: 'Evita que tu mascota se pierda'
+      description: [
+                    'Microchip obligatorio',
+                    'Collar con GPS',
+                    'Entrenamiento básico',
+                    'Rutinas establecidas'
+                  ]
     },
     {
-      id: 'search',
-      name: 'Búsqueda',
-      icon: '🔍',
-      description: 'Qué hacer si tu mascota se pierde'
-    },
+  id: 'search',
+  name: 'Búsqueda',
+  icon: '🔍',
+  description: [
+                  'Acción rápida',
+                  'Uso de redes sociales',
+                  'Carteles efectivos',
+                  'Búsqueda en diferentes horarios'
+              ]
+},
     {
       id: 'care',
       name: 'Cuidados',
       icon: '❤️',
-      description: 'Salud y bienestar de tu mascota'
+description: [
+                'Medicina preventiva',
+                'Alimentación balanceada',
+                'Ejercicio regular',
+                'Revisiones veterinarias'
+              ]
     }
   ];
 
@@ -49,7 +70,12 @@ const CategoriesSection = ({ selectedCategory, setSelectedCategory }) => {
           >
             <div className={styles.categoryIcon}>{category.icon}</div>
             <h3 className={styles.categoryTitle}>{category.name}</h3>
-            <p className={styles.categoryDescription}>{category.description}</p>
+            <div className={styles.categoryDescription}>
+              {category.description.map((tip, idx) => (
+                <p key={idx}>{tip}</p>
+              ))}
+            </div>
+
             <div className={styles.categoryArrow}>→</div>
           </div>
         ))}
