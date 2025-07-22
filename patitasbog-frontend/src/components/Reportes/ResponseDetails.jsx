@@ -8,6 +8,7 @@ import { responseService } from '../../services/responseService';
 
 const ResponseDetails = ( { data, idviewer, idreport } ) => {
     const [idresponse, setIdReponse] = useState('');
+    const navigate = useNavigate();
     const [like_clicked, setLike_Clicked] = useState(false);
     const [dislike_clicked, setDislike_Clicked] = useState(false);
     const [date, setDate] = useState('');
