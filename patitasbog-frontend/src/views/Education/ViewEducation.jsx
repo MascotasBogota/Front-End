@@ -152,6 +152,7 @@ const ViewEducation = () => {
           setSelectedCategory={setSelectedCategory}
         />
         <TipsSection 
+          key={selectedCategory} 
           data={educationData[selectedCategory]}
           selectedCategory={selectedCategory}
         />
