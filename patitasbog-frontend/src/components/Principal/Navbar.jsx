@@ -64,15 +64,15 @@ const Navbar = () => {
           <Link to="/education">Módulo Educativo</Link>
           {!isAuthenticated && (
             <>
-              <Link to="/register">Registrarse</Link>
-              <Link to="/login">Iniciar Sesión</Link>
+              <Link to="/register" data-testid="navbar-register-link">Registrarse</Link>
+              <Link to="/login" data-testid="navbar-login-link">Iniciar Sesión</Link>
             </>
           )}
           {isAuthenticated && (
             <>
               <Link to="/notificaciones">Notificaciones</Link>
-              <Link to="/perfil">Mi Perfil</Link>
-              <button onClick={handleLogout} className={styles.logoutBtn}>
+              <Link to="/perfil" data-testid="navbar-profile-link">Mi Perfil</Link>
+              <button onClick={handleLogout} data-testid="navbar-logout-button" className={styles.logoutBtn}>
                 Cerrar Sesión
               </button>
             </>
@@ -102,10 +102,10 @@ const Navbar = () => {
           </Link>
           {!isAuthenticated && (
             <>
-              <Link to="/register" onClick={closeMobileMenu}>
+              <Link to="/register" data-testid="navbar-register-link" onClick={closeMobileMenu}>
                 Registrarse
               </Link>
-              <Link to="/login" onClick={closeMobileMenu}>
+              <Link to="/login" data-testid="navbar-login-link" onClick={closeMobileMenu}>
                 Iniciar Sesión
               </Link>
             </>
@@ -115,10 +115,10 @@ const Navbar = () => {
               <Link to="/notificaciones" onClick={closeMobileMenu}>
                 Notificaciones
               </Link>
-              <Link to="/perfil" onClick={closeMobileMenu}>
+              <Link to="/perfil" data-testid="navbar-profile-link" onClick={closeMobileMenu}>
                 Mi Perfil
               </Link>
-              <button onClick={handleLogout} className={styles.logoutBtn}>
+              <button onClick={handleLogout} data-testid="navbar-logout-button" className={styles.logoutBtn}>
                 Cerrar Sesión
               </button>
             </>

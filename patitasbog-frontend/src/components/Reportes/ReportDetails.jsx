@@ -185,8 +185,8 @@ const ReportDetails = ( { idviewer } ) => {
                             </p>
                         
                             <img src='/icons/check.svg' className={styles.change_icon} onClick={handleClose}/>
-                            <img src='/icons/pencil.svg' className={styles.change_icon} onClick={handleEdit}/>
-                            <img src='/icons/trash.svg' className={styles.change_icon} onClick={handleDelete}/>
+                            <img src='/icons/pencil.svg' alt='pencil' className={styles.change_icon} onClick={handleEdit}/>
+                            <img src='/icons/trash.svg' alt='trash' className={styles.change_icon} onClick={handleDelete}/>
                         </div>
                         )
                     }

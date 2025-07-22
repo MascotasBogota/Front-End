@@ -90,6 +90,7 @@ const FormChangePassword = ( { correo } ) => {
                             type={showCurrentPassword ? "text" : "password"}
                             className={styles.formInput}
                             value={currentPassword}
+                            data-testid="current-pass"
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             required
                         />
@@ -114,6 +115,7 @@ const FormChangePassword = ( { correo } ) => {
                             type={showPassword ? "text" : "password"}
                             className={styles.formInput}
                             value={password}
+                            data-testid="pass"
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
@@ -157,6 +159,7 @@ const FormChangePassword = ( { correo } ) => {
                             type={showConfirmPassword ? "text" : "password"}
                             className={styles.formInput}
                             value={confirmPassword}
+                            data-testid="confirm-pass"
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />

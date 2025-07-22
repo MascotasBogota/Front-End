@@ -138,7 +138,7 @@ const ResponseDetails = ( { data, idviewer, idreport } ) => {
                 )
                 }
                 {idvieweruser == idresponseUser && (
-                    <img src='/icons/trash.svg' className={styles.response_change_icon} onClick={handleDelete}/>
+                    <img src='/icons/trash.svg' alt='trash-response' className={styles.response_change_icon} onClick={handleDelete}/>
                 )
                 }
             </div>
