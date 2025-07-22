@@ -136,7 +136,7 @@ const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
                 <span className={styles.response_type_label}>{type == "avistamiento" ? "Avistamiento" : "Encontrado"}</span>
 
                 {idviewer == idresponseUser && (
-                    <img src='/icons/pencil.svg' className={styles.response_change_icon} onClick={handleEdit}/>
+                    <img src='/icons/pencil.svg' alt='pencil-response' className={styles.response_change_icon} onClick={handleEdit}/>
                 )
                 }
                 {idviewer == idresponseUser && (
