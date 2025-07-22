@@ -4,11 +4,29 @@ import { useContext, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styles from "../../styles/Navbar.module.css" 
 import { AuthContext } from "../../contexts/AuthContext"
+import { notificationService } from "../../services/notificationService"
 
-const Navbar = () => {
+const Navbar = ( { handleOpenNotifications } ) => {
   const { isAuthenticated, logout } = useContext(AuthContext)
   const navigate = useNavigate()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [notificationsCount, setNotificationsCount] = useState(0)
+
+  useEffect(() => {
+          const fetchNotificacions = async () => {
+              try {
+                  const response = await notificationService.getUnreadNotificationsCount();
+                  setNotificationsCount(response.data.unread_count);
+                  console.log(response);
+              } catch (error) {
+                  console.log(error);
+              }
+          };
+  
+          if (isAuthenticated) {
+              fetchNotificacions();
+          }
+      }, [isAuthenticated, notificationsCount]);
 
   const handleLogout = () => {
     logout()
@@ -70,9 +88,11 @@ const Navbar = () => {
           )}
           {isAuthenticated && (
             <>
-              <Link to="/notificaciones">Notificaciones</Link>
+
+              <p onClick={handleOpenNotifications}>Notificaciones {notificationsCount > 0 && `(${notificationsCount})`}</p>
               <Link to="/perfil" data-testid="navbar-profile-link">Mi Perfil</Link>
               <button onClick={handleLogout} data-testid="navbar-logout-button" className={styles.logoutBtn}>
+
                 Cerrar Sesión
               </button>
             </>
@@ -112,10 +132,10 @@ const Navbar = () => {
           )}
           {isAuthenticated && (
             <>
-              <Link to="/notificaciones" onClick={closeMobileMenu}>
-                Notificaciones
-              </Link>
+
+              <p onClick={handleOpenNotifications}>Notificaciones {notificationsCount > 0 && `(${notificationsCount})`}</p>
               <Link to="/perfil" data-testid="navbar-profile-link" onClick={closeMobileMenu}>
+
                 Mi Perfil
               </Link>
               <button onClick={handleLogout} data-testid="navbar-logout-button" className={styles.logoutBtn}>
