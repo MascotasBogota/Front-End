@@ -132,6 +132,7 @@ const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
                     </p>
                 </div>
                 <span className={styles.response_type_label}>{type == "avistamiento" ? "Avistamiento" : "Encontrado"}</span>
+
                 {idvieweruser == idresponseUser && (
                     <img src='/icons/pencil.svg' className={styles.response_change_icon} onClick={handleEdit}/>
                 )
@@ -140,6 +141,7 @@ const ResponseDetails = ( { data, idviewer, idreport, report } ) => {
                     <img src='/icons/trash.svg' alt='trash-response' className={styles.response_change_icon} onClick={handleDelete}/>
                 )
                 }
+
             </div>
             <div className={styles.datetime_container_response}>
                 <p className={styles.datetime_text_response}>Fecha: {date}</p>

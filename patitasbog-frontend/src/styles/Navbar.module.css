@@ -85,6 +85,7 @@
 }
 
 .navLinks a,
+.navLinks p, 
 .logoutBtn {
   font-size: var(--fs-link);
   font-weight: 900;
@@ -103,11 +104,13 @@
 }
 
 .navLinks a:hover,
+.navLinks p:hover, 
 .logoutBtn:hover {
   text-decoration: underline;
 }
 
-.navLinks a:not(:last-child)::after {
+.navLinks a:not(:last-child)::after,
+.navLinks p:not(:last-child)::after {
   content: "";
   display: inline-block;
   width: 2px;
